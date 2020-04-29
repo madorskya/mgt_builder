@@ -1,0 +1,15 @@
+// parameter	value	
+int_reg_offset	0	
+reg_width_bits	32	
+mgt_rx_iface	mgt_rx	
+mgt_tx_iface	mgt_tx	
+phalg_tx_iface	phalg_tx	
+drp_iface	drp	
+interfaces_fname	mgt_interfaces.sv	
+mgt_module_fn	mgt_module.sv	
+common_module_fn	common_module.sv	
+quad_module_fn	quad_module.sv	
+		
+root_config	.	
+MGT	xc7vx690tffg1927-2/GTH	
+board	MTF7	
