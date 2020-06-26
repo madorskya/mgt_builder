@@ -1,0 +1,38 @@
+//name	direction	type	clock	bits	default	interface	indexed	buffer	
+QPLLOUTCLK	out	c		1			y		
+QPLLOUTREFCLK	out	c		1			y		
+REFCLKOUTMONITOR	out	c		1			y		
+DRPADDR	in	drp	DRPCLK	8		drp			
+DRPCLK	in	drp		1					
+DRPDI	in	drp	DRPCLK	32		drp			
+DRPDO	out	drp	DRPCLK	32		drp	y		
+DRPEN	in	drp	DRPCLK	1		drp			
+DRPRDY	out	drp	DRPCLK	1		drp	y		
+DRPWE	in	drp	DRPCLK	1		drp			
+QPLLDMONITOR	out	0		1			y		
+BGBYPASSB	in	0		1	1'b1				
+BGMONITORENB	in	0		1	1'b1				
+BGPDB	in	0		1	1'b1				
+BGRCALOVRD	in	0		5	5'b11111				
+BGRCALOVRDENB	in	0		1	1'b1				
+PMARSVD	in	0		8					
+PMARSVDOUT	out	0		1			y		
+QPLLFBCLKLOST	out	s	QPLLLOCKDETCLK	1			y		
+QPLLLOCK	out	s		1			y		
+QPLLLOCKDETCLK	in	c		1					
+QPLLLOCKEN	in	0		1	1'b1				
+QPLLOUTRESET	in	0		1					
+QPLLPD	in	s		1					
+QPLLREFCLKLOST	out	s	QPLLLOCKDETCLK	1			y		
+QPLLREFCLKSEL	in	0		3	3'b001				
+QPLLRESET	in	s		1					
+QPLLRSVD1	in	0		16	16'h0				
+QPLLRSVD2	in	0		5	5'b11111				
+RCALENB	in	0		1	1'b1				
+GTGREFCLK	in	0		1			y		
+GTNORTHREFCLK0	in	0		1			y		
+GTNORTHREFCLK1	in	0		1			y		
+GTREFCLK0	in	c		1			y		
+GTREFCLK1	in	0		1			y		
+GTSOUTHREFCLK0	in	0		1			y		
+GTSOUTHREFCLK1	in	0		1			y		
