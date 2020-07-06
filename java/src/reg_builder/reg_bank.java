@@ -1,6 +1,10 @@
 package reg_builder;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 class bit_range
@@ -108,12 +112,48 @@ class attribute
 		}
 		System.out.println();
 	};
+	
+	// generate verilog global for this att
+	String verilog_global()
+	{
+		String s = String.format("wire%s %s", 
+				(att_range.width() > 1) ? (" [" + att_range.print() + "]") : "", 
+				name);
+		if (dims.size() > 0) 
+		{
+			for (bit_range r: dims)
+				s += " [" + r.print() + "]";
+		}
+		s += ";";
+		return s;
+	};
+
+	// generate verilog logic for this att
+	String verilog_logic()
+	{
+		String s = "";
+		if (read_only)
+			s = String.format("assign reg_['h%x][%s] = %s%s;", reg_offset, reg_range.print(), name, indexes);
+		else
+			s = String.format("assign %s%s = reg_['h%x][%s];", name, indexes, reg_offset, reg_range.print());
+		
+		return s;
+	};
+	//Address       bits    rw      Name    att_bits        att_enc bin_enc
+	//00000   0:0     R/W     CPLLRESET       0:0     x-x     x-x
+	String register_map()
+	{
+		String s = String.format("%05x\t%s\t%s\t%s%s\t%s\tx-x\tx-x", 
+				reg_offset, reg_range.print(), read_only ? "R":"R/W", name, indexes, att_range.print());
+		return s;
+	};
 };
 
 public class reg_bank 
 {
 	HashMap<Integer, attribute> atts; // map of the attributes (register fractions), with arrays
 	HashMap<Integer, attribute> atts_unwrap; // map of the attributes (register fractions), arrays unwrapped
+    int reg_width_bits = 64; // hardcoded temporarily
 	
     int reg_base;
     int reg_last;
@@ -124,7 +164,7 @@ public class reg_bank
 	{
 		atts = new HashMap<Integer, attribute>();
 		atts_unwrap = new HashMap<Integer, attribute>();
-		System.out.println ("reg_bank created");
+//		System.out.println ("reg_bank created");
 		
 	};
 	
@@ -235,8 +275,8 @@ public class reg_bank
                 atts.put(atts_count, na);
                 atts_count++;
 
-                System.out.println(String.format("name: %s dims.length: %d na.dims.size: %d new_reg: %b", 
-        				att_name, dims.length, na.dims.size(), new_reg));
+//                System.out.println(String.format("name: %s dims.length: %d na.dims.size: %d new_reg: %b", 
+//        				att_name, dims.length, na.dims.size(), new_reg));
                 
                 // if it's an array, unwrap 
                 if (na.dims.size() > 0)
@@ -271,11 +311,87 @@ public class reg_bank
     	       reg_base, reg_last, wire_base, wire_last));
 	};
     
+	void verilog_global(String fname)
+	{
+        List<String> lines = new ArrayList<>();
+        int i = 0;
+		for(HashMap.Entry<Integer,attribute> ate : atts.entrySet())
+		{
+			lines.add (ate.getValue().verilog_global());
+			i++;
+		}
+
+		Path file = Paths.get(fname);
+        try
+        {
+            Files.write(file, lines, StandardCharsets.UTF_8);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+		System.out.println ("verilog_global wrote " + i + " lines");
+		
+	};
+	
+	void verilog_logic(String fname)
+	{
+        List<String> lines = new ArrayList<>();
+        
+        // declaration of registers and wires
+//        lines.add (String.format("reg  [%d:0] reg_  [%d:%d];", reg_width_bits-1, reg_last,  reg_base));
+//        lines.add (String.format("wire [%d:0] wire_ [%d:%d];", reg_width_bits-1, wire_last, wire_base));
+        lines.add (String.format("localparam REG_LAST = %d;", reg_last));
+        lines.add (String.format("logic  [%d:0] reg_  [%d:%d];", reg_width_bits-1, wire_last,  reg_base));
+        lines.add ("");
+        
+        // assignments of registers to atts and vv
+        int i = 0;
+		for(HashMap.Entry<Integer,attribute> ate : atts_unwrap.entrySet())
+		{
+			lines.add (ate.getValue().verilog_logic());
+			i++;
+		}
+
+		Path file = Paths.get(fname);
+        try
+        {
+            Files.write(file, lines, StandardCharsets.UTF_8);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+		System.out.println ("verilog_logic wrote " + i + " lines");
+		
+	};
+	
+	void register_map (String fname)
+	{
+        List<String> lines = new ArrayList<>();
+		int i = 0;
+		for(HashMap.Entry<Integer,attribute> ate : atts_unwrap.entrySet())
+		{
+			lines.add (ate.getValue().register_map());
+			i++;
+		}
+		
+		Path file = Paths.get(fname);
+        try
+        {
+            Files.write(file, lines, StandardCharsets.UTF_8);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+		System.out.println ("register_map wrote " + i + " lines");
+	};
+	
     int assign_addresses (boolean read_only, int start_addr)
     {
         int ca = start_addr; // current address
         int cb = 0; // current bit
-        int reg_width_bits = 64; // hardcoded temporarily
         
         for (HashMap.Entry<Integer,attribute> ate : atts_unwrap.entrySet())
         {

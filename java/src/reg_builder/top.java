@@ -13,11 +13,14 @@ public class top {
        		);
 
        	reg_bank rb = new reg_bank();
-       	String[] fs = rb.read_tab_file("registers/register_map.tab");
+       	String[] fs = rb.read_tab_file("registers/register_list.tab");
        	rb.read_config(fs);
        	int last_addr = rb.assign_addresses (false, 0); // first R/W registers
        	rb.assign_addresses (true, last_addr); // then RO
-       	rb.print();
+       	rb.verilog_global("sv/registers_global.svh"); // write verilog global declarations
+       	rb.verilog_logic ("sv/registers_logic.sv"); // write verilog logic source
+       	rb.register_map  ("registers/register_offsets.tab"); // write register address map for control software
+//       	rb.print();
        
     }
 }
