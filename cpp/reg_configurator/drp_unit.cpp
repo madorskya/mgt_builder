@@ -33,17 +33,10 @@ string bit_range::print()
     return res.str();
 }
 
-drp_unit::drp_unit(int base_a, int full_drp_addr_width)
+drp_unit::drp_unit(int base_a)
 {
-    // convert to actual base address, taking device base into account
     // base_addr is in 64-bit words
-
-    // split out quad address
-    quad_address = base_a >> full_drp_addr_width;
-    int base_a_noq = base_a & ((1<<full_drp_addr_width)-1); // leave only addres inside quad
-
-    MEM_BASE = 0xC0000/8;
-    base_addr = base_a_noq + MEM_BASE; // true base address without quad number
+    base_addr = base_a >> 3;
 //    printf("new drp_unit: %05x %05x %02x %05x\n", base_a, base_a_noq, quad_address, base_addr);
 
     rx_active = tx_active = common = false;
@@ -771,8 +764,10 @@ boost::multiprecision::uint128_t drp_unit::att_read  (int fd, string name, strin
                 rb = (boost::multiprecision::uint128_t) rb64;
             }
             else
+            {
+                cout << "cannot find register for attribute: " << name << endl;
                 rb = -1; // invalid value if the attribute/port was not in registers
-
+            }
 
             rb &= reg_rng.mask; // leave only relevant bits
             rb >>= reg_rng.low; // now the relevant portion is in low bits

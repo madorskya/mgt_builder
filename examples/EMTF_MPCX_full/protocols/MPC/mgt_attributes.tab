@@ -343,7 +343,7 @@ CPLLFBCLKLOST	CPLLFBCLKLOST_OUT
 CPLLLOCK	CPLLLOCK_OUT	
 CPLLLOCKDETCLK	CPLLLOCKDETCLK_IN	
 CPLLLOCKEN	tied_to_vcc_i	
-CPLLPD	power_down	
+CPLLPD	tied_to_vcc_i	
 CPLLREFCLKLOST	CPLLREFCLKLOST_OUT	
 CPLLREFCLKSEL	3'b001	
 CPLLRESET	CPLLRESET_IN	
@@ -383,8 +383,8 @@ PHYSTATUS	phystatus_w
 RXRATE	tied_to_ground_vec_i[2:0]	
 RXVALID	rxvalid_w	
 //----------------------------	Power-Down	
-RXPD	{power_down,	
-TXPD	{power_down,	
+RXPD	2'b11	
+TXPD	2'b11	
 //------------------------	RX	
 SETERRSTATUS	tied_to_ground_i	
 //-------------------	RX	

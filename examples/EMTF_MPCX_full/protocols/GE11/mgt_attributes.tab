@@ -398,8 +398,8 @@ PHYSTATUS	,
 RXRATE	tied_to_ground_vec_i[2:0]	
 RXVALID	,	
 //----------------------------	Power-Down	
-RXPD	2'b00	
-TXPD	2'b00	
+RXPD	2'b11	
+TXPD	2'b11	
 //------------------------	RX	
 SETERRSTATUS	tied_to_ground_i	
 //-------------------	RX	

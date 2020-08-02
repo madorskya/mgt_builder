@@ -24,11 +24,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-    if (argc > 1)
+    if (argc > 2)
     {
-        // argv[1] is top config file name
+        // argv[2] is top config file name
         fpga chip;
-        chip.read_top_config (argv[1]); // top configuration file
+        chip.read_top_config (argv[2]); // top configuration file
         chip.read_mgt_config (); // read MGT configuration
         chip.read_mgt_list   (); // fpga link base addresses
         chip.read_links      (); // link config file, same as what java script reads
@@ -40,10 +40,9 @@ int main(int argc, char *argv[])
 
         if (argc > 2)
         {
-            int dev_ind = 1;
             ostringstream dev_name;
 
-            dev_name << "/dev/utca_sp12" << dev_ind;
+            dev_name << "/dev/utca_sp12" << argv[1];
             // open device
             int device_d = ::open(dev_name.str().c_str(),O_RDWR);
             if (device_d < 0)
@@ -54,15 +53,15 @@ int main(int argc, char *argv[])
             {
 //                printf("opened device: %s\n", dev_name.str().c_str());
 
-                if (string(argv[2]).compare("write_registers") == 0)
+                if (string(argv[3]).compare("write_registers") == 0)
                 {
                     // arguments: write_registers [x y common(0,1)]
                     int x = -1,y = -1,common = -1;
-                    if (argc >= 6)
+                    if (argc >= 7)
                     {
-                        x      = strtol (argv[3], NULL, 10);
-                        y      = strtol (argv[4], NULL, 10);
-                        common = strtol (argv[5], NULL, 10);
+                        x      = strtol (argv[4], NULL, 10);
+                        y      = strtol (argv[5], NULL, 10);
+                        common = strtol (argv[6], NULL, 10);
                         drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                         if (common) uit = *(uit.common_unit);
 
@@ -72,7 +71,7 @@ int main(int argc, char *argv[])
                         uit.write_registers (device_d); // write register contents into device
                         uit.check_registers (device_d); // check all registers
                     }
-                    else if (argc >= 4)
+                    else if (argc >= 5)
                     {
 
                         chip.fill_registers  ();
@@ -99,14 +98,14 @@ int main(int argc, char *argv[])
                         chip.check_registers (device_d); // check all registers
                     }
                 }
-                else if (string(argv[2]).compare("check_registers") == 0)
+                else if (string(argv[3]).compare("check_registers") == 0)
                 {
 
                     // fill actual 32-bit register images with data according to parameters, not touching bits that were there before
                     chip.fill_registers  ();
                     chip.check_registers (device_d); // check all registers
                 }
-                else if (string(argv[2]).compare("check_atts") == 0)
+                else if (string(argv[3]).compare("check_atts") == 0)
                 {
 
                     cout << "checking attributes" << endl;
@@ -115,15 +114,15 @@ int main(int argc, char *argv[])
                     chip.read_registers (device_d);
                     chip.check_atts (); // check all attributes
                 }
-                else if (string(argv[2]).compare("reset") == 0)
+                else if (string(argv[3]).compare("reset") == 0)
                 {
                     chip.reset (device_d);
                 }
-                else if (string(argv[2]).compare("tx_phase_align") == 0)
+                else if (string(argv[3]).compare("tx_phase_align") == 0)
                 {
                     chip.tx_phase_align (device_d);
                 }
-                else if (string(argv[2]).compare("print") == 0)
+                else if (string(argv[3]).compare("print") == 0)
                 {
                     for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
                     {
@@ -140,7 +139,7 @@ int main(int argc, char *argv[])
                     }
 
                 }
-                else if (string(argv[2]).compare("test") == 0)
+                else if (string(argv[3]).compare("test") == 0)
                 {
                     //int i = 0x123456;
                     for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
@@ -162,51 +161,51 @@ int main(int argc, char *argv[])
                     }
 
                 }
-                else if (string(argv[2]).compare("read") == 0)
+                else if (string(argv[3]).compare("read") == 0)
                 {
                     // arguments: read x y common(0,1) register_name
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
-                    int common = strtol (argv[5], NULL, 10);
-                    string rname = argv[6];
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
+                    int common = strtol (argv[6], NULL, 10);
+                    string rname = argv[7];
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                     if (common) uit = *(uit.common_unit);
 
                     uit.att_read_prn(device_d, rname);
                 }
-                else if (string(argv[2]).compare("read_registers") == 0)
+                else if (string(argv[3]).compare("read_registers") == 0)
                 {
                     // arguments: read_registers x y common(0,1)
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
-                    int common = strtol (argv[5], NULL, 10);
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
+                    int common = strtol (argv[6], NULL, 10);
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                     if (common) uit = *(uit.common_unit);
 
                     uit.read_registers_prn(device_d);
                 }
-                else if (string(argv[2]).compare("write") == 0)
+                else if (string(argv[3]).compare("write") == 0)
                 {
                     // arguments: write x y common(0,1) register_name value
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
-                    int common = strtol (argv[5], NULL, 10);
-                    string rname = argv[6];
-                    boost::multiprecision::uint128_t value  = strtol (argv[7], NULL, 16);
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
+                    int common = strtol (argv[6], NULL, 10);
+                    string rname = argv[7];
+                    boost::multiprecision::uint128_t value  = strtol (argv[8], NULL, 16);
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                     if (common) uit = *(uit.common_unit);
 
                     uit.att_write(device_d, rname, value);
                 }
-                else if (string(argv[2]).compare("prbs_program") == 0)
+                else if (string(argv[3]).compare("prbs_program") == 0)
                 {
                     // program trasmitters first
                     // 1 = PRBS-7
                     // 4 = PRBS-31
-                    int prbs_type = atoi(argv[3]);
+                    int prbs_type = atoi(argv[4]);
                     for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
                     {
                         drp_unit du = it->second;
@@ -237,7 +236,7 @@ int main(int argc, char *argv[])
                         }
                     }
                 }
-                else if (string(argv[2]).compare("prbs_read") == 0)
+                else if (string(argv[3]).compare("prbs_read") == 0)
                 {
                     for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
                     {
@@ -250,24 +249,24 @@ int main(int argc, char *argv[])
                         }
                     }
                 }
-                else if (string(argv[2]).compare("print_atts") == 0)
+                else if (string(argv[3]).compare("print_atts") == 0)
                 {
                     // arguments: print_atts x y common(0,1)
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
-                    int common = strtol (argv[5], NULL, 10);
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
+                    int common = strtol (argv[6], NULL, 10);
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                     if (common) uit = *(uit.common_unit);
 
                     uit.read_print_atts(device_d);
                 }
-                else if (string(argv[2]).compare("print_registers") == 0)
+                else if (string(argv[3]).compare("print_registers") == 0)
                 {
                     // arguments: print_registers x y common(0,1)
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
-                    int common = strtol (argv[5], NULL, 10);
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
+                    int common = strtol (argv[6], NULL, 10);
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
                     if (common) uit = *(uit.common_unit);
@@ -283,7 +282,7 @@ int main(int argc, char *argv[])
                     }
 
                 }
-                else if (string(argv[2]).compare("drp") == 0)
+                else if (string(argv[3]).compare("drp") == 0)
                 {
                     // arguments: drp x y
                     cout << "max_drp_addr_width: " << chip.max_drp_addr_width << endl;
@@ -292,8 +291,8 @@ int main(int argc, char *argv[])
                     cout << "xy_reg_addr: " << hex << chip.xy_reg_addr << endl;
 
 
-                    int x      = strtol (argv[3], NULL, 10);
-                    int y      = strtol (argv[4], NULL, 10);
+                    int x      = strtol (argv[4], NULL, 10);
+                    int y      = strtol (argv[5], NULL, 10);
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
 

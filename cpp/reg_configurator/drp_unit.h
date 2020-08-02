@@ -128,7 +128,7 @@ public:
     uint32_t MEM_BASE; // core fpga base addr, in 64-bit words
     vector<drp_unit> tx_mmcm_slaves; // list of txoutclk clock-sharing slaves
 
-    drp_unit    (int base_a, int full_drp_addr_width);
+    drp_unit    (int base_a);
     drp_unit (){}
     int  read_config (std::string fname, bool drp_reg);
     void read_params ();

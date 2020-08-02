@@ -836,7 +836,7 @@ void drp_unit::wait_for (int fd, string name, int t)
     {
         boost::multiprecision::uint128_t v = att_read (fd, name, dum);
         if (v == t) break;
-//        if (i > 10) usleep (10000);
+        if (i > 10) usleep (10000);
     }
     if (i == 20) cout << dec << x << " " << y << " " << name << " == " << t << " did not assert" << endl;
 //    else cout << "wait counter: " << i << endl;
