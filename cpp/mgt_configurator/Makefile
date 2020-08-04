@@ -1,21 +1,11 @@
 LOCINC     = -I.
 OPTIM      = -O2
 CCOPT      = -Wall $(OPTIM) $(LOCINC)
-CCFILES   := drp_unit.cpp fpga.cpp main.cpp
-OBJECTS    = $(CCFILES:.cpp=.o)
 CC         = g++
 CL         = g++
 
-## rules	
-#%.o: %.cpp
-#	$(CC) $(CCOPT) -c $< -o $*.o
-
-#%: %.o
-#	$(CL) $(CCOPT) -o $@ $^
-
 all: mgt_configurator
 
-## dependencies
 mgt_configurator: main.o fpga.o drp_unit.o
 	$(CL) $(CCOPT) -o mgt_configurator main.o fpga.o drp_unit.o
 
