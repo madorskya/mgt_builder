@@ -13,3 +13,5 @@ top_module_name	emtf_serial_io
 root_config	.	
 MGT	xc7vx690tffg1927-2/GTH	
 board	MTF7	
+device_prefix	/dev/utca_sp12	
+device_count	3	

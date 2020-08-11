@@ -53,6 +53,8 @@ public:
     string common_atts_fn        ;
     string mgt_path              ;
     string board_path            ;
+	string device_prefix         ;
+	int    device_count          ;
     string board_full_path;
     string root_path             ;
     string sv_path;

@@ -513,8 +513,11 @@ void fpga::read_top_config(string fname)
             if (sf[0].compare("common_atts_fn"        ) == 0)  common_atts_fn        = sf[1]; else
             if (sf[0].compare("MGT"                   ) == 0)  mgt_path              = sf[1]; else
             if (sf[0].compare("board"                 ) == 0)  board_path            = sf[1]; else
+            if (sf[0].compare("device_prefix"         ) == 0)  device_prefix         = sf[1]; else
+            if (sf[0].compare("device_count"          ) == 0)  device_count          = strtol (sf[1].c_str(), NULL, 10); else
             if (sf[0].compare("root_config"           ) == 0)  {} else // unused
             if (sf[0].compare("phalg_tx_iface"        ) == 0)  {} else // unused
+            if (sf[0].compare("top_module_name"       ) == 0)  {} else // unused
             {
                 printf ("Unsupported parameter in top config file: %s = %s\n", sf[0].c_str(), sf[1].c_str());
             }

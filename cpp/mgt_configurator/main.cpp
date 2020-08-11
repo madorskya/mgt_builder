@@ -18,17 +18,21 @@
 #include <fcntl.h>
 #include "drp_unit.h"
 #include "fpga.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
 
-    if (argc > 2)
+    ostringstream dev_name;
+
+    if (argc > 1)
     {
-        // argv[2] is top config file name
+        // argv[1] is top config file name
         fpga chip;
-        chip.read_top_config (argv[2]); // top configuration file
+        chip.read_top_config (argv[1]); // top configuration file
         chip.read_mgt_config (); // read MGT configuration
         chip.read_mgt_list   (); // fpga link base addresses
         chip.read_links      (); // link config file, same as what java script reads
@@ -37,19 +41,120 @@ int main(int argc, char *argv[])
         chip.fill_registers  (); // using this to only detect which registers are there, and fill map with offsets
         chip.read_tx_mmcm_map(); // read map of TX clock-sharing MMCMs
 
+		// open devices
+		string device_prefix = chip.device_prefix;
+		int device_count = chip.device_count;
+		int device_d = -1;
+		int fd[device_count];
+		string device_name[device_count];
+		bool device_selected[device_count];
+		memset(device_selected, 0, sizeof(device_selected)); // unselect all devices initially
+
+		for (int i = 0; i < device_count; i++)
+		{
+ 			dev_name.str("");
+ 			dev_name.clear();
+ 			dev_name << device_prefix << i;
+			device_name[i] = dev_name.str().c_str();
+            // open device
+            fd[i] = ::open(device_name[i].c_str(), O_RDWR);
+            if (fd[i] < 0)
+            {
+                printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());
+            }
+		}
+
+		char * line;
+		string sline;
+		while(1)
+		{   
+			line = readline("mgtc> ");
+			sline = (string)line;
+			boost::trim (sline);
+			if(*line) add_history(line);
+
+			vector <string> fld;
+			boost::split(fld, sline, boost::is_any_of("\t ,")); // split on tabs,spaces,commas
+			if (fld.size() == 0) // empty line
+				continue;
+
+			if (sline.compare("exit") == 0) exit(0);
+			if (sline.compare("quit") == 0) exit(0);
+
+			// list available devices
+			if (sline.compare("list") == 0)
+			{
+				cout << "available devices:" << endl;
+				for (int i = 0; i < device_count; i++)
+					if (fd[i] >= 0) printf ("index: %d name: %s\n", i, device_name[i].c_str());
+			}
+
+			// select devices or list selected devices
+			if (sline.find("select") != string::npos)
+			{
+
+				if (fld.size() > 1) // command includes device indexes
+				{
+					if (fld[1].compare("all") == 0) // user wants all devices selected
+					{
+						memset(device_selected, 0xff, sizeof(device_selected)); // select all devices
+					}
+					else
+					{
+						memset(device_selected, 0, sizeof(device_selected)); // unselect all devices initially
+						for (unsigned i = 1; i < fld.size(); i++) // scan remaining fields, these should be device indexes
+						{
+							int dev_ind = strtol (fld[i].c_str(), NULL, 10); // convert into integer
+							if (dev_ind < 0 || dev_ind >= device_count)
+							{
+								cout << "invalid device index: " << fld[i] << endl;
+							}
+							else
+							{
+								device_selected[dev_ind] = true;
+							}
+						}
+					}
+				}
+
+				cout << "selected devices:" << endl;
+				for (int i = 0; i < device_count; i++)
+					if (device_selected[i]) printf ("index: %d name: %s\n", i, device_name[i].c_str());
+
+			}
+
+			if (sline.compare("write_registers") == 0)
+			{
+				for (int i = 0; i < device_count; i++)
+				{
+					if (fd[i] >= 0 && device_selected[i]) 
+					{
+						printf ("index: %d name: %s write_registers\n", i, device_name[i].c_str());
+                        chip.read_registers  (fd[i]);
+                        // fill actual 32-bit register images with data according to parameters, not touching bits that were there before
+                        chip.fill_registers  ();
+                        chip.write_registers (fd[i]); // write register contents into device
+                        chip.check_registers (fd[i]); // check all registers
+					}
+				}
+			}
+
+			if (sline.compare("reset") == 0)
+			{
+				for (int i = 0; i < device_count; i++)
+				{
+					if (fd[i] >= 0 && device_selected[i]) 
+					{
+						printf ("index: %d name: %s reset\n", i, device_name[i].c_str());
+						chip.reset (fd[i]);
+					}
+				}
+			}
+		}
 
         if (argc > 2)
         {
-            ostringstream dev_name;
 
-            dev_name << "/dev/utca_sp12" << argv[1];
-            // open device
-            int device_d = ::open(dev_name.str().c_str(),O_RDWR);
-            if (device_d < 0)
-            {
-                printf("ERROR: Can not open device file for MTF7: %s\n", dev_name.str().c_str());
-            }
-            else
             {
 //                printf("opened device: %s\n", dev_name.str().c_str());
 
@@ -91,6 +196,7 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
+						// this section ported
                         chip.read_registers  (device_d);
                         // fill actual 32-bit register images with data according to parameters, not touching bits that were there before
                         chip.fill_registers  ();
@@ -116,6 +222,7 @@ int main(int argc, char *argv[])
                 }
                 else if (string(argv[3]).compare("reset") == 0)
                 {
+					// this section ported
                     chip.reset (device_d);
                 }
                 else if (string(argv[3]).compare("tx_phase_align") == 0)
@@ -296,30 +403,6 @@ int main(int argc, char *argv[])
                     // find MGT
                     drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
 
-//                    for (int quad = 0; quad < 8; quad++)
-//                    {
-//                        // write quad selector
-//                        uit.reg_write(device_d, chip.quad_drp_addr0, 1 << quad);
-
-//                        for (int mgt = 0; mgt < 4; mgt++)
-//                        {
-//                            int xy_addr = (mgt << 9) + 0; // ACJTAG register
-//                            uit.reg_write (device_d, xy_addr, quad*16+mgt);
-
-//                        }
-//                    }
-//                    for (int quad = 0; quad < 8; quad++)
-//                    {
-//                        // write quad selector
-//                        uit.reg_write(device_d, chip.quad_port_addr0, 1 << quad);
-
-//                        for (int mgt = 0; mgt < 4; mgt++)
-//                        {
-//                            int xy_addr = (mgt << 9) + 0; // ACJTAG register
-//                            uit.reg_write (device_d, xy_addr, (quad*16+mgt) << 16);
-
-//                        }
-//                    }
                     for (int quad = 0; quad < 8; quad++)
                     {
                         // write quad selector
@@ -361,70 +444,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-        cout << "no arguments" << endl;
+        cout << "Use: " << argv[0] << " top_config_file" << endl;
     }
 
-/*
-        cout << "MGT unit" << endl;
-        map<string,drp_unit>::iterator it = chip.mgt_map.begin();
-        drp_unit du = it->second;
-        for (map<int, uint32_t>::iterator it = du.registers.begin(); it != du.registers.end(); ++it)
-        {
-            int offset = it->first;
-            uint32_t bits = it->second;
-
-            printf ("%04x: %08x\n", offset, bits);
-        }
-
-        cout << "COMMON unit" << endl;
-        drp_unit duc = *(du.common_unit);
-        for (map<int, uint32_t>::iterator it = duc.registers.begin(); it != duc.registers.end(); ++it)
-        {
-            int offset = it->first;
-            uint32_t bits = it->second;
-
-            printf ("%04x: %08x\n", offset, bits);
-        }
-
-
-
-for (auto it = chip.mgt_map.cbegin(); it != chip.mgt_map.cend(); ++it)
-        {
-            drp_unit du = it->second;
-
-            printf ("%s\t%05x\t%lu\tX%dY%d\t%05x\t%lu\n", it->first.c_str(), du.base_addr, du.atts.size(), du.x, du.y,
-                    du.common_unit->base_addr, du.common_unit->atts.size());
-        }
-
-        auto it = chip.mgt_map.cbegin();
-        drp_unit du = it->second;
-        for (auto it = du.atts.cbegin(); it != du.atts.cend(); ++it)
-        {
-            string mname = it->first;
-            attribute ea = it->second;
-            string aname = ea.name;
-            //bit_range br = ea.brange;
-            bool valid_value = ea.valid_value;
-
-            if (!valid_value)
-                cout << "no value for : " << aname << " val: " << ea.value << endl;
-        }
-
-        cout << "COMMON unit" << endl;
-        drp_unit duc = *(du.common_unit);
-        for (auto it = duc.atts.cbegin(); it != duc.atts.cend(); ++it)
-        {
-            string mname = it->first;
-            attribute ea = it->second;
-            string aname = ea.name;
-            //bit_range br = ea.brange;
-            bool valid_value = ea.valid_value;
-
-            if (!valid_value)
-                cout << "no value for : " << aname << " val: " << ea.value << endl;
-        }
-
-    }
-*/
     return 0;
 }
