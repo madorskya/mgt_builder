@@ -123,9 +123,9 @@ public:
     void read_tx_mmcm_map();
     void tx_phase_align(int fd);
     int  mkxy (int x, int y) {return x*1000+y;} // make one integer out of X and Y, for maps
-	void create_semaphore (int dev_ind);
-	void lock_board(int fd);
-	void unlock_board(int fd);
+	int  create_semaphore (int dev_ind);
+	int  lock_board(int fd);
+	int  unlock_board(int fd);
 
     map<int,drp_unit> mgt_map; // XY coordinate to MGT
     map<int,drp_unit> com_map; // XY coordinate to COMMON

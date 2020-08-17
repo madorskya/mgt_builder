@@ -626,7 +626,7 @@ void fpga::read_mgt_config()
 
 }
 
-void fpga::lock_board(int dev_ind)
+int fpga::lock_board(int dev_ind)
 {
 	int sem_id = fd_semid[dev_ind];
 	int nsops = 2;
@@ -642,10 +642,14 @@ void fpga::lock_board(int dev_ind)
 	sops[1].sem_flg = SEM_UNDO | IPC_NOWAIT; /* take off semaphore */
 
 	if ((semop(sem_id, sops, nsops)) == -1)
+	{
 		printf("lock semop: semop failed\n");
+		return -1;
+	}
+	return 0;
 }
 
-void fpga::unlock_board(int dev_ind)
+int fpga::unlock_board(int dev_ind)
 {
 	int sem_id = fd_semid[dev_ind];
 	int nsops = 1;
@@ -657,10 +661,14 @@ void fpga::unlock_board(int dev_ind)
 	sops[0].sem_flg = SEM_UNDO | IPC_NOWAIT; /* take off semaphore, asynchronous  */
 
 	if ((semop(sem_id, sops, nsops)) == -1)
+	{
 		printf("unlock semop: semop failed\n");
+		return -1;
+	}
+	return 0;
 }
 
-void fpga::create_semaphore (int dev_ind)
+int fpga::create_semaphore (int dev_ind)
 {
 	int semid;
 	key_t sem_key;
@@ -670,11 +678,17 @@ void fpga::create_semaphore (int dev_ind)
 	
 	FILE* sem_fd = fopen (sem_fn, "wr"); // create a file for semaphore
 	if (sem_fd == NULL)
+	{
 		printf ("cannot open semaphore file\n");
+		return -1;
+	}
 
     /* generate key */
     if ((sem_key = ftok(sem_fn, (char)dev_ind)) == -1)
+	{
         printf("ftok failed, dev_ind: %d\n", dev_ind);
+		return -2;
+	}
 
     /* set up semaphore */
 
@@ -682,8 +696,12 @@ void fpga::create_semaphore (int dev_ind)
 	//		sem_key, nsems, semflg);
 
     if ((semid = semget(sem_key, nsems, semflg)) == -1)
-            printf("semget failed\n");
-
+	{
+        printf("semget failed\n");
+		return -3;
+	}
     fd_semid[dev_ind] = semid; // store semaphore ID in map
+
+	return 0;
 }
 

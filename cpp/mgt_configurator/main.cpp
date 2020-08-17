@@ -78,14 +78,14 @@ void register_write (string cmd)
 	{
 		if (fd[i] >= 0 && device_selected[i]) 
 		{
-			chip.lock_board (i);
+			if (chip.lock_board (i) < 0) exit(-1);
 			printf ("index: %d name: %s writing registers\n", i, device_name[i].c_str());
 			chip.read_registers  (fd[i]);
 			// fill actual 32-bit register images with data according to parameters, not touching bits that were there before
 			chip.fill_registers  ();
 			chip.write_registers (fd[i]); // write register contents into device
 			chip.check_registers (fd[i]); // check all registers
-			chip.unlock_board (i);
+			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
 }
@@ -96,10 +96,10 @@ void device_reset (string cmd)
 	{
 		if (fd[i] >= 0 && device_selected[i]) 
 		{
-			chip.lock_board (i);
+			if (chip.lock_board (i) < 0) exit(-1);
 			printf ("index: %d name: %s reset\n", i, device_name[i].c_str());
 			chip.reset (fd[i]);
-			chip.unlock_board (i);
+			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
 }
@@ -114,7 +114,7 @@ void prbs_pattern (string cmd)
 	{
 		if (fd[i] >= 0 && device_selected[i]) 
 		{
-			chip.lock_board (i);
+			if (chip.lock_board (i) < 0) exit(-1);
 			cout << "device: " << i << endl;
 			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
 			{
@@ -141,7 +141,7 @@ void prbs_pattern (string cmd)
 					du.att_write(fd[i], "RXPRBSCNTRESET", 0);
 				}
 			}
-			chip.unlock_board (i);
+			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
 }
@@ -152,7 +152,7 @@ void prbs_read (string cmd)
 	{
 		if (fd[i] >= 0 && device_selected[i]) 
 		{
-			chip.lock_board (i);
+			if (chip.lock_board (i) < 0) exit(-1);
 			cout << "device: " << i << endl;
 			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
 			{
@@ -164,7 +164,7 @@ void prbs_read (string cmd)
 					du.att_read_prn(fd[i], "RX_PRBS_ERR_CNT");
 				}
 			}
-			chip.unlock_board (i);
+			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
 }
@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
 			else
 			{
 				// create semaphore for this board
-				chip.create_semaphore(i);
+				if (chip.create_semaphore(i) < 0) exit(-1);
 			}
 		}
 
