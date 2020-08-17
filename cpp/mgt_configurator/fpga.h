@@ -23,10 +23,11 @@
 #include <fstream>
 #include <map>
 #include <vector>
-
 #include <boost/algorithm/string.hpp>
-
+#include <sys/sem.h>
 #include "drp_unit.h"
+
+#define MAX_DEVICES 100
 
 using namespace std;
 
@@ -104,7 +105,7 @@ public:
     int fpga_in_out_addr;
 
     int xy_reg_addr;
-
+	int fd_semid[MAX_DEVICES];
 
     void read_mgt_list ();
     void read_links ();
@@ -122,9 +123,12 @@ public:
     void read_tx_mmcm_map();
     void tx_phase_align(int fd);
     int  mkxy (int x, int y) {return x*1000+y;} // make one integer out of X and Y, for maps
+	void create_semaphore (int dev_ind);
+	void lock_board(int fd);
+	void unlock_board(int fd);
+
     map<int,drp_unit> mgt_map; // XY coordinate to MGT
     map<int,drp_unit> com_map; // XY coordinate to COMMON
-
     map<string,int> mgt_name_map; // MGT name to XY
     map<string,int> com_name_map; // COM name to XY
     vector<drp_unit> tx_mmcm_masters; // map of txuserclk-sharing masters. Each master remembers its slaves
