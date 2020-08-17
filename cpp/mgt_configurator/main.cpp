@@ -161,26 +161,25 @@ void prbs_read (string cmd)
 	}
 }
 
+string help_general = "commands: device register reset prbs exit";
+
 using namespace std;
 node_record nr[] =
 {
-	{0, "device", "list|select", NULL},
-	{1, 	"list", "<Enter>", device_select},
-	{1, 	"select", "device list|all", NULL},
-	{2,			"([0-9,]+)", "<Enter>", device_select},
-	{2,			"all", "<Enter>", device_select},
-	{0, "register", "write", NULL},
-	{1,     "write", "all", NULL},
-	{2,         "all", "<Enter>", register_write},
-	{0, "reset", "<Enter>", device_reset},
-	{0, "prbs", "pattern|read", NULL},
-	{1,     "7",  "<Enter>", prbs_pattern},
-	{1,     "15", "<Enter>", prbs_pattern},
-	{1,     "23", "<Enter>", prbs_pattern},
-	{1,     "31", "<Enter>", prbs_pattern},
-	{1,     "read", "<Enter>", prbs_read},
-	{0, "exit", "<Enter>", eject},
-	{-1, "", "", NULL} // end marker
+	{0, "device",            "list|select",     NULL,           NULL},
+	{1, 	"list",          "<Enter>",         device_select,  NULL},
+	{1, 	"select",        "device list|all", NULL,           NULL},
+	{2,			"([0-9,]+)", "<Enter>",         device_select,  NULL},
+	{2,			"all",       "<Enter>",         device_select,  NULL},
+	{0, "register",          "write",           NULL,           NULL},
+	{1,     "write",         "all",             NULL,           NULL},
+	{2,         "all",       "<Enter>",         register_write, NULL},
+	{0, "reset",             "<Enter>",         device_reset,   NULL},
+	{0, "prbs",              "pattern|read",    NULL,           NULL},
+	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},
+	{1,     "read",          "<Enter>",         prbs_read,      NULL},
+	{0, "exit",              "<Enter>",         eject,          NULL},
+	{-1,"help",              "<Enter>",         NULL,           &help_general} // end marker
 };
 
 int main(int argc, char *argv[])
@@ -230,6 +229,8 @@ int main(int argc, char *argv[])
 			int ei = ln.get_enter_index();
 
 			if (ei >= 0 && nr[ei].cb != NULL) nr[ei].cb(bline);
+
+        	if (ei < 0) printf("%s", ln.get_help_message().c_str());
 
 			free (buf);
 		}

@@ -1,10 +1,10 @@
-LOCINC     = -I. -I../linenoise_cpp
+LN_LOC     = ../../../linenoise_cpp/
+LOCINC     = -I. -I$(LN_LOC)
 OPTIM      = -O2
 CCOPT      = -Wall $(OPTIM) $(LOCINC)
 LIB        = -lreadline -lncurses -lboost_regex-mt
 CC         = g++
 CL         = g++
-LN_LOC     = ../linenoise_cpp
 
 all: mgt_configurator
 
