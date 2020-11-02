@@ -1,0 +1,15 @@
+exit 
+exit
+device select all
+reset 
+register write all 
+reset 
+exit
+device select all 
+register write all
+reset 
+device list 
+device select 0,1,2
+register write all 
+help
+reset 
