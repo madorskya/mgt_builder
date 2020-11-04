@@ -1,1 +1,28 @@
 // destination	dest index	source	source index	buffer	
+mgt_qpll0clk	[0]	com_qpll0outclk			
+mgt_qpll0clk	[1]	com_qpll0outclk			
+mgt_qpll0clk	[2]	com_qpll0outclk			
+mgt_qpll0clk	[3]	com_qpll0outclk			
+mgt_qpll1clk	[0]	com_qpll1outclk			
+mgt_qpll1clk	[1]	com_qpll1outclk			
+mgt_qpll1clk	[2]	com_qpll1outclk			
+mgt_qpll1clk	[3]	com_qpll1outclk			
+mgt_qpll0refclk	[0]	com_qpll0outrefclk			
+mgt_qpll0refclk	[1]	com_qpll0outrefclk			
+mgt_qpll0refclk	[2]	com_qpll0outrefclk			
+mgt_qpll0refclk	[3]	com_qpll0outrefclk			
+mgt_qpll1refclk	[0]	com_qpll1outrefclk			
+mgt_qpll1refclk	[1]	com_qpll1outrefclk			
+mgt_qpll1refclk	[2]	com_qpll1outrefclk			
+mgt_qpll1refclk	[3]	com_qpll1outrefclk			
+mgt_dmonitorclk		drpclk			
+mgt_cplllockdetclk		drpclk			
+mgt_rxsyncallin		mgt_rxphaligndone			
+mgt_rxusrclk	[0]	mgt_rx_if[0].rxoutclk			
+mgt_rxusrclk	[1]	mgt_rx_if[1].rxoutclk			
+mgt_rxusrclk	[2]	mgt_rx_if[2].rxoutclk			
+mgt_rxusrclk	[3]	mgt_rx_if[3].rxoutclk			
+mgt_txusrclk2		mgt_txusrclk			
+mgt_rxusrclk2		mgt_rxusrclk			
+com_qpll0lockdetclk		drpclk			
+com_qpll1lockdetclk		drpclk			

@@ -1,308 +1,308 @@
 //name	direction	type	clock	bits	default	interface	indexed	buffer	
-CPLLREFCLKSEL	in	0		3	3'b1				
-GTGREFCLK	in	0		1					
-GTNORTHREFCLK0	in	0		1					
-GTNORTHREFCLK1	in	0		1					
-GTREFCLK0	in	0		1					
-GTREFCLK1	in	0		1					
-GTSOUTHREFCLK0	in	0		1					
-GTSOUTHREFCLK1	in	0		1					
-QPLL0CLK	in	c		1			y		
-QPLL1CLK	in	c		1			y		
-QPLL0REFCLK	in	c		1			y		
-QPLL1REFCLK	in	c		1			y		
-RXSYSCLKSEL	in	s		2			y		
-TXSYSCLKSEL	in	s		2			y		
-TXPLLCLKSEL	in	s		2			y		
-RXPLLCLKSEL	in	s		2			y		
-GTREFCLKMONITOR	out	0		1					
+CDRSTEPDIR	in	0		1	1'b0				
+CDRSTEPSQ	in	0		1	1'b0				
+CDRSTEPSX	in	0		1	1'b0				
+CFGRESET	in	s		1					
+CPLLFBCLKLOST	out	s		1			y		
+CPLLLOCK	out	s		1			y		
 CPLLLOCKDETCLK	in	c		1					
 CPLLLOCKEN	in	0		1	1'b1				
 CPLLPD	in	s		1			y		
+CPLLREFCLKLOST	out	s		1			y		
+CPLLREFCLKSEL	in	0		3	3'b1				
 CPLLREFCLKSEL	in	0		3	3'b1				
 CPLLRESET	in	0		1					
-CPLLFBCLKLOST	out	s		1			y		
-CPLLLOCK	out	s		1			y		
-CPLLREFCLKLOST	out	s		1			y		
-GTRESETSEL	in	s		1			y		
-RESETOVRD	in	0		1					
-GTTXRESETSEL	in	s		1			y		
-GTRXRESETSEL	in	s		1			y		
-GTTXRESET	in	s		1			y		
-TXPMARESET	in	s		1			y		
-TXPCSRESET	in	s		1			y		
-TXUSERRDY	in	s		1			y		
-TXRESETDONE	out	s	TXUSRCLK2	1			y		
-CFGRESET	in	s		1					
-TXPMARESETDONE	out	s		1			y		
-PCSRSVDOUT	out	0		1					
-RESETEXCEPTION	out	0		1					
-GTPOWERGOOD	out	s		1			y		
-TXDCCDONE	out	0		1					
-TXDCCFORCESTART	out	0		1					
-TXDCCRESET	out	0		1					
-GTRXRESET	in	s		1			y		
-RXOSCALRESET	in	s		1			y		
-RSOSINTDONE	out	0		1					
-RXPMARESET	in	s		1			y		
-RXCDRRESET	in	0		1					
-RXCDRFREQRESET	in	0		1					
-RXDFELPMRESET	in	s		1			y		
+DMONFIFORESET	in	s	DMONITORCLK	1					
+DMONITORCLK	in	c		1					
+DMONITOROUT	out	s		16			y		
+DMONITOROUTCLK	out	s		1			y		
+DRPADDR	in	drp	DRPCLK	10		drp_gty			
+DRPCLK	in	drp		1					
+DRPDI	in	drp	DRPCLK	32		drp_gty			
+DRPDO	out	drp	DRPCLK	32		drp_gty	y		
+DRPEN	in	drp	DRPCLK	1		drp_gty			
+DRPRDY	out	drp	DRPCLK	1		drp_gty	y		
+DRPRST	in	s		1					
+DRPWE	in	drp	DRPCLK	1		drp_gty			
+EYESCANDATAERROR	out	s		1			y		
 EYESCANRESET	in	s		1			y		
-RXPCSRESET	in	s		1			y		
-RXBUFRESET	in	s		1			y		
-RXUSERRDY	in	s		1			y		
-RXRESETDONE	out	s		1			y		
-RXPMARESETDONE	out	s		1			y		
-RXOOBRESET	in	0		1					
-RESETEXCEPTION	out	0		1					
+EYESCANTRIGGER	in	s		1					
+FREQOS	in	0		1	1'b0				
+GTGREFCLK	in	0		1					
+GTNORTHREFCLK0	in	0		1					
+GTNORTHREFCLK1	in	0		1					
 GTPOWERGOOD	out	s		1			y		
+GTPOWERGOOD	out	s		1			y		
+GTREFCLK0	in	0		1					
+GTREFCLK1	in	0		1					
+GTREFCLKMONITOR	out	0		1					
+GTRESETSEL	in	s		1			y		
+GTRXRESET	in	s		1			y		
+GTRXRESETSEL	in	s		1			y		
+GTSOUTHREFCLK0	in	0		1					
+GTSOUTHREFCLK1	in	0		1					
+GTTXRESET	in	s		1			y		
+GTTXRESETSEL	in	s		1			y		
+GTYRXN	in	d		1		mgt_gty_rx			
+GTYRXP	in	d		1		mgt_gty_rx			
+INCPCTRL	in	0		1	1'b0				
+LOOPBACK	in	s		3			y		
+MGTYTXN	out	d		1		mgt_gty_tx			
+MGTYTXP	out	d		1		mgt_gty_tx			
+PCSRSVDOUT	out	0		1					
+PHYSTATUS	out	0		1					
+QPLL0CLK	in	c		1			y		
+QPLL0REFCLK	in	c		1			y		
+QPLL1CLK	in	c		1			y		
+QPLL1REFCLK	in	c		1			y		
+RESETEXCEPTION	out	0		1					
+RESETEXCEPTION	out	0		1					
+RESETOVRD	in	0		1					
+RSOSINTDONE	out	0		1					
+RX8B10BEN	in	s	RXUSRCLK2	1					
+RXAFECFOKEN	in	0		1	1'b1				
+RXBUFRESET	in	s		1			y		
+RXBUFRESET	in	s		1					
+RXBUFSTATUS	out	s	RXUSRCLK2	3			y		
+RXBYTEISALIGNED	out	s	RXUSRCLK2	1			y		
+RXBYTEREALIGN	out	0	RXUSRCLK2	1			y		
+RXCDRFREQRESET	in	0		1					
+RXCDRFREQRESET	in	s		1					
+RXCDRHOLD	in	s		1					
+RXCDRHOLD	in	s		1					
+RXCDRLOCK	out	0		1					
+RXCDROVRDEN	in	s		1					
+RXCDROVRDEN	in	0		1	1'b0				
+RXCDRPHDONE	out	0		1					
+RXCDRRESET	in	0		1					
+RXCDRRESET	in	0		1	1'b0				
+RXCHANBONDSEQ	out	0	RXUSRCLK2	1					
+RXCHANISALIGNED	out	0	RXUSRCLK2	1					
+RXCHANREALIGN	out	0	RXUSRCLK2	1					
+RXCHBONDEN	in	0	RXUSRCLK2	1					
+RXCHBONDI	in	0	RXUSRCLK	5					
+RXCHBONDLEVEL	in	0	RXUSRCLK2	3					
+RXCHBONDMASTER	in	0	RXUSRCLK2	1					
+RXCHBONDO	out	0	RXUSRCLK	5					
+RXCHBONDSLAVE	in	0	RXUSRCLK2	1					
 RXCKCALDONE	out	0		1					
 RXCKCALRESET	in	0		1					
 RXCKCALSTART	in	0		7					
+RXCLKCORCNT	out	0	RXUSRCLK2	1					
+RXCOMINITDET	out	0	TXUSRCLK2	1					
+RXCOMMADET	out	0	RXUSRCLK2	1			y		
+RXCOMMADETEN	in	s	RXUSRCLK2	1					
+RXCOMSASDET	out	0	TXUSRCLK2	1					
+RXCOMWAKEDET	out	0	TXUSRCLK2	1					
+RXCTRL0	out	d	RXUSRCLK2	16		mgt_gty_rx	y		
+RXCTRL1	out	d	RXUSRCLK2	16		mgt_gty_rx	y		
+RXCTRL2	out	d	RXUSRCLK2	8		mgt_gty_rx	y		
+RXCTRL3	out	d	RXUSRCLK2	8		mgt_gty_rx	y		
+RXDATA	out	d	RXUSRCLK2	128		mgt_gty_rx	y		
+RXDATAEXTENDRSVD	out	0	RXUSRCLK2	1					
+RXDATAVALID	out	d	RXUSRCLK2	2		mgt_gty_rx	y		
+RXDFEAGCHOLD	in	0		1	1'b0				
+RXDFEAGCOVRDEN	in	0		1	1'b0				
+RXDFECFOKFCNUM	in	0		4	4'b1101				
+RXDFECFOKFEN	in	0		1	1'b0				
+RXDFECFOKFPULSE	in	0		1	1'b0				
+RXDFECFOKHOLD	in	0		1	1'b0				
+RXDFECFOKOVREN	in	0		1	1'b0				
+RXDFEKHHOLD	in	0		1	1'b0				
+RXDFEKHOVRDEN	in	0		1	1'b0				
+RXDFELFHOLD	in	0		1	1'b0				
+RXDFELFOVRDEN	in	0		1	1'b0				
+RXDFELPMRESET	in	s		1			y		
+RXDFELPMRESET	in	s		1					
+RXDFETAP10HOLD	in	0		1	1'b0				
+RXDFETAP10OVRDEN	in	0		1	1'b0				
+RXDFETAP11HOLD	in	0		1	1'b0				
+RXDFETAP11OVRDEN	in	0		1	1'b0				
+RXDFETAP12HOLD	in	0		1	1'b0				
+RXDFETAP12OVRDEN	in	0		1	1'b0				
+RXDFETAP13HOLD	in	0		1	1'b0				
+RXDFETAP13OVRDEN	in	0		1	1'b0				
+RXDFETAP14HOLD	in	0		1	1'b0				
+RXDFETAP14OVRDEN	in	0		1	1'b0				
+RXDFETAP15HOLD	in	0		1	1'b0				
+RXDFETAP15OVRDEN	in	0		1	1'b0				
+RXDFETAP2HOLD	in	0		1	1'b0				
+RXDFETAP2OVRDEN	in	0		1	1'b0				
+RXDFETAP3HOLD	in	0		1	1'b0				
+RXDFETAP3OVRDEN	in	0		1	1'b0				
+RXDFETAP4HOLD	in	0		1	1'b0				
+RXDFETAP4OVRDEN	in	0		1	1'b0				
+RXDFETAP5HOLD	in	0		1	1'b0				
+RXDFETAP5OVRDEN	in	0		1	1'b0				
+RXDFETAP6HOLD	in	0		1	1'b0				
+RXDFETAP6OVRDEN	in	0		1	1'b0				
+RXDFETAP7HOLD	in	0		1	1'b0				
+RXDFETAP7OVRDEN	in	0		1	1'b0				
+RXDFETAP8HOLD	in	0		1	1'b0				
+RXDFETAP8OVRDEN	in	0		1	1'b0				
+RXDFETAP9HOLD	in	0		1	1'b0				
+RXDFETAP9OVRDEN	in	0		1	1'b0				
+RXDFEUTHOLD	in	0		1	1'b0				
+RXDFEUTOVRDEN	in	0		1	1'b0				
+RXDFEVPHOLD	in	0		1	1'b0				
+RXDFEVPOVRDEN	in	0		1	1'b0				
+RXDFEXYDEN	in	0		1	1'b1				
+RXDLYBYPASS	in	s		1					
+RXDLYBYPASS	in	s		1					
+RXDLYEN	in	s		1					
+RXDLYOVRDEN	in	s		1					
+RXDLYSRESET	in	s		1					
+RXDLYSRESETDONE	out	s		1			y		
+RXELECIDLE	out	0		1					
+RXELECIDLEMODE	in	s		2					
+RXGEARBOXSLIP	in	d	RXUSRCLK2	1		mgt_gty_rx	y		
+RXHEADER	out	d	RXUSRCLK2	6		mgt_gty_rx	y		
+RXHEADERVALID	out	d	RXUSRCLK2	2		mgt_gty_rx	y		
+RXLATCLK	in	c		1		mgt_gty_rx			
+RXLPMEN	in	s		1					
+RXLPMGCHOLD	in	0		1	1'b0				
+RXLPMGCOVRDEN	in	0		1	1'b0				
+RXLPMHFHOLD	in	0		1	1'b0				
+RXLPMHFOVRDEN	in	0		1	1'b0				
+RXLPMLFHOLD	in	0		1	1'b0				
+RXLPMLFKLOVRDEN	in	0		1	1'b0				
+RXLPMOSHOLD	in	0		1	1'b0				
+RXLPMOSOVRDEN	in	0		1	1'b0				
+RXMCOMMAALIGNEN	in	s	RXUSRCLK2	1					
+RXMONITOROUT	out	0		8					
+RXMONITORSEL	in	0		2	2'b00				
+RXOOBRESET	in	0		1					
+RXOOBRESET	in	0		1					
+RXOSCALRESET	in	s		1			y		
+RXOSHOLD	in	0		1	1'b0				
+RXOSINTDONE	out	0		1					
+RXOSINTSTARTED	out	0		1					
+RXOSINTSTROBEDONE	out	0		1					
+RXOSINTSTROBESTARTED	in	0		1	1'b0				
+RXOSOVRDEN	in	0		1	1'b0				
+RXOUTCLK	out	c		1		mgt_gty_rx	y		
+RXOUTCLKFABRIC	out	0		1			y		
+RXOUTCLKPCS	out	0		1			y		
+RXOUTCLKSEL	in	s		3					
+RXPCOMMAALIGNEN	in	s	RXUSRCLK2	1					
+RXPCSRESET	in	s		1			y		
 RXPD	in	s		2	2'b11		y		
-TXPD	in	s		2	2'b11		y		
-TXPDELECIDLEMODE	in	0		1					
-TXPHDLYPD	in	0		1					
+RXPHALIGN	in	s		1					
+RXPHALIGNDONE	out	d		1			y		
+RXPHALIGNEN	in	s		1					
+RXPHALIGNERR	out	s		1			y		
 RXPHDLYPD	in	0		1					
-LOOPBACK	in	s		3			y		
-DRPADDR	in	drp	DRPCLK	10		drp			
-DRPCLK	in	drp		1					
-DRPDI	in	drp	DRPCLK	32		drp			
-DRPDO	out	drp	DRPCLK	32		drp	y		
-DRPEN	in	drp	DRPCLK	1		drp			
-DRPRDY	out	drp	DRPCLK	1		drp	y		
-DRPWE	in	drp	DRPCLK	1		drp			
-DRPRST	in	s		1					
-DMONITOROUT	out	s		16			y		
-DMONITORCLK	in	c		1					
-DMONFIFORESET	in	s	DMONITORCLK	1					
-DMONITOROUTCLK	out	s		1			y		
-TXCTRL0	in	d	TXUSRCLK2	16		mgt_tx	y		
-TXCTRL1	in	d	TXUSRCLK2	16		mgt_tx	y		
-TXCTRL2	in	d	TXUSRCLK2	8		mgt_tx	y		
-TXDATA	in	d	TXUSRCLK2	128		mgt_tx	y		
-TXDATAEXTENDRSVD	in	0		1					
-TXUSRCLK	in	c		1			y		
-TXUSRCLK2	in	c		1			y		
+RXPHDLYPD	in	s		1					
+RXPHDLYRESET	in	s		1					
+RXPLLCLKSEL	in	s		2			y		
+RXPMARESET	in	s		1			y		
+RXPMARESETDONE	out	s		1			y		
+RXPOLARITY	in	s		1					
+RXPRBSCNTRESET	in	s	RXUSRCLK2	1					
+RXPRBSERR	out	s	RXUSRCLK2	1			y		
+RXPRBSLOCKED	out	s	RXUSRCLK2	1			y		
+RXPRBSSEL	in	s	RXUSRCLK2	4					
+RXPRGDIVRESETDONE	out	s		1			y		
+RXPROGDIVRESET	in	s		1					
+RXRATE	in	s		3					
+RXRATE	in	s	RXUSRCLK2	3					
+RXRATEDONE	out	0	RXUSRCLK2	1			y		
+RXRATEMODE	in	s		1					
+RXRESETDONE	out	s		1			y		
+RXSLIDE	in	d	RXUSRCLK2	1		mgt_gty_rx			
+RXSLIPOUTCLK	in	s		1					
+RXSLIPPMA	in	s		1					
+RXSTARTOFSEQ	out	d	RXUSRCLK2	2		mgt_gty_rx	y		
+RXSTATUS	out	0		3					
+RXSYNCALLIN	in	d		1					
+RXSYNCDONE	out	s		1			y		
+RXSYNCIN	in	s		1					
+RXSYNCMODE	in	s		1					
+RXSYNCOUT	out	s		1			y		
+RXSYSCLKSEL	in	s		2			y		
+RXTERMINATION	in	0		1	1'b0				
+RXUSERRDY	in	s		1			y		
+RXUSRCLK	in	c		1			y		
+RXUSRCLK2	in	c		1			y		
 TX8B10BBYPASS	in	s	TXUSRCLK2	8			y		
 TX8B10BEN	in	s	TXUSRCLK2	1			y		
-TXHEADER	in	d	TXUSRCLK2	6		mgt_tx	y		
-TXSEQUENCE	in	d	TXUSRCLK2	7		mgt_tx	y		
 TXBUFSTATUS	out	s	TXUSRCLK2	2			y		
-TXLATCLK	in	c		1					
 TXBUFSTATUS	out	d	TXUSRCLK2	2			y		
-TXPHDLYRESET	in	s		1					
-TXPHALIGN	in	s		1					
-TXPHALIGNEN	in	s		1					
-TXPHDLYPD	in	s		1					
-TXPHINIT	in	0		1	wiz				
-TXPHOVRDEN	in	s		1					
-TXDLYSRESET	in	s		1					
-TXDLYBYPASS	in	s		1					
-TXDLYEN	in	s		1					
-TXDLYOVRDEN	in	s		1					
-TXPHDLYTSTCLK	in	0		1	wiz				
-TXDLYHOLD	in	0		1	wiz				
-TXDLYUPDOWN	in	0		1	wiz				
-TXPHALIGNDONE	out	s		1			y		
-TXPHINITDONE	out	s		1			y		
-TXDLYSRESETDONE	out	s		1			y		
-TXSYNCMODE	in	s		1					
-TXSYNCALLIN	in	s		1					
-TXSYNCIN	in	s		1					
-TXSYNCOUT	out	s		1			y		
-TXSYNCDONE	out	s		1			y		
-TXPRBSSEL	in	s	TXUSRCLK2	4					
-TXPRBSFORCEERR	in	s	TXUSRCLK2	1					
-TXPOLARITY	in	s	TXUSRCLK2	1					
-TXPROGDIVRESET	in	s		1					
-TXPRGDIVRESETDONE	out	s		1					
-TXOUTCLKSEL	in	s		3					
-TXRATE	in	s		3					
-TXOUTCLKFABRIC	out	0		1					
-TXOUTCLK	out	c		1			y		
-TXOUTCLKPCS	out	0		1					
-TXRATEDONE	out	s		1			y		
-TXDLYBYPASS	in	s		1					
-TXRATEMODE	in	s		1					
-TXPIPPMEN	in	s		1					
-TXPIPPMOVRDEN	in	s		1					
-TXPIPPMSEL	in	s		1					
-TXPIPPMPD	in	s		1					
-TXPIPPMSTEPSIZE	in	s		5					
-TXDEEMPH	in	s		2					
-TXDIFFCTRL	in	s		5					
-TXELECIDLE	in	s	TXUSRCLK2	1					
-TXINHIBIT	in	s	TXUSRCLK2	1					
-TXMAINCURSOR	in	s		7					
-TXMARGIN	in	s		3					
-TXPOSTCURSOR	in	s		5					
-TXPRECURSOR	in	s		5					
-MGTYTXP	out	d		1		mgt_tx			
-MGTYTXN	out	d		1		mgt_tx			
-TXSWING	in	s		1					
-TXPISOPD	in	0		1	wiz				
-TXDETECTRX	in	0		1					
-PHYSTATUS	out	0		1					
-RXSTATUS	out	0		3					
 TXCOMFINISH	out	0		1					
 TXCOMINIT	in	0		1					
 TXCOMSAS	in	0		1					
 TXCOMWAKE	in	0		1					
-GTYRXP	in	d		1		mgt_rx			
-GTYRXN	in	d		1		mgt_rx			
-RXTERMINATION	in	0		1	wiz				
-RXOOBRESET	in	0		1					
-RXELECIDLEMODE	in	s		2					
-RXELECIDLE	out	0		1					
-RXCOMINITDET	out	0	TXUSRCLK2	1					
-RXCOMSASDET	out	0	TXUSRCLK2	1					
-RXCOMWAKEDET	out	0	TXUSRCLK2	1					
+TXCTRL0	in	d	TXUSRCLK2	16		mgt_gty_tx	y		
+TXCTRL1	in	d	TXUSRCLK2	16		mgt_gty_tx	y		
+TXCTRL2	in	d	TXUSRCLK2	8		mgt_gty_tx	y		
+TXDATA	in	d	TXUSRCLK2	128		mgt_gty_tx	y		
+TXDATAEXTENDRSVD	in	0		1					
+TXDCCDONE	out	0		1					
+TXDCCFORCESTART	out	0		1					
+TXDCCRESET	out	0		1					
+TXDEEMPH	in	s		2					
+TXDETECTRX	in	0		1					
+TXDIFFCTRL	in	s		5					
+TXDLYBYPASS	in	s		1					
+TXDLYBYPASS	in	s		1					
+TXDLYEN	in	s		1					
+TXDLYHOLD	in	0		1	1'b0				
+TXDLYOVRDEN	in	s		1					
+TXDLYSRESET	in	s		1					
+TXDLYSRESETDONE	out	s		1			y		
+TXDLYUPDOWN	in	0		1	1'b0				
+TXELECIDLE	in	s	TXUSRCLK2	1					
+TXHEADER	in	d	TXUSRCLK2	6		mgt_gty_tx	y		
+TXINHIBIT	in	s	TXUSRCLK2	1					
+TXLATCLK	in	c		1					
+TXMAINCURSOR	in	s		7					
+TXMARGIN	in	s		3					
+TXOUTCLK	out	c		1			y		
+TXOUTCLKFABRIC	out	0		1					
+TXOUTCLKPCS	out	0		1					
+TXOUTCLKSEL	in	s		3					
+TXPCSRESET	in	s		1			y		
+TXPD	in	s		2	2'b11		y		
+TXPDELECIDLEMODE	in	0		1					
+TXPHALIGN	in	s		1					
+TXPHALIGNDONE	out	s		1			y		
+TXPHALIGNEN	in	s		1					
+TXPHDLYPD	in	0		1					
+TXPHDLYPD	in	s		1					
+TXPHDLYRESET	in	s		1					
+TXPHDLYTSTCLK	in	0		1	1'b0				
+TXPHINIT	in	0		1	1'b0				
+TXPHINITDONE	out	s		1			y		
+TXPHOVRDEN	in	s		1					
+TXPIPPMEN	in	s		1					
+TXPIPPMOVRDEN	in	s		1					
+TXPIPPMPD	in	s		1					
+TXPIPPMSEL	in	s		1					
+TXPIPPMSTEPSIZE	in	s		5					
+TXPISOPD	in	0		1	1'b0				
+TXPLLCLKSEL	in	s		2			y		
+TXPMARESET	in	s		1			y		
+TXPMARESETDONE	out	s		1			y		
+TXPOLARITY	in	s	TXUSRCLK2	1					
+TXPOSTCURSOR	in	s		5					
+TXPRBSFORCEERR	in	s	TXUSRCLK2	1					
+TXPRBSSEL	in	s	TXUSRCLK2	4					
+TXPRECURSOR	in	s		5					
+TXPRGDIVRESETDONE	out	s		1					
+TXPROGDIVRESET	in	s		1					
+TXRATE	in	s		3					
+TXRATEDONE	out	s		1			y		
+TXRATEMODE	in	s		1					
+TXRESETDONE	out	s	TXUSRCLK2	1			y		
+TXSEQUENCE	in	d	TXUSRCLK2	7		mgt_gty_tx	y		
+TXSWING	in	s		1					
+TXSYNCALLIN	in	s		1					
+TXSYNCDONE	out	s		1			y		
+TXSYNCIN	in	s		1					
+TXSYNCMODE	in	s		1					
+TXSYNCOUT	out	s		1			y		
+TXSYSCLKSEL	in	s		2			y		
 TXSYSCLKSEL	in	s		1					
-RXCDRHOLD	in	s		1					
-RXCDROVRDEN	in	s		1					
-RXLPMEN	in	s		1					
-RXDFELPMRESET	in	s		1					
-RXOSHOLD	in	0		1	wiz				
-RXOSOVRDEN	in	0		1	wiz				
-RXLPMLFHOLD	in	0		1	wiz				
-RXLPMLFKLOVRDEN	in	0		1	wiz				
-RXLPMHFHOLD	in	0		1	wiz				
-RXLPMHFOVRDEN	in	0		1	wiz				
-RXDFEAGCHOLD	in	0		1	wiz				
-RXDFEAGCOVRDEN	in	0		1	wiz				
-RXDFELFHOLD	in	0		1	wiz				
-RXDFELFOVRDEN	in	0		1	wiz				
-RXDFEUTHOLD	in	0		1	wiz				
-RXDFEUTOVRDEN	in	0		1	wiz				
-RXDFEVPHOLD	in	0		1	wiz				
-RXDFEVPOVRDEN	in	0		1	wiz				
-RXDFETAP2HOLD	in	0		1	wiz				
-RXDFETAP2OVRDEN	in	0		1	wiz				
-RXDFETAP3HOLD	in	0		1	wiz				
-RXDFETAP3OVRDEN	in	0		1	wiz				
-RXDFETAP4HOLD	in	0		1	wiz				
-RXDFETAP4OVRDEN	in	0		1	wiz				
-RXDFETAP5HOLD	in	0		1	wiz				
-RXDFETAP5OVRDEN	in	0		1	wiz				
-RXDFETAP6HOLD	in	0		1	wiz				
-RXDFETAP6OVRDEN	in	0		1	wiz				
-RXDFETAP7HOLD	in	0		1	wiz				
-RXDFETAP7OVRDEN	in	0		1	wiz				
-RXDFETAP8HOLD	in	0		1	wiz				
-RXDFETAP8OVRDEN	in	0		1	wiz				
-RXDFETAP9HOLD	in	0		1	wiz				
-RXDFETAP9OVRDEN	in	0		1	wiz				
-RXDFETAP10HOLD	in	0		1	wiz				
-RXDFETAP10OVRDEN	in	0		1	wiz				
-RXDFETAP11HOLD	in	0		1	wiz				
-RXDFETAP11OVRDEN	in	0		1	wiz				
-RXDFETAP12HOLD	in	0		1	wiz				
-RXDFETAP12OVRDEN	in	0		1	wiz				
-RXDFETAP13HOLD	in	0		1	wiz				
-RXDFETAP13OVRDEN	in	0		1	wiz				
-RXDFETAP14HOLD	in	0		1	wiz				
-RXDFETAP14OVRDEN	in	0		1	wiz				
-RXDFETAP15HOLD	in	0		1	wiz				
-RXDFETAP15OVRDEN	in	0		1	wiz				
-RXMONITORSEL	in	0		2	wiz				
-RXMONITOROUT	out	0		8					
-RXAFECFOKEN	in	0		1	wiz				
-RXOSINTSTROBESTARTED	in	0		1	wiz				
-RXDFEXYDEN	in	0		1	wiz				
-RXOSINTDONE	out	0		1					
-RXOSINTSTARTED	out	0		1					
-RXOSINTSTROBEDONE	out	0		1					
-RXLPMOSHOLD	in	0		1	wiz				
-RXLPMOSOVRDEN	in	0		1	wiz				
-RXLPMGCHOLD	in	0		1	wiz				
-RXLPMGCOVRDEN	in	0		1	wiz				
-FREQOS	in	0		1	wiz				
-RXDFECFOKFCNUM	in	0		4	wiz				
-RXDFECFOKFEN	in	0		1	wiz				
-RXDFECFOKFPULSE	in	0		1	wiz				
-RXDFECFOKHOLD	in	0		1	wiz				
-RXDFECFOKOVREN	in	0		1	wiz				
-RXDFEKHHOLD	in	0		1	wiz				
-RXDFEKHOVRDEN	in	0		1	wiz				
-RXCDRFREQRESET	in	s		1					
-RXCDRHOLD	in	s		1					
-RXCDROVRDEN	in	0		1	wiz				
-RXCDRRESET	in	0		1	wiz				
-RXRATE	in	s		3					
-RXCDRLOCK	out	0		1					
-RXCDRPHDONE	out	0		1					
-INCPCTRL	in	0		1	wiz				
-CDRSTEPSX	in	0		1	wiz				
-CDRSTEPSQ	in	0		1	wiz				
-CDRSTEPDIR	in	0		1	wiz				
-RXPROGDIVRESET	in	s		1					
-RXPRGDIVRESETDONE	out	s		1			y		
-RXOUTCLKSEL	in	s		3					
-RXRATE	in	s	RXUSRCLK2	3					
-RXOUTCLKFABRIC	out	0		1			y		
-RXOUTCLK	out	c		1		mgt_rx	y		
-RXOUTCLKPCS	out	0		1			y		
-RXRATEDONE	out	0	RXUSRCLK2	1			y		
-RXDLYBYPASS	in	s		1					
-RXRATEMODE	in	s		1					
-EYESCANDATAERROR	out	s		1			y		
-EYESCANTRIGGER	in	s		1					
-RXPOLARITY	in	s		1					
-RXPRBSCNTRESET	in	s	RXUSRCLK2	1					
-RXPRBSSEL	in	s	RXUSRCLK2	4					
-RXPRBSERR	out	s	RXUSRCLK2	1			y		
-RXPRBSLOCKED	out	s	RXUSRCLK2	1			y		
-RXBYTEISALIGNED	out	s	RXUSRCLK2	1			y		
-RXBYTEREALIGN	out	0	RXUSRCLK2	1			y		
-RXCOMMADET	out	0	RXUSRCLK2	1			y		
-RXCOMMADETEN	in	s	RXUSRCLK2	1					
-RXPCOMMAALIGNEN	in	s	RXUSRCLK2	1					
-RXMCOMMAALIGNEN	in	s	RXUSRCLK2	1					
-RXSLIDE	in	d	RXUSRCLK2	1		mgt_rx			
-RX8B10BEN	in	s	RXUSRCLK2	1					
-RXCTRL0	out	d	RXUSRCLK2	16		mgt_rx	y		
-RXCTRL1	out	d	RXUSRCLK2	16		mgt_rx	y		
-RXCTRL2	out	d	RXUSRCLK2	8		mgt_rx	y		
-RXCTRL3	out	d	RXUSRCLK2	8		mgt_rx	y		
-RXPHDLYRESET	in	s		1					
-RXPHALIGN	in	s		1					
-RXPHALIGNEN	in	s		1					
-RXPHDLYPD	in	s		1					
-RXDLYSRESET	in	s		1					
-RXDLYBYPASS	in	s		1					
-RXDLYEN	in	s		1					
-RXDLYOVRDEN	in	s		1					
-RXPHALIGNDONE	out	d		1			y		
-RXDLYSRESETDONE	out	s		1			y		
-RXSYNCMODE	in	s		1					
-RXSYNCALLIN	in	d		1					
-RXSYNCIN	in	s		1					
-RXSYNCOUT	out	s		1			y		
-RXSYNCDONE	out	s		1			y		
-RXSLIPOUTCLK	in	s		1					
-RXSLIPPMA	in	s		1					
-RXPHALIGNERR	out	s		1			y		
-RXBUFRESET	in	s		1					
-RXBUFSTATUS	out	s	RXUSRCLK2	3			y		
-RXCLKCORCNT	out	0	RXUSRCLK2	1					
-RXCHANBONDSEQ	out	0	RXUSRCLK2	1					
-RXCHANISALIGNED	out	0	RXUSRCLK2	1					
-RXCHANREALIGN	out	0	RXUSRCLK2	1					
-RXCHBONDI	in	0	RXUSRCLK	5					
-RXCHBONDO	out	0	RXUSRCLK	5					
-RXCHBONDLEVEL	in	0	RXUSRCLK2	3					
-RXCHBONDMASTER	in	0	RXUSRCLK2	1					
-RXCHBONDSLAVE	in	0	RXUSRCLK2	1					
-RXCHBONDEN	in	0	RXUSRCLK2	1					
-RXDATAVALID	out	d	RXUSRCLK2	2		mgt_rx	y		
-RXGEARBOXSLIP	in	d	RXUSRCLK2	1		mgt_rx	y		
-RXHEADER	out	d	RXUSRCLK2	6		mgt_rx	y		
-RXHEADERVALID	out	d	RXUSRCLK2	2		mgt_rx	y		
-RXSTARTOFSEQ	out	d	RXUSRCLK2	2		mgt_rx	y		
-RXLATCLK	in	c		1		mgt_rx			
-RXDATA	out	d	RXUSRCLK2	128		mgt_rx	y		
-RXUSRCLK	in	c		1		mgt_rx	y		
-RXUSRCLK2	in	c		1		mgt_rx	y		
-RXDATAEXTENDRSVD	out	0	RXUSRCLK2	1					
+TXUSERRDY	in	s		1			y		
+TXUSRCLK	in	c		1			y		
+TXUSRCLK2	in	c		1			y		

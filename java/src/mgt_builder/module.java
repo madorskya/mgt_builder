@@ -492,8 +492,8 @@ public class module
         lines.add    (qc.generated_header);
         lines.add    ("`ifndef MGT_INTERFACES_SV");
         lines.add    ("`define MGT_INTERFACES_SV");
-        lines.addAll (write_iface (mgt_rx_lst, "mgt_rx"));
-        lines.addAll (write_iface (mgt_tx_lst, "mgt_tx"));
+        lines.addAll (write_iface (mgt_rx_lst, qc.mgt_rx_iface));
+        lines.addAll (write_iface (mgt_tx_lst, qc.mgt_tx_iface));
 //        lines.addAll (write_iface (phalg_tx_lst, "phalg_tx"));
         // drp interface is constructed manually for now
         //lines.addAll (write_iface (drp_lst,    "drp"));
