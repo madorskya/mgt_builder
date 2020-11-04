@@ -1,0 +1,23 @@
+// parameter	value	comment	
+mgts_per_quad	4	number of MGTs in one quad	
+commons_per_quad	1	number of COMMON blocks in one quad	
+max_drp_addr_width	9	maximum DRP address width for all modules, in bits	
+max_mgt_x	1	X dimension of MGT matrix in the device	
+max_mgt_y	32	Y dimension of MGT matrix in the device	
+max_common_x	1	calculated, X dimension of COMMON matrix in the device	
+max_common_y	8	calculated, Y dimension of COMMON matrix in the device	
+mgt_refclk_name	GTREFCLK0	MGT reference clock name	
+common_refclk_name	GTREFCLK00	COMMON reference clock name	
+mgt_channel_name	GTYE4_CHANNEL	MGT channel primitive name	
+mgt_common_name	GTHE4_COMMON	COMMON primitive name	
+mgt_quad_name	GTHE4_QUAD	QUAD module name	
+mgt_txoutclk_name	TXOUTCLK	name of TX output clock port, used to create TX user clock with MMCM	
+mgt_txusrclk_name	TXUSRCLK	name of TX user clock port	
+mgt_rxoutclk_name	RXOUTCLK	name of RX output clock port	
+mgt_rxusrclk_name	RXUSRCLK	name of RX user clock port	
+mgt_txpolarity_name	TXPOLARITY	name of TX polarity port	
+mgt_rxpolarity_name	RXPOLARITY	name of RX polarity port	
+mgt_tx_powerdown_name	TXPD	name of TX power down port	
+mgt_rx_powerdown_name	RXPD	name of RX power down port	
+cppl_powerdown_name	CPLLPD	name of CPLL power down port	
+qpll_powerdown_name	QPLL0PD	name of QPLL power down port	
