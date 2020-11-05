@@ -123,12 +123,15 @@ public class module
                 port p = new port(qc);
                 p.address = new reg_addr();
                 p.name = sf[0].trim();
+                if (p.name.isEmpty()) continue; // at least the name must be present
                 p.dir = sf[1].trim();
                 p.type = sf[2].trim();
                 p.clock = sf[3].trim();
                 try {p.bits = Integer.parseInt(sf[4].trim());} catch (Exception e) 
                 {
-                    System.out.println (String.format("exception: %s %s %s %s %s", sf[0], sf[1], sf[2], sf[3], sf[4]));
+                    System.out.println (String.format("fill_ports illegal bits: %s %s %s %s %s", sf[0], sf[1], sf[2], sf[3], sf[4]));
+                    continue; // cannot convert number of bits
+                    
                 }
                 p.dflt = sf[5].trim();
                 p.iface = sf[6].trim();
@@ -368,7 +371,7 @@ public class module
         lines.add    ("(");
         lines.addAll (module_ios);
         lines.add    (");");
-        lines.add    ("`include \"xymap.sv\"");
+        lines.add    ("`include \"" + qc.xymap_fn + "\"");
         lines.add    ("\twire [15:0] XY = mgtxy[qind][mind];");
         lines.addAll (regs);
         lines.addAll (wires);

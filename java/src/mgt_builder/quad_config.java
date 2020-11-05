@@ -46,6 +46,7 @@ public class quad_config
     String links_fn;
     String mgt_atts_fn;
     String common_atts_fn;
+    String xymap_fn;
     String top_module_name;
     
     String[] mgt_ports;
@@ -130,6 +131,7 @@ public class quad_config
 
     public void decode_top_config (String[] tc)
     {
+       xymap_fn = "xymap.sv"; // to support legacy configs
        for (String s : tc) 
        {
            String[] sf = s.split("\t");
@@ -156,6 +158,7 @@ public class quad_config
                if (sf[0].trim().contentEquals("common_drp_offsets_fn" ))  common_drp_offsets_fn = sf[1].trim(); else
                if (sf[0].trim().contentEquals("mgt_atts_fn"           ))  mgt_atts_fn           = sf[1].trim(); else
                if (sf[0].trim().contentEquals("common_atts_fn"        ))  common_atts_fn        = sf[1].trim(); else
+               if (sf[0].trim().contentEquals("xymap_fn"              ))  xymap_fn              = sf[1].trim(); else
                if (sf[0].trim().contentEquals("MGT"                   ))  mgt_path              = sf[1].trim(); else
                if (sf[0].trim().contentEquals("board"                 ))  board_path            = sf[1].trim(); else
                if (sf[0].trim().contentEquals("root_config"           ))  root_path             = sf[1].trim(); else

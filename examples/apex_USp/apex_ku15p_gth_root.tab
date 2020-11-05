@@ -1,0 +1,18 @@
+// parameter	value	
+int_reg_offset	0	
+reg_width_bits	32	
+mgt_rx_iface	mgt_gth_rx	
+mgt_tx_iface	mgt_gth_tx	
+phalg_tx_iface	phalg_gth_tx	
+drp_iface	drp_gth	
+interfaces_fname	mgt_gth_interfaces.sv	
+mgt_module_fn	mgt_gth_module.sv	
+common_module_fn	common_gth_module.sv	
+quad_module_fn	quad_gth_module.sv	
+xymap_fn	xymap_gth.sv	
+top_module_name	apex_ku15p_gth_serial_io	
+root_config	.	
+MGT	xcku15p-ffva1760-2/GTH	
+board	apex_ku15p_gth	
+device_prefix	/dev/apex_axi	
+device_count	1	

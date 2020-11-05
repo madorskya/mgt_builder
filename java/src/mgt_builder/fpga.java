@@ -1004,7 +1004,7 @@ set_clock_groups -name async_refclks -asynchronous \
        quad_inst.write_quad();
 
        write_fpga (qc.sv_path + "/" + qc.top_module_name + ".sv");
-       write_constr (qc.sv_path + "/" + qc.top_module_name + ".xdc", qc.sv_path + "xymap.sv");
+       write_constr (qc.sv_path + "/" + qc.top_module_name + ".xdc", qc.sv_path + qc.xymap_fn);
        
        assign_base_addr(); // assign base addresses to all MGTs in active quads
        write_base_addr(qc.root_path + "/fpga_base_addr.tab");
