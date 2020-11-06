@@ -1,74 +1,74 @@
 //name	direction	type	clock	bits	default	interface	indexed	buffer	
-QPLL0REFCLKSEL	in	0		3	3'b1				
-QPLL1REFCLKSEL	in	0		3	3'b1				
-GTNORTHREFCLK00	in	0		1					
-GTNORTHREFCLK01	in	0		1					
-GTNORTHREFCLK10	in	0		1					
-GTNORTHREFCLK11	in	0		1					
-GTREFCLK00	in	c		1			y		
-GTREFCLK10	in	0		1			y		
-GTREFCLK01	in	c		1			y		
-GTREFCLK11	in	0		1			y		
-GTSOUTHREFCLK00	in	0		1					
-GTSOUTHREFCLK01	in	0		1					
-GTSOUTHREFCLK00	in	0		1					
-GTSOUTHREFCLK01	in	0		1					
-QPLL0OUTCLK	out	c		1			y		
-QPLL1OUTCLK	out	c		1			y		
-QPLL0OUTREFCLK	out	c		1			y		
-QPLL1OUTREFCLK	out	c		1			y		
-REFCLKOUTMONITOR0	out	0		1			y		
-REFCLKOUTMONITOR1	out	0		1			y		
-QPLLDMONITOR0	out	0		8			y		
-QPLLDMONITOR1	out	0		8			y		
-QPLL0CLKRSVD0	in	0		1					
-QPLL1CLKRSVD0	in	0		1					
-QPLL0CLKRSVD1	in	0		1					
-QPLL1CLKRSVD1	in	0		1					
-QPLL0FBCLKLOST	out	s	QPLL0LOCKDETCLK	1			y		
-QPLL1FBCLKLOST	out	s	QPLL1LOCKDETCLK	1			y		
-QPLL0LOCK	out	s		1			y		
-QPLL1LOCK	out	s		1			y		
-QPLL0LOCKDETCLK	in	c		1					
-QPLL1LOCKDETCLK	in	c		1					
-QPLL0LOCKEN	in	0		1	1'b1				
-QPLL1LOCKEN	in	0		1	1'b1				
-QPLL0PD	in	s		1					
-QPLL1PD	in	s		1					
-QPLL0REFCLKLOST	out	s	QPLL0LOCKDETCLK	1			y		
-QPLL1REFCLKLOST	out	s	QPLL1LOCKDETCLK	1			y		
-QPLL0RESET	in	s		1					
-QPLL1RESET	in	s		1					
-QPLLRSVD1	in	s		8					
-QPLLRSVD2	in	s		5					
-QPLLRSVD3	in	s		5					
-QPLLRSVD4	in	s		8					
 BGBYPASSB	in	0		1	1'b1				
 BGMONITORENB	in	0		1	1'b1				
 BGPDB	in	0		1	1'b1				
 BGRCALOVRD	in	0		5	5'b11111				
 BGRCALOVRDENB	in	0		1	1'b1				
-RCALENB	in	0		1	1'b1				
+DRPADDR	in	drp	DRPCLK	10		drp_gth			
+DRPCLK	in	drp		1					
+DRPDI	in	drp	DRPCLK	32		drp_gth			
+DRPDO	out	drp	DRPCLK	32		drp_gth	y		
+DRPEN	in	drp	DRPCLK	1		drp_gth			
+DRPRDY	out	drp	DRPCLK	1		drp_gth	y		
+DRPWE	in	drp	DRPCLK	1		drp_gth			
+GTNORTHREFCLK00	in	0		1					
+GTNORTHREFCLK01	in	0		1					
+GTNORTHREFCLK10	in	0		1					
+GTNORTHREFCLK11	in	0		1					
+GTREFCLK00	in	c		1			y		
+GTREFCLK01	in	c		1			y		
+GTREFCLK10	in	0		1			y		
+GTREFCLK11	in	0		1			y		
+GTSOUTHREFCLK00	in	0		1					
+GTSOUTHREFCLK01	in	0		1					
+GTSOUTHREFCLK10	in	0		1					
+GTSOUTHREFCLK11	in	0		1					
 PMARSVD0	in	0		8					
 PMARSVD1	in	0		8					
-SDM0RESET	in	s		1					
-SDM1RESET	in	s		1					
-SDM0DATA	in	s		25					
-SDM1DATA	in	s		25					
-SDM0WIDTH	in	s		2					
-SDM1WIDTH	in	s		2					
+QPLL0CLKRSVD0	in	0		1					
+QPLL0CLKRSVD1	in	0		1					
+QPLL0FBCLKLOST	out	s	QPLL0LOCKDETCLK	1			y		
 QPLL0FBDIV	in	0		8	8'b00000000				
+QPLL0LOCK	out	s		1			y		
+QPLL0LOCKDETCLK	in	c		1					
+QPLL0LOCKEN	in	0		1	1'b1				
+QPLL0OUTCLK	out	c		1			y		
+QPLL0OUTREFCLK	out	c		1			y		
+QPLL0PD	in	s		1					
+QPLL0REFCLKLOST	out	s	QPLL0LOCKDETCLK	1			y		
+QPLL0REFCLKSEL	in	0		3	3'b1				
+QPLL0RESET	in	s		1					
+QPLL1CLKRSVD0	in	0		1					
+QPLL1CLKRSVD1	in	0		1					
+QPLL1FBCLKLOST	out	s	QPLL1LOCKDETCLK	1			y		
 QPLL1FBDIV	in	0		8	8'b00000000				
-SDM0TOGGLE	in	0		1					
-SDM1TOGGLE	in	0		1					
+QPLL1LOCK	out	s		1			y		
+QPLL1LOCKDETCLK	in	c		1					
+QPLL1LOCKEN	in	0		1	1'b1				
+QPLL1OUTCLK	out	c		1			y		
+QPLL1OUTREFCLK	out	c		1			y		
+QPLL1PD	in	s		1					
+QPLL1REFCLKLOST	out	s	QPLL1LOCKDETCLK	1			y		
+QPLL1REFCLKSEL	in	0		3	3'b1				
+QPLL1RESET	in	s		1					
+QPLLDMONITOR0	out	0		8			y		
+QPLLDMONITOR1	out	0		8			y		
+QPLLRSVD1	in	s		8					
+QPLLRSVD2	in	s		5					
+QPLLRSVD3	in	s		5					
+QPLLRSVD4	in	s		8					
+RCALENB	in	0		1	1'b1				
+REFCLKOUTMONITOR0	out	0		1			y		
+REFCLKOUTMONITOR1	out	0		1			y		
+SDM0DATA	in	s		25					
 SDM0FINALOUT	out	0		4			y		
-SDM1FINALOUT	out	0		4			y		
+SDM0RESET	in	s		1					
 SDM0TESTDATA	out	0		15			y		
+SDM0TOGGLE	in	0		1					
+SDM0WIDTH	in	s		2					
+SDM1DATA	in	s		25					
+SDM1FINALOUT	out	0		4			y		
+SDM1RESET	in	s		1					
 SDM1TESTDATA	out	0		15			y		
-DRPADDR	in	drp	DRPCLK	10		drp			
-DRPCLK	in	drp		1					
-DRPDI	in	drp	DRPCLK	32		drp			
-DRPDO	out	drp	DRPCLK	32		drp	y		
-DRPEN	in	drp	DRPCLK	1		drp			
-DRPRDY	out	drp	DRPCLK	1		drp	y		
-DRPWE	in	drp	DRPCLK	1		drp			
+SDM1TOGGLE	in	0		1					
+SDM1WIDTH	in	s		2					

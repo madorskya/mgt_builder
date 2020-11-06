@@ -10,20 +10,19 @@ CPLLLOCKEN	in	0		1	1'b1
 CPLLPD	in	s		1			y		
 CPLLREFCLKLOST	out	s		1			y		
 CPLLREFCLKSEL	in	0		3	3'b1				
-CPLLREFCLKSEL	in	0		3	3'b1				
 CPLLRESET	in	0		1					
 DMONFIFORESET	in	s	DMONITORCLK	1					
 DMONITORCLK	in	c		1					
 DMONITOROUT	out	s		16			y		
 DMONITOROUTCLK	out	s		1			y		
-DRPADDR	in	drp	DRPCLK	10		drp			
+DRPADDR	in	drp	DRPCLK	10		drp_gty			
 DRPCLK	in	drp		1					
-DRPDI	in	drp	DRPCLK	32		drp			
-DRPDO	out	drp	DRPCLK	32		drp	y		
-DRPEN	in	drp	DRPCLK	1		drp			
-DRPRDY	out	drp	DRPCLK	1		drp	y		
+DRPDI	in	drp	DRPCLK	32		drp_gty			
+DRPDO	out	drp	DRPCLK	32		drp_gty	y		
+DRPEN	in	drp	DRPCLK	1		drp_gty			
+DRPRDY	out	drp	DRPCLK	1		drp_gty	y		
 DRPRST	in	s		1					
-DRPWE	in	drp	DRPCLK	1		drp			
+DRPWE	in	drp	DRPCLK	1		drp_gty			
 EYESCANDATAERROR	out	s		1			y		
 EYESCANRESET	in	s		1			y		
 EYESCANTRIGGER	in	s		1					
@@ -31,7 +30,6 @@ FREQOS	in	0		1	1'b0
 GTGREFCLK	in	0		1					
 GTNORTHREFCLK0	in	0		1					
 GTNORTHREFCLK1	in	0		1					
-GTPOWERGOOD	out	s		1			y		
 GTPOWERGOOD	out	s		1			y		
 GTREFCLK0	in	0		1					
 GTREFCLK1	in	0		1					
@@ -56,25 +54,19 @@ QPLL0REFCLK	in	c		1			y
 QPLL1CLK	in	c		1			y		
 QPLL1REFCLK	in	c		1			y		
 RESETEXCEPTION	out	0		1					
-RESETEXCEPTION	out	0		1					
 RESETOVRD	in	0		1					
 RSOSINTDONE	out	0		1					
 RX8B10BEN	in	s	RXUSRCLK2	1					
 RXAFECFOKEN	in	0		1	1'b1				
-RXBUFRESET	in	s		1			y		
 RXBUFRESET	in	s		1					
 RXBUFSTATUS	out	s	RXUSRCLK2	3			y		
 RXBYTEISALIGNED	out	s	RXUSRCLK2	1			y		
 RXBYTEREALIGN	out	0	RXUSRCLK2	1			y		
-RXCDRFREQRESET	in	0		1					
 RXCDRFREQRESET	in	s		1					
 RXCDRHOLD	in	s		1					
-RXCDRHOLD	in	s		1					
 RXCDRLOCK	out	0		1					
-RXCDROVRDEN	in	s		1					
 RXCDROVRDEN	in	0		1	1'b0				
 RXCDRPHDONE	out	0		1					
-RXCDRRESET	in	0		1					
 RXCDRRESET	in	0		1	1'b0				
 RXCHANBONDSEQ	out	0	RXUSRCLK2	1					
 RXCHANISALIGNED	out	0	RXUSRCLK2	1					
@@ -113,7 +105,6 @@ RXDFEKHOVRDEN	in	0		1	1'b0
 RXDFELFHOLD	in	0		1	1'b0				
 RXDFELFOVRDEN	in	0		1	1'b0				
 RXDFELPMRESET	in	s		1			y		
-RXDFELPMRESET	in	s		1					
 RXDFETAP10HOLD	in	0		1	1'b0				
 RXDFETAP10OVRDEN	in	0		1	1'b0				
 RXDFETAP11HOLD	in	0		1	1'b0				
@@ -148,7 +139,6 @@ RXDFEVPHOLD	in	0		1	1'b0
 RXDFEVPOVRDEN	in	0		1	1'b0				
 RXDFEXYDEN	in	0		1	1'b1				
 RXDLYBYPASS	in	s		1					
-RXDLYBYPASS	in	s		1					
 RXDLYEN	in	s		1					
 RXDLYOVRDEN	in	s		1					
 RXDLYSRESET	in	s		1					
@@ -172,7 +162,6 @@ RXMCOMMAALIGNEN	in	s	RXUSRCLK2	1
 RXMONITOROUT	out	0		8					
 RXMONITORSEL	in	0		2	2'b00				
 RXOOBRESET	in	0		1					
-RXOOBRESET	in	0		1					
 RXOSCALRESET	in	s		1			y		
 RXOSHOLD	in	0		1	1'b0				
 RXOSINTDONE	out	0		1					
@@ -192,7 +181,6 @@ RXPHALIGNDONE	out	d		1			y
 RXPHALIGNEN	in	s		1					
 RXPHALIGNERR	out	s		1			y		
 RXPHDLYPD	in	0		1					
-RXPHDLYPD	in	s		1					
 RXPHDLYRESET	in	s		1					
 RXPLLCLKSEL	in	s		2			y		
 RXPMARESET	in	s		1			y		
@@ -205,7 +193,6 @@ RXPRBSSEL	in	s	RXUSRCLK2	4
 RXPRGDIVRESETDONE	out	s		1			y		
 RXPROGDIVRESET	in	s		1					
 RXRATE	in	s		3					
-RXRATE	in	s	RXUSRCLK2	3					
 RXRATEDONE	out	0	RXUSRCLK2	1			y		
 RXRATEMODE	in	s		1					
 RXRESETDONE	out	s		1			y		
@@ -227,7 +214,6 @@ RXUSRCLK2	in	c		1			y
 TX8B10BBYPASS	in	s	TXUSRCLK2	8			y		
 TX8B10BEN	in	s	TXUSRCLK2	1			y		
 TXBUFSTATUS	out	s	TXUSRCLK2	2			y		
-TXBUFSTATUS	out	d	TXUSRCLK2	2			y		
 TXCOMFINISH	out	0		1					
 TXCOMINIT	in	0		1					
 TXCOMSAS	in	0		1					
@@ -244,7 +230,6 @@ TXDEEMPH	in	s		2
 TXDETECTRX	in	0		1					
 TXDIFFCTRL	in	s		5					
 TXDLYBYPASS	in	s		1					
-TXDLYBYPASS	in	s		1					
 TXDLYEN	in	s		1					
 TXDLYHOLD	in	0		1	1'b0				
 TXDLYOVRDEN	in	s		1					
@@ -257,7 +242,7 @@ TXINHIBIT	in	s	TXUSRCLK2	1
 TXLATCLK	in	c		1					
 TXMAINCURSOR	in	s		7					
 TXMARGIN	in	s		3					
-TXOUTCLK	out	c		1			y		
+TXOUTCLK	out	c		1		mgt_gty_tx	y		
 TXOUTCLKFABRIC	out	0		1					
 TXOUTCLKPCS	out	0		1					
 TXOUTCLKSEL	in	s		3					
@@ -268,7 +253,6 @@ TXPHALIGN	in	s		1
 TXPHALIGNDONE	out	s		1			y		
 TXPHALIGNEN	in	s		1					
 TXPHDLYPD	in	0		1					
-TXPHDLYPD	in	s		1					
 TXPHDLYRESET	in	s		1					
 TXPHDLYTSTCLK	in	0		1	1'b0				
 TXPHINIT	in	0		1	1'b0				
@@ -302,7 +286,6 @@ TXSYNCIN	in	s		1
 TXSYNCMODE	in	s		1					
 TXSYNCOUT	out	s		1			y		
 TXSYSCLKSEL	in	s		2			y		
-TXSYSCLKSEL	in	s		1					
 TXUSERRDY	in	s		1			y		
 TXUSRCLK	in	c		1			y		
 TXUSRCLK2	in	c		1			y		

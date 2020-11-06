@@ -11,8 +11,8 @@ GTREFCLK01	in	c		1			y
 GTREFCLK11	in	0		1			y		
 GTSOUTHREFCLK00	in	0		1					
 GTSOUTHREFCLK01	in	0		1					
-GTSOUTHREFCLK00	in	0		1					
-GTSOUTHREFCLK01	in	0		1					
+GTSOUTHREFCLK10	in	0		1					
+GTSOUTHREFCLK11	in	0		1					
 QPLL0OUTCLK	out	c		1			y		
 QPLL1OUTCLK	out	c		1			y		
 QPLL0OUTREFCLK	out	c		1			y		
@@ -65,10 +65,10 @@ SDM0FINALOUT	out	0		4			y
 SDM1FINALOUT	out	0		4			y		
 SDM0TESTDATA	out	0		15			y		
 SDM1TESTDATA	out	0		15			y		
-DRPADDR	in	drp	DRPCLK	10		drp			
+DRPADDR	in	drp	DRPCLK	10		drp_gty			
 DRPCLK	in	drp		1					
-DRPDI	in	drp	DRPCLK	32		drp			
-DRPDO	out	drp	DRPCLK	32		drp	y		
-DRPEN	in	drp	DRPCLK	1		drp			
-DRPRDY	out	drp	DRPCLK	1		drp	y		
-DRPWE	in	drp	DRPCLK	1		drp			
+DRPDI	in	drp	DRPCLK	32		drp_gty			
+DRPDO	out	drp	DRPCLK	32		drp_gty	y		
+DRPEN	in	drp	DRPCLK	1		drp_gty			
+DRPRDY	out	drp	DRPCLK	1		drp_gty	y		
+DRPWE	in	drp	DRPCLK	1		drp_gty			
