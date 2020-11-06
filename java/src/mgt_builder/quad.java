@@ -290,7 +290,7 @@ public class quad
         List<String> ios = new ArrayList<>();
 
         // add necessary interfaces
-        ios.add (String.format("\t%s.in %s_qif,", qc.drp_iface, qc.drp_iface));
+        ios.add (String.format("\tdrp.in %s_qif,", qc.drp_iface));
         ios.add ("\tinput drpclk,");
         ios.add (String.format("\t%s.in %s_if [%d:0],", qc.mgt_tx_iface, qc.mgt_tx_iface, qc.mgts_per_quad-1));
         ios.add (String.format("\t%s.in %s_if [%d:0],", qc.mgt_rx_iface, qc.mgt_rx_iface, qc.mgts_per_quad-1));
@@ -350,9 +350,10 @@ public class quad
         aw_quad_bits = (int)Math.ceil(Math.log(qc.mgts_per_quad + qc.commons_per_quad)/Math.log(2)) + qc.max_drp_addr_width;
         
         String drp_mux = String.format(
-"	drp #(.AW(%d)) drp_if [drpn-1:0]();\n" +
-"	drp_mux #(.N(drpn), .AW_FPGA(%d), .AW_QUAD(%d)) drpm (drp_if, drp_qif, drpclk);\n",
-                qc.max_drp_addr_width, aw_quad_bits, qc.max_drp_addr_width);
+"	drp #(.AW(%d)) %s_if [drpn-1:0]();\n" +
+"	drp_mux #(.N(drpn), .AW_FPGA(%d), .AW_QUAD(%d)) drpm (%s_if, %s_qif, drpclk);\n",
+                qc.max_drp_addr_width, qc.drp_iface, 
+                aw_quad_bits, qc.max_drp_addr_width, qc.drp_iface, qc.drp_iface);
 
         
         lines.add    (qc.generated_header);

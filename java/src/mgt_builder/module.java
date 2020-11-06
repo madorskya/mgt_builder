@@ -226,7 +226,7 @@ public class module
         String dirc, bitfld, ifp_name; // signal
         
         // add mandatory interfaces to module_ios
-        module_ios.add (String.format("\t%s.in %s_if,", qc.drp_iface, qc.drp_iface));
+        module_ios.add (String.format("\tdrp.in %s_if,", qc.drp_iface));
         if (mgt_tx_lst.size() > 0) module_ios.add (String.format("\t%s.in %s_if,", qc.mgt_tx_iface, qc.mgt_tx_iface));
         if (mgt_rx_lst.size() > 0) module_ios.add (String.format("\t%s.in %s_if,", qc.mgt_rx_iface, qc.mgt_rx_iface));
 //        if (phalg_tx_lst.size() > 0) module_ios.add (String.format("\t%s.in %s_if,", qc.phalg_tx_iface, qc.phalg_tx_iface));

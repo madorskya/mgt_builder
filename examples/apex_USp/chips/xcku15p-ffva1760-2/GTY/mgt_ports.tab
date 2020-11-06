@@ -16,14 +16,14 @@ DMONFIFORESET	in	s	DMONITORCLK	1
 DMONITORCLK	in	c		1					
 DMONITOROUT	out	s		16			y		
 DMONITOROUTCLK	out	s		1			y		
-DRPADDR	in	drp	DRPCLK	10		drp_gty			
+DRPADDR	in	drp	DRPCLK	10		drp			
 DRPCLK	in	drp		1					
-DRPDI	in	drp	DRPCLK	32		drp_gty			
-DRPDO	out	drp	DRPCLK	32		drp_gty	y		
-DRPEN	in	drp	DRPCLK	1		drp_gty			
-DRPRDY	out	drp	DRPCLK	1		drp_gty	y		
+DRPDI	in	drp	DRPCLK	32		drp			
+DRPDO	out	drp	DRPCLK	32		drp	y		
+DRPEN	in	drp	DRPCLK	1		drp			
+DRPRDY	out	drp	DRPCLK	1		drp	y		
 DRPRST	in	s		1					
-DRPWE	in	drp	DRPCLK	1		drp_gty			
+DRPWE	in	drp	DRPCLK	1		drp			
 EYESCANDATAERROR	out	s		1			y		
 EYESCANRESET	in	s		1			y		
 EYESCANTRIGGER	in	s		1					

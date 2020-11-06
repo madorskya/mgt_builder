@@ -569,7 +569,7 @@ public class fpga
             }
         }
 
-        ios.add (String.format("\t%s.in %s_fif,", qc.drp_iface, qc.drp_iface));
+        ios.add (String.format("\tdrp.in %s_fif,", qc.drp_iface));
         ios.add ("\tinput drpclk,");
         ios.add (String.format("\tinput [%d:0] refclk_p,", refclk_cnt-1));
         ios.add (String.format("\tinput [%d:0] refclk_n,", refclk_cnt-1));
@@ -679,9 +679,10 @@ public class fpga
         aw_fpga_bits = (int)Math.ceil(Math.log(quads_per_fpga)/Math.log(2)) + quad_inst.get_aw_quad_bits();
         
         String drp_mux = String.format(
-"	drp #(.AW(%d)) drp_qif [quadn-1:0]();\n" +
-"	drp_mux_fpga #(.N(quadn), .AW_QUAD(%d)) drpm (drp_qif, drp_fif, drpclk);\n",
-                quad_inst.get_aw_quad_bits(), quad_inst.get_aw_quad_bits());
+"	drp #(.AW(%d)) %s_qif [quadn-1:0]();\n" +
+"	drp_mux_fpga #(.N(quadn), .AW_QUAD(%d)) drpm (%s_qif, %s_fif, drpclk);\n",
+                quad_inst.get_aw_quad_bits(), qc.drp_iface, 
+                quad_inst.get_aw_quad_bits(), qc.drp_iface, qc.drp_iface);
         
         lines.add    (qc.generated_header);
         lines.add    ("`include \"drp_interface.sv\"");
