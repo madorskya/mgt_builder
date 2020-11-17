@@ -10,7 +10,7 @@ mgt_refclk_name	GTREFCLK0	MGT reference clock name
 common_refclk_name	GTREFCLK00	COMMON reference clock name	
 mgt_channel_name	GTYE4_CHANNEL	MGT channel primitive name	
 mgt_common_name	GTYE4_COMMON	COMMON primitive name	
-mgt_quad_name	GTTE4_QUAD	QUAD module name	
+mgt_quad_name	GTYE4_QUAD	QUAD module name	
 mgt_txoutclk_name	TXOUTCLK	name of TX output clock port, used to create TX user clock with MMCM	
 mgt_txusrclk_name	TXUSRCLK	name of TX user clock port	
 mgt_rxoutclk_name	RXOUTCLK	name of RX output clock port	

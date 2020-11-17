@@ -11,10 +11,10 @@ CPLLPD	in	s		1			y
 CPLLREFCLKLOST	out	s		1			y		
 CPLLREFCLKSEL	in	0		3	3'b1				
 CPLLRESET	in	0		1					
-DMONFIFORESET	in	s	DMONITORCLK	1					
+DMONFIFORESET	in	0	DMONITORCLK	1					
 DMONITORCLK	in	c		1					
-DMONITOROUT	out	s		16			y		
-DMONITOROUTCLK	out	s		1			y		
+DMONITOROUT	out	0		16			y		
+DMONITOROUTCLK	out	0		1			y		
 DRPADDR	in	drp	DRPCLK	10		drp_gth			
 DRPCLK	in	drp		1					
 DRPDI	in	drp	DRPCLK	32		drp_gth			
