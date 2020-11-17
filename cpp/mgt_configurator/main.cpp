@@ -90,6 +90,31 @@ void register_write (string cmd)
 	}
 }
 
+void register_read (string cmd)
+{
+    vector <string> argv;
+	boost::split(argv, cmd, boost::is_any_of("\t ")); // split on tabs,spaces
+
+	int x      = strtol (argv[2].c_str(), NULL, 10);
+	int y      = strtol (argv[3].c_str(), NULL, 10);
+	int common = strtol (argv[4].c_str(), NULL, 10);
+	string rname = argv[5];
+
+	for (int i = 0; i < device_count; i++)
+	{
+		if (fd[i] >= 0 && device_selected[i]) 
+		{
+			if (chip.lock_board (i) < 0) exit(-1);
+			// find MGT
+			drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
+			if (common) uit = *(uit.common_unit);
+
+			uit.att_read_prn(fd[i], rname);
+			if (chip.unlock_board (i) < 0) exit(-1);
+		}
+	}
+}
+
 void device_reset (string cmd)
 {
 	for (int i = 0; i < device_count; i++)
@@ -179,9 +204,14 @@ node_record nr[] =
 	{1, 	"select",        "device list|all", NULL,           NULL},
 	{2,			"([0-9,]+)", "<Enter>",         device_select,  NULL},
 	{2,			"all",       "<Enter>",         device_select,  NULL},
-	{0, "register",          "write",           NULL,           NULL},
+	{0, "register",          "write|read",      NULL,           NULL},
 	{1,     "write",         "all",             NULL,           NULL},
 	{2,         "all",       "<Enter>",         register_write, NULL},
+	{1,     "read",          "link X",          NULL,           NULL},
+	{2,         "([0-1])",   "link Y",          NULL,           NULL},
+	{3,         "([0-9]+)",  "common (1|0)",    NULL,           NULL},
+	{4,         "([0-1])",   "reg name",        NULL,           NULL},
+	{5,         "([A-Z0-9_]+)", "<Enter>",      register_read,  NULL},
 	{0, "reset",             "<Enter>",         device_reset,   NULL},
 	{0, "prbs",              "pattern|read",    NULL,           NULL},
 	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},

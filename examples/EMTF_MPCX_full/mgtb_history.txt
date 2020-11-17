@@ -13,3 +13,28 @@ device select 0,1,2
 register write all 
 help
 reset 
+help
+device select 0
+exit
+device select 0\
+exit
+device select 0
+register read 1 9 0 XY_COORD
+register read 1 9 0 RXCDRLOCK
+register read 1 9 0 RXSLIDE_MODE
+register read 1 9 0 RXSYNCDONE
+register read 1 9 0 RXBUF_EN
+register read 1 9 0 RX_DATA_WIDTH
+register read 1 9 0 RX_INT_DATAWIDTH
+register read 1 9 1 QPLLFBCLKLOST
+register read 1 9 1 QPLLLOCK
+register read 1 9 1 QPLLPD
+register read 1 9 1 QPLLREFCLKLOST
+register read 1 9 1 QPLLREFCLKSEL
+register read 1 9 0 RXPOLARITY
+register read 1 8 0 RXPOLARITY
+register read 0 8 0 RXPOLARITY
+register read 0 10 0 RXPOLARITY
+register read 1 7 0 RXPOLARITY
+register read 1 6 0 RXPOLARITY
+register read 0 6 0 RXPOLARITY
