@@ -134,7 +134,7 @@ void prbs_pattern (string cmd)
 	vector <string> fld;
 	boost::split(fld, cmd, boost::is_any_of("\t ,")); // split on tabs,spaces,commas
 	// program trasmitters first
-	int prbs_type = (strtol(cmd.c_str(), NULL, 10) + 1)/8;
+	int prbs_type = (strtol(fld[1].c_str(), NULL, 10) + 1)/8;
 	for (int i = 0; i < device_count; i++)
 	{
 		if (fd[i] >= 0 && device_selected[i]) 
@@ -146,7 +146,7 @@ void prbs_pattern (string cmd)
 				drp_unit du = it->second;
 				if (du.tx_group_index >= 0)
 				{
-					cout << "programming PRBS " << dec << du.tx_group_name << du.tx_group_index << endl;
+					cout << "programming TX PRBS " << dec << prbs_type << " " << du.tx_group_name << du.tx_group_index << endl;
 					du.att_write(fd[i], "TXPRBSSEL", prbs_type);
 				}
 			}
@@ -156,7 +156,7 @@ void prbs_pattern (string cmd)
 				drp_unit du = it->second;
 				if (du.rx_group_index >= 0)
 				{
-					cout << "programming PRBS " << dec << du.rx_group_name << du.rx_group_index << endl;
+					cout << "programming RX PRBS " << dec << prbs_type << " " << du.rx_group_name << du.rx_group_index << endl;
 					du.att_write(fd[i], "RXSLIDE_MODE", 0); // have to set RXSLIDE_MODE=OFF for PRBS test
 					du.att_write(fd[i], "RXPRBSSEL", prbs_type);
 					usleep (10000); // give DFE time to train
