@@ -16,3 +16,4 @@ MGT	xcku15p-ffva1760-2/GTY
 board	apex_ku15p_gty	
 device_prefix	/dev/apex_axi	
 device_count	1	
+mem_base	0x0	

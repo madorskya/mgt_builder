@@ -1,2 +1,5 @@
-//MMCM name: TCDS_4
-0	5	master
+//MMCM name: TCDS_2
+0	28	master
+0	29	slave
+0	30	slave
+0	31	slave

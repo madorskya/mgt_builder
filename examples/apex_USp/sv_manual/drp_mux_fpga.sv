@@ -11,7 +11,6 @@ module drp_mux_fpga #
 );
 
 	(* mark_debug *) logic [AW_QUAD-1:0] drpaddr_quad [N-1:0];
-//	(* mark_debug *) logic [N-1:0] drpclk_quad;
 	(* mark_debug *) logic [31:0]  drpdi_quad   [N-1:0];
 	(* mark_debug *) logic [31:0]  drpdo_quad   [N-1:0];
 	(* mark_debug *) logic [N-1:0] drpen_quad ;
@@ -20,7 +19,6 @@ module drp_mux_fpga #
 	(* mark_debug *) logic [N-1:0] int_reg_quad ;
 
 	(* mark_debug *) logic [AW_QUAD-1:0] drpaddr_fpga;
-//	(* mark_debug *) logic        drpclk_fpga;
 	(* mark_debug *) logic [31:0] drpdi_fpga;
 	(* mark_debug *) logic [31:0] drpdo_fpga;
 	(* mark_debug *) logic        drpen_fpga;
@@ -33,7 +31,6 @@ module drp_mux_fpga #
 	   for (gi = 0; gi < N; gi++)
 	   begin: ass_quad_loop
 	       assign drp_quad[gi].drpaddr = drpaddr_quad[gi];
-//	       assign drp_quad[gi].drpclk  = drpclk_quad[gi];
 	       assign drp_quad[gi].drpdi   = drpdi_quad[gi];
 	       assign drpdo_quad[gi]       = drp_quad[gi].drpdo;
 	       assign drp_quad[gi].drpen   = drpen_quad[gi];
@@ -44,7 +41,6 @@ module drp_mux_fpga #
 	endgenerate
 
    assign drpaddr_fpga    = drp_fpga.drpaddr;
-//   assign drpclk_fpga     = drp_fpga.drpclk ;
    assign drpdi_fpga      = drp_fpga.drpdi  ;
    assign drp_fpga.drpdo  = drpdo_fpga      ;
    assign drpen_fpga      = drp_fpga.drpen  ;
@@ -63,7 +59,6 @@ module drp_mux_fpga #
    localparam quad_port_addr0 = {{(AW_QUAD-2){1'b1}}, 2'b11};
    
 	integer di;
-//	always @(posedge drpclk_fpga)
 	always @(posedge drp_clk)
 	begin
 		drprdy_fpga = 1'b0;
@@ -86,24 +81,28 @@ module drp_mux_fpga #
 		          quad_drp_select = 64'h0;
 		          quad_port_select = 64'h0;
 		          quad_drp_select[31: 0]   = drpdi_fpga; 
+				  drprdy_fpga = 1'b1;
 		      end
 		      quad_drp_addr1: 
 		      begin 
 		          quad_drp_select = 64'h0;
 		          quad_port_select = 64'h0;
 		          quad_drp_select[63:32]   = drpdi_fpga;
+				  drprdy_fpga = 1'b1;
 		      end
 		      quad_port_addr0:
 		      begin 
 		          quad_drp_select = 64'h0;
 		          quad_port_select = 64'h0;
 		          quad_port_select[31: 0] = drpdi_fpga;
+				  drprdy_fpga = 1'b1;
 		      end
 		      quad_port_addr1:
 		      begin
 		          quad_drp_select = 64'h0;
 		          quad_port_select = 64'h0;
 		          quad_port_select[63:32] = drpdi_fpga;
+				  drprdy_fpga = 1'b1;
 		      end
 		   endcase
 		end
@@ -114,7 +113,6 @@ module drp_mux_fpga #
 		for (di = 0; di < N; di++)
 		begin
 			drpaddr_quad[di] = drpaddr_fpga;
-//			drpclk_quad [di] = drpclk_fpga;
 			drpdi_quad  [di] = drpdi_fpga;
 			drpwe_quad  [di] = drpwe_fpga;
 		end

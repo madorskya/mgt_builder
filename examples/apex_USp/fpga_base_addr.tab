@@ -1,2 +1,8 @@
-tcds_rx	0	0	4	00000	01000	xcku15p-ffva1760-2/GTH	TCDS
-tcds_tx	0	0	5	00400	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_rx	0	0	28	00000	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_rx	1	0	29	00400	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_rx	2	0	30	00800	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_rx	3	0	31	00c00	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_tx	0	0	28	00000	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_tx	1	0	29	00400	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_tx	2	0	30	00800	01000	xcku15p-ffva1760-2/GTH	TCDS
+tcds_tx	3	0	31	00c00	01000	xcku15p-ffva1760-2/GTH	TCDS
