@@ -1,9 +1,17 @@
 // direction	x	y	prototocol	Q/CPLL	refclk F	interface	index	
-rx	0	28	TCDS	Q	160.3144	tcds_rx	0	
-rx	0	29	TCDS	Q	160.3144	tcds_rx	1	
-rx	0	30	TCDS	Q	160.3144	tcds_rx	2	
-rx	0	31	TCDS	Q	160.3144	tcds_rx	3	
-tx	0	28	TCDS	Q	160.3144	tcds_tx	0	
-tx	0	29	TCDS	Q	160.3144	tcds_tx	1	
-tx	0	30	TCDS	Q	160.3144	tcds_tx	2	
-tx	0	31	TCDS	Q	160.3144	tcds_tx	3	
+rx	0	32	TCDS	Q	160.3144	tcds_rx	0	
+rx	0	33	TCDS	Q	160.3144	tcds_rx	1	
+rx	0	34	TCDS	Q	160.3144	tcds_rx	2	
+rx	0	35	TCDS	Q	160.3144	tcds_rx	3	
+rx	0	36	TCDS	Q	160.3144	tcds_rx	4	
+rx	0	37	TCDS	Q	160.3144	tcds_rx	5	
+rx	0	38	TCDS	Q	160.3144	tcds_rx	6	
+rx	0	39	TCDS	Q	160.3144	tcds_rx	7	
+tx	0	32	TCDS	Q	160.3144	tcds_tx	0	
+tx	0	33	TCDS	Q	160.3144	tcds_tx	1	
+tx	0	34	TCDS	Q	160.3144	tcds_tx	2	
+tx	0	35	TCDS	Q	160.3144	tcds_tx	3	
+tx	0	36	TCDS	Q	160.3144	tcds_tx	4	
+tx	0	37	TCDS	Q	160.3144	tcds_tx	5	
+tx	0	38	TCDS	Q	160.3144	tcds_tx	6	
+tx	0	39	TCDS	Q	160.3144	tcds_tx	7	
