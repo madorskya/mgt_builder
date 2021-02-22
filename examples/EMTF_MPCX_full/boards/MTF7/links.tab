@@ -1,3 +1,4 @@
+// type	X	Y	Protocol	CPLL/QPLL	Refclk F	interface	index	
 rx	1	39	MPCX	C	640	mpc0_rx	0	
 rx	1	37	MPCX	C	640	mpc0_rx	1	
 rx	0	39	MPCX	C	640	mpc0_rx	2	
@@ -62,4 +63,5 @@ rx	1	7	GE11	Q	640	ge11_rx	4
 rx	1	6	GE11	Q	640	ge11_rx	5	
 rx	0	6	GE11	Q	640	ge11_rx	6	
 tx	0	31	CPPF	Q	125	gmt_tx	0	
+tx	1	36	CPPF	Q	125	gmt_tx	1	
 tx	1	4	DAQ	C	125	daq_tx	0	
