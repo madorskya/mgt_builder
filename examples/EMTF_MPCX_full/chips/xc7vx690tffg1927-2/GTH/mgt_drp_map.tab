@@ -577,3 +577,17 @@ PIPEGEN3	2
 // attributes not in the DRP map marked with N in rw field, added manually							
 1'b1	0:0	N	RX_CLKMUX_PD	0:0	X-x	X-x	
 1'b1	0:0	N	TX_CLKMUX_PD	0:0	X-x	X-x	
+// Extra ES registers from Table 4-28: DRP Address Map for Eye Scan Read-Only (R) Registers							
+151	15:0	R	es_error_count	15:0	0-65535	0-65535	
+152	15:0	R	es_sample_count	15:0	0-65535	0-65535	
+153	3:0	R	es_control_status	3:0	0-65535	0-65535	
+154	15:0	R	es_rdata	79:64	0-65535	0-65535	
+155	15:0	R	es_rdata	63:48	0-65535	0-65535	
+156	15:0	R	es_rdata	47:32	0-65535	0-65535	
+157	15:0	R	es_rdata	31:16	0-65535	0-65535	
+158	15:0	R	es_rdata	15:0	0-65535	0-65535	
+159	15:0	R	es_sdata	79:64	0-65535	0-65535	
+15A	15:0	R	es_sdata	63:48	0-65535	0-65535	
+15B	15:0	R	es_sdata	47:32	0-65535	0-65535	
+15C	15:0	R	es_sdata	31:16	0-65535	0-65535	
+15D	15:0	R	es_sdata	15:0	0-65535	0-65535	
