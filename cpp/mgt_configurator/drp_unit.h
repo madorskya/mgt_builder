@@ -37,6 +37,10 @@ using namespace std;
 #define PORT_MARK   0x40000000 // port marker for register offsets
 #define PORT_UNMARK 0x3FFFFFFF // mask for removing PORT_MARK from offsets
 
+#define MGT_TYPE    0
+#define GTH	    0
+#define GTX         1
+
 class bit_range
 {
 public:
@@ -97,6 +101,32 @@ public:
 class drp_unit
 {
 public:
+    // Control the prescaling of the sample count to keep both sample
+    // count and error count in reasonable precision within the 16-bit
+    // register range.
+    // Valid values: from 0 to 31.
+    boost::multiprecision::uint128_t prescale;
+
+    // QPLL/CPLL output clock divider D for the RX datapath.
+    // Valid values: 1, 2, 4, 8, 16.
+    boost::multiprecision::uint128_t rxout_div;
+
+    // Defines the width of valid data on Rdata and Sdata buses.
+    // Valid values: 16, 20, 32, 40.
+    boost::multiprecision::uint128_t rx_data_width;
+
+    // Equalizer mode: LPM linear eq. or DFE eq.
+    // When in DFE mode (RXLPMEN=0), due to the unrolled first DFE tap,
+    // two separate eye scan measurements are needed, one at +UT and
+    // one at -UT, to measure the TOTAL BER at a given vertical and
+    // horizontal offset.
+    // Valid values = 'LPM', 'DFE'.
+    string eq_mode;
+    int h_max;
+    int v_max;
+    int h_step;
+    int v_step;
+
     bool common;
     bool common_is_used;
     int base_addr;
@@ -129,7 +159,18 @@ public:
     vector<drp_unit> tx_mmcm_slaves; // list of txoutclk clock-sharing slaves
 
     drp_unit    (int base_a, int full_drp_addr_width);
-    drp_unit (){}
+    drp_unit ()
+    {
+        prescale = 0;
+        rxout_div = 1;
+        rx_data_width = 40;
+        eq_mode = "LPM";
+        h_max = 32;
+        v_max = 127;
+        h_step = 1;
+        v_step = 2;
+    };
+
     int  read_config (std::string fname, bool drp_reg);
     void read_params ();
     int  read_params_rx_tx (string param_fname, string unit);
@@ -155,9 +196,16 @@ public:
     uint64_t reg_read  (int fd, int addr);
     void     reg_write (int fd, int addr, uint64_t data);
 
+    void eyescan_config(int fd, int x, int y);
+    bool eyescan_control(int fd, int x, int y, bool err_det_en, bool run, bool arm);
+    bool eyescan_offset (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign);
+    bool eyescan_wait (int fd, int x, int y, string wait_for);
+    map <string,boost::multiprecision::uint128_t> eyescan_acquisition(int fd, int x, int y, int hor_offset, int ver_offset);
+    void eyescan_sweep (int fd, int x, int y, int scale, int i, int mode);
+    void eyescan_complete (int fd, int x, int y, int scale, int i, int mode);
+
     string print();
 
 };
-
 
 #endif // DRP_UNIT_H

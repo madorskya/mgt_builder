@@ -1,9 +1,3 @@
-exit 
-exit
-device select all
-reset 
-register write all 
-reset 
 exit
 device select all 
 register write all
@@ -82,3 +76,25 @@ device list
 device select 0
 register write all 
 reset 
+device select 0
+register write all 
+reset
+device select 0,1,2,3,4,6,8,10,11
+register write all 
+reset
+exit
+device select 5
+register write 
+register write all 
+reset
+device select 9
+register write all 
+reset
+device select 7
+register write all 
+reset
+device list 
+register read 1 32 0 RX_OS_CFG
+register read 1 32 0 RX_DFE_LPM_HOLD_DURING_EIDLE 
+register read 1 32 0 ES_QUAL_MASK
+register read 1 32 0 ES_SDATA_MASK

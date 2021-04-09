@@ -2,7 +2,7 @@ LN_LOC     = ../../../linenoise_cpp/
 LOCINC     = -I. -I$(LN_LOC)
 OPTIM      = -O2
 CCOPT      = -Wall $(OPTIM) $(LOCINC)
-LIB        = -lreadline -lncurses -lboost_regex-mt
+LIB        = -lreadline -lncurses -lboost_regex-mt -std=c++11 
 CC         = g++
 CL         = g++
 

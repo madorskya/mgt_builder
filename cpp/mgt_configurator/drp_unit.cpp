@@ -1105,3 +1105,537 @@ void drp_unit::reset_rx (int fd)
     else
 
  */
+
+void drp_unit::eyescan_config (int fd, int x, int y)
+{
+/*
+This function configures the current GT number to enable Eye Scan.
+The following attributes are configured for the given transceiver lane:
+  - ES_QUALIFIER
+  - ES_QUAL_MASK
+  - ES_SDATA_MASK
+  - ES_PRESCALE
+
+  es_qualifier     -> This element must be a 5 elements (16-bit integers) 1D array,
+                      containing the 80-bit ES_QUALIFIER value.
+                      This element is optional, default values available.
+                       es_qualifier[0] -> ES_QUALIFIER[15:0]
+                          ...
+                       es_qualifier[4] -> ES_QUALIFIER[79:64]
+  es_qual_mask     -> This element must be a 5 elements (16-bit integers) 1D array,
+                      containing the 80-bit ES_QUAL_MASK value.
+                      This element is optional, default values available.
+                       es_qual_mask[0] -> ES_QUAL_MASK[15:0]
+                          ...
+                       es_qual_mask[4] -> ES_QUAL_MASK[79:64]
+  es_sdata_mask    -> This element must be a 5 elements (16-bit integers) 1D array,
+                      containing the 80-bit ES_SDATA_MASK value.
+                      If this mask is not given, then an internal default will be
+                      assigned for the statistical eye application based on the
+                      rx_data_width global parameter value.
+                       es_sdata_mask[0] -> ES_SDATA_MASK[15:0]
+                          ...
+                       es_sdata_mask[4] -> ES_SDATA_MASK[79:64]
+*/
+  boost::multiprecision::uint128_t es_qualifier = 0x0, es_qual_mask = 0x0, es_sdata_mask = 0x0, 
+                                   es_prescale = 0x0, es_eye_scan_en_rb = 0x0;
+
+  map<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t> es_sdata_mask_dict;
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(2, 0xFFFFFFFFFF0000FFFFFF));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(3, 0xFFFFFFFFFF00000FFFFF));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(4, 0xFFFFFFFFFF00000000FF));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(5, 0xFFFFFFFFFF0000000000));
+  es_qualifier = 0x00000000000000000000;
+  es_qual_mask = 0xFFFFFFFFFFFFFFFFFFFF;
+
+  rx_data_width = att_read_prn(fd, "RX_DATA_WIDTH");
+  //int rx_datawidth = rx_data_width.convert_to<int>();
+  cout << "ES_SDATA_MASK defined based on rx_data_width (bin) = " << rx_data_width << endl;
+  es_sdata_mask = es_sdata_mask_dict.at(rx_data_width);
+
+  cout << "Configuring GT_" << x << "_" << y << " ..." << endl;
+
+  // Configure the ES_QUALIFIER attribute.
+  cout << "Configuring the ES_QUALIFIER attribute for GT_" << x << "_" << y << " ..." << endl;
+  att_write(fd, "ES_QUALIFIER", es_qualifier);
+
+  // Configure the ES_QUAL_MASK attribute.
+  // According to UG476 pg. 217, ES_QUAL_MASK for a statistical eye is 80 1's,
+  // so the sample counter and error counter accumulate on every cycle.
+  // Thus, we write this registers to the given GT number to configure the hardware.
+  cout << "Configuring the ES_QUAL_MASK attribute for GT_" << x << "_" << y << " ..." << endl;
+  att_write(fd, "ES_QUAL_MASK", es_qual_mask);
+
+  // Configure the ES_SDATA_MASK attribute.
+  cout << "Configuring the ES_SDATA_MASK attribute for GT_" << x << "_" << y << " ..." << endl;
+  att_write(fd, "ES_SDATA_MASK", es_sdata_mask);
+
+  // Configure the ES_PRESCALE attribute.
+  cout << "Configuring the ES_PRESCALE attribute for GT_" << x << "_" << y << " ..." << endl;
+  es_prescale = prescale;
+  att_write(fd, "ES_PRESCALE", es_prescale);
+
+  // According to UG476 pg. 221, for a GTH xcvr ES_EYE_SCAN_EN should always be
+  // asserted when using Eye Scan; otherwise, the Eye Scan circuitry in the PMA
+  // will be powered down.
+  if (MGT_TYPE == GTH)
+  {
+    cout << "Asserting that ES_EYE_SCAN_EN bit is TRUE for GTH_" << x << "_" << y << " ..." << endl;
+    es_eye_scan_en_rb = att_read_prn(fd, "ES_EYE_SCAN_EN");
+    if (!es_eye_scan_en_rb)
+    {
+      cout << "ES_EYE_SCAN_EN is not asserted for GT_" << x << "_" << y << ", enable it before link bringup." << endl;
+      //throw runtime_error("Eye Scan cicuitry is powered down");
+      cout << "Eye Scan cicuitry is powered down" << endl;
+    }
+  }
+
+  cout << "Configured GT_" << x << "_" << y << " ..." << endl;
+}
+
+bool drp_unit::eyescan_control (int fd, int x, int y, bool err_det_en, bool run, bool arm)
+{
+/*
+Configures the eye scan control state machine for the current XCVR lane.
+This function returns True if there was an update in the register map.
+
+Parameters:
+  err_det_en -> Enable error detection.
+                1 -> statistical eye | 0 -> scope and waveform views.
+  run        -> Asserting this parameter causes a state transition from the WAIT
+                state to the RESET state, initiating a BER measurement sequence.
+  arm        -> Asserting this parameter causes a state transition from the WAIT
+                state to the RESET state, initiating a diagnostic sequence.
+                In the ARMED state, deasserting this bit causes a state transition
+                to the READ state if one of the states of bits x03D[5:2] below is
+                not met.
+  ARM_TRIGGER_ON = {"error_detected"   : 0b0001,\
+                    "qualifier_pattern": 0b0010,\
+                    "es_trigger"       : 0b0100,\
+                    "immediate"        : 0b1000}
+*/
+  map<string,boost::multiprecision::uint128_t> arm_trigger_on;
+  arm_trigger_on.insert(pair<string,boost::multiprecision::uint128_t>("error_detected", 0x1));
+  arm_trigger_on.insert(pair<string,boost::multiprecision::uint128_t>("qualifier_pattern", 0x2));
+  arm_trigger_on.insert(pair<string,boost::multiprecision::uint128_t>("es_trigger", 0x4));
+  arm_trigger_on.insert(pair<string,boost::multiprecision::uint128_t>("immediate", 0x8));
+
+  boost::multiprecision::uint128_t es_errdet_en = 0x0,  es_eye_scan_en = 0x1, 
+                                   es_control = 0x0,  es_errdet_en_rb = 0x0,  
+                                   es_eye_scan_en_rb = 0x0, es_control_rb = 0x0;
+  cout << "Eyescan state machine control for MGT_" << x << "_" << y << " ..." << endl;
+
+  // Read the current register values.
+  es_errdet_en_rb = att_read_prn(fd, "ES_ERRDET_EN");
+  es_eye_scan_en_rb = att_read_prn(fd, "ES_EYE_SCAN_EN");
+  es_control_rb = att_read_prn(fd, "ES_CONTROL");
+
+  // Determine the GT Channel attributes to be changed.
+  es_errdet_en = (boost::multiprecision::uint128_t) err_det_en;
+  es_control = ((boost::multiprecision::uint128_t) run  << 0) | 
+               ((boost::multiprecision::uint128_t) arm  << 1)| 
+               ( arm_trigger_on.at("error_detected")    << 2);
+
+  cout << "Control attributes... ES_ERRDET_EN:0b{0:b} " << es_errdet_en 
+  << " ES_EYE_SCAN_EN:0b{1:b} " << es_eye_scan_en << " ES_CONTROL:0b{2:06b} " 
+  << es_control << endl;
+
+  // Write the new register values.
+  att_write(fd, "ES_ERRDET_EN", es_errdet_en);
+  att_write(fd, "ES_EYE_SCAN_EN", es_eye_scan_en);
+  att_write(fd, "ES_CONTROL", es_control);
+
+  // Return True when the register changed.
+  return ((es_errdet_en_rb != es_errdet_en) || 
+          (es_eye_scan_en_rb != es_eye_scan_en) || 
+          (es_control_rb != es_control));
+}
+
+bool drp_unit::eyescan_offset (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign)
+{
+/*
+Configures the eyescan horizontal phase offset and vertical voltage offset
+for the current XCVR lane number.
+This function returns true if at least one register was updated.
+
+Parameters:
+          hor_offset -> Horizontal phase offset.
+                        [-32, 32] corresponding to -0.5 UI to +0.5 UI.
+          ver_offset -> Vertical voltage offset.
+                        [-127, 127] corresponding to 0.39% increments.
+          ut_sign    -> UT tap sign: '+UT' or '-UT'.
+"""
+UT_SIGN_BIT = {'+UT': 0b0, '-UT': 0b1}
+*/
+  boost::multiprecision::uint128_t es_vert_offset_rb = 0x0, es_horz_offset_rb = 0x0, 
+                                   es_vert_offset = 0x0, es_horz_offset = 0x0, 
+                                   phase_uni = 0x0, offset_sign = 0x0;
+  int offset_magn = 0;
+  int phase_offset = 0;
+
+  cout << "Offset configuration for MGT_" << x << "_" << y << " ..." << endl;
+  cout << "GT_" << x << "_" << y << " Horizontal offset: " << hor_offset << 
+  " Vertical offset: " << ver_offset << " UT: " << ut_sign << endl;
+
+  // Read the current register values.
+  es_vert_offset_rb = att_read_prn(fd, "ES_VERT_OFFSET");
+  es_horz_offset_rb = att_read_prn(fd, "ES_HORZ_OFFSET");
+
+  // Determine the GT channel attributes to be changed.
+  if (ver_offset < 0)
+  {
+    offset_sign  = 0x1;
+    phase_uni  = 0x1;
+  }
+  offset_magn = abs(ver_offset) & 0x007F;
+  es_vert_offset = ((boost::multiprecision::uint128_t) offset_magn  << 0) | 
+                   ( offset_sign                                    << 7) | 
+                   ((boost::multiprecision::uint128_t) ut_sign      << 8);
+  phase_offset = hor_offset & 0x0FFF;
+  es_horz_offset = ((boost::multiprecision::uint128_t) phase_offset << 0) | 
+                   ((boost::multiprecision::uint128_t) phase_uni    << 11);
+
+  cout << "Offset attributes... ES_HORZ_OFFSET:0b{0:012b} " << es_horz_offset 
+  << " ES_VERT_OFFSET:0b{1:09b} "<< es_vert_offset << endl;
+
+  // Write new register values.
+  att_write(fd, "ES_VERT_OFFSET", es_vert_offset);
+  att_write(fd, "ES_HORZ_OFFSET", es_horz_offset);
+
+  // Return True when at least one of the two registers changed.
+  return ((es_vert_offset_rb != es_vert_offset) || 
+          (es_horz_offset_rb != es_horz_offset));
+}
+
+bool drp_unit::eyescan_wait (int fd, int x, int y, string wait_for)
+{
+/*
+This function waits for the eye scan control FSM of the current lane
+number, to transition to the given state (wait_for).
+Returns True when the desired state is reached.
+
+Parameters:
+  wait_for -> State which the function waits the FSM to transition to.
+  {'WAIT','RESET','COUNT','END','ARMED','READ'}
+*/
+  map<string,boost::multiprecision::uint128_t> state_decode;
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("WAIT", 0x0));
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("RESET", 0x1));
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("COUNT", 0x3));
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("END", 0x2));
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("ARMED", 0x5));
+  state_decode.insert(pair<string,boost::multiprecision::uint128_t>("READ", 0x4));
+
+  cout << "Waiting for " << state_decode.at(wait_for) << " state at MGT_" << x 
+  << "_" << y << endl;
+
+  // Poll the es_control_status GT attribute until the FSM transistions to
+  // the given state.
+  boost::multiprecision::uint128_t es_control_status_rb = 0x0, done = 0x0, 
+                                   current_state = 0x0, delay128 = 0x0;
+  int exit_after = 10000, delay = 0;
+  bool state_reached = false;
+  int iterations = 0;
+
+  int pscale = prescale.convert_to<int>();
+
+  if (prescale > 13)
+  {
+    delay128 = 1 << (pscale - 13);
+    delay = delay128.convert_to<int>();
+  }
+
+  while (!state_reached)
+  {
+    // Read the status register.
+    es_control_status_rb = att_read_prn(fd, "es_control_status");
+    done = es_control_status_rb & 0x0001;
+    current_state = es_control_status_rb >> 1;
+    cout << "Current state: 0b{0:03b}  Status: " << done << " (0b0:'Not Done!', 0b1: 'Done!')" << endl;
+
+    // Compare current state with expected state.
+    state_reached = (current_state == state_decode.at(wait_for));
+    if ((iterations >= 100) && (!state_reached) && (iterations % 100 == 0))
+    {
+      cout << wait_for << " state has not been reached for GT_" << x << "_" << y << " after " 
+      << iterations << " iterations." << endl;
+      usleep(delay * 1000);
+
+      // Exit after so many iterations, preventing the application to hang.
+      iterations++;
+      if (exit_after == iterations)
+        break;
+    }
+  }
+
+  // Validate that the expected state was reached.
+  if (!state_reached)
+  {
+    cout << wait_for << " state was not been reached at GT_" << x << "_" << y << " after " 
+    << iterations << " polls." << endl;
+    throw runtime_error("Eyescan status timed out.");
+  }
+
+  cout << wait_for << " state reached at GT_" << x << "_" << y << endl;
+
+  return state_reached;
+}
+
+map <string,boost::multiprecision::uint128_t> drp_unit::eyescan_acquisition (int fd, int x, int y, int hor_offset, int ver_offset)
+{
+/*
+This function performs an acquisition for the current lane number.
+
+Parameters:
+  hor_offset -> Horizontal phase offset.
+                [-32, 32] corresponding to -0.5 UI to +0.5 UI.
+  ver_offset -> Vertical voltage offset.
+                [-127, 127] corresponding to 0.39% increments.
+*/
+  cout << "Starting acquisition for GT_" << x << "_" << y << " ..." << endl;
+
+  map<string,boost::multiprecision::uint128_t> acq_counters;
+  boost::multiprecision::uint128_t error_count_pUT = 0x0, error_count_nUT = 0x0, 
+                                   sample_count_pUT = 0x0, sample_count_nUT = 0x0, 
+                                   e_mode = 0x0;
+
+  // Check equalizer mode: LPM linear eq. or DFE eq.
+  eq_mode = "LPM";
+  e_mode = att_read_prn(fd, "RXLPMEN");
+  if (e_mode == 0x0)
+  {
+    eq_mode = "DFE";
+  }
+
+  // First eye scan measurement (LPM | DFE)
+  // Start the FSM on the requested lane.
+  cout << "Starting +UT acquisition for GT_" << x << "_" << y << " ..." << endl;
+
+  // Clear run & arm bits in the Eyescan control.
+  eyescan_control(fd, x, y, true, false, false);
+
+  // Set offsets with +UT.
+  eyescan_offset(fd, x, y, hor_offset, ver_offset, 0);
+
+  // Start eyescan FSM: set run with ErrDet enabled.
+  eyescan_control(fd, x, y, true, true, false);
+
+  // Wait for END state.
+  eyescan_wait(fd, x, y, "END");
+
+  // Clear run & arm bits in the Eyescan control.
+  eyescan_control(fd, x, y, true, false, false);
+
+  // Read counters with +UT.
+  error_count_pUT = att_read_prn(fd, "es_error_count");
+  sample_count_pUT = att_read_prn(fd, "es_sample_count");
+  acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("error_count_pUT", error_count_pUT));
+  acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("sample_count_pUT", sample_count_pUT));
+  cout << "Results +UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_pUT") 
+  << " Samples = " << acq_counters.at("sample_count_pUT") << endl;
+
+  // Start second eye scan measurement (DFE eq. only)
+  if (eq_mode == "DFE")
+  {
+    // Set offsets with +UT.
+    eyescan_offset(fd, x, y, hor_offset, ver_offset, 1);
+
+    // Start eyescan FSM: set run with ErrDet enabled.
+    eyescan_control(fd, x, y, true, true, false);
+  }
+  else
+  {
+    cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
+    << hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
+  }
+
+  // Wait for the FSM (-UT, DFE only) to complete on each lane, and read counters.
+  if (eq_mode == "DFE")
+  {
+    // Wait for END state.
+    eyescan_wait(fd, x ,y, "END");
+
+    // Clear run & arm bits in the Eyescan control.
+    eyescan_control(fd, x, y, true, false, false);
+
+    // Read counters with -UT.
+    error_count_nUT = att_read_prn(fd, "es_error_count");
+    sample_count_nUT = att_read_prn(fd, "es_sample_count");
+    acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("error_count_nUT", error_count_nUT));
+    acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("sample_count_nUT", sample_count_nUT));
+    cout << "Results -UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_nUT") 
+    << " Samples = " << acq_counters.at("sample_count_nUT") << endl;
+    cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
+    << hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
+  }
+
+  // Return the error and sample counters for the current lane, both +UT and -UT.
+  return acq_counters;
+}
+
+void drp_unit::eyescan_sweep (int fd, int x, int y, int scale, int i, int mode)
+{
+/*
+Performs Eye Scan "measurement loop" (error counting) acquisitions across the
+given phase and voltage offset ranges.
+This function creates a .csv file containing the sweep results.
+*/
+  int horz_max = 0, vert_max = 0, horz_step = 0, vert_step = 0, rxdiv = 0;
+  double BER_calculated = 0, ber_0 = 0, ber_1 = 0, error_count_0 = 0, error_count_1 = 0;
+  boost::multiprecision::uint128_t ber128_0 = 0x0, ber128_1 = 0x0,
+				   error_count128_0 = 0x0, error_count128_1 = 0x0;
+
+  cout << "Starting sweep for GT_" << x << "_" << y << " ..." << endl;
+
+  // Perform the Eye Scan sweep!
+  int pscale = prescale.convert_to<int>();
+  rxout_div = att_read_prn(fd, "RXOUT_DIV");
+  int rxdiv_deg = rxout_div.convert_to<int>();
+  rxdiv = 1 << rxdiv_deg;
+
+  h_max = 32;
+  horz_max = rxdiv * h_max;
+  h_step = 1;
+  horz_step = rxdiv * h_step;
+  v_max = 127;
+  vert_max = v_max;
+  v_step = 2;
+  vert_step = v_step;
+
+  // Pre-fill .csv result file.
+  ostringstream osfilename;
+  osfilename << "/tmp/eyescan_" << dec << i << "_" << dec << x << "_" << dec << y << ".csv";
+  string filename = osfilename.str();
+  ofstream f(filename.c_str(), ios::app);
+
+  f << "Dwell,BER" << endl;
+  f << "Dwell BER,1e-" << dec << scale  << endl;
+  f << "Dwell Time,0" << endl;
+  f << "Horizontal Increment," << dec << horz_step << endl;
+  f << "Horizontal Range,-0.500 UI to 0.500 UI" << endl;
+  f << "Vertical Increment," << dec << vert_step << endl;
+  f << "Vertical Range,100%" << endl;
+  f << "Scan Start" << endl;
+  f << "2d statistical,";
+
+  for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal to pre-fill .csv file
+    if (i_horz == horz_max)
+    {
+      f << i_horz << endl;
+    }
+    else
+    {
+      f << i_horz << ",";
+    }
+  }
+
+  if (mode == 1)
+  {
+    vert_max = 0;
+  }
+
+  for (int i_vert = vert_max; i_vert >= -vert_max; i_vert = i_vert - vert_step) {	// iterate vertical
+    f << i_vert << ",";
+    for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal
+       if (eq_mode == "DFE")
+       {
+	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
+         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));	
+
+         if (ber128_0 == 0)
+         {
+           ber128_0 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+         }
+
+	 ber128_1 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_nUT") *
+         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+
+         if (ber128_1 == 0)
+         {
+           ber128_1 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+         }
+
+	 ber_0 = ber128_0.convert_to<double>();
+	 ber_1 = ber128_1.convert_to<double>();
+
+         error_count128_0 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+	 error_count_0 = error_count128_0.convert_to<double>();
+         error_count128_1 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_nUT"));
+	 error_count_1 = error_count128_1.convert_to<double>();
+
+	 if (error_count128_0 == 0)
+	 {
+	   error_count128_0 = 1;
+	 }
+
+	 if (error_count128_1 == 0)
+         {
+           error_count128_1 = 1;
+         }
+
+         BER_calculated = (error_count_0 / ber_0) + (error_count_1 / ber_1);
+       }
+       else
+       {
+	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") * 
+         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+
+         if (ber128_0 == 0)
+         {
+           ber128_0 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+         }
+
+	 ber_0 = ber128_0.convert_to<double>();
+         error_count128_0 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+	 error_count_0 = error_count128_0.convert_to<double>();
+
+         if (error_count_0 == 0)
+         {
+           error_count_0 = 1;
+         }
+
+	 BER_calculated = error_count_0 / ber_0;
+       }
+       if (i_horz == horz_max)
+       {
+         f << BER_calculated << endl;
+       }
+       else
+       {
+         f << BER_calculated << ",";
+       }
+    }
+  }
+  f << "Scan End" << endl;
+  f.close();
+
+  cout << "Sweep finished for GT_" << x << "_" << y << " ..." << endl;
+}
+
+void drp_unit::eyescan_complete (int fd, int x, int y, int scale, int i, int mode)
+{
+/*
+This function performs full GT configuration and starts the eye scan sweep.
+*/
+  map<int,boost::multiprecision::uint128_t> scale_dict;
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(6, 0));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(7, 4));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(8, 7));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(9, 10));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(10, 14));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(11, 17));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(12, 20));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(13, 24));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(14, 27));
+  scale_dict.insert(pair<int,boost::multiprecision::uint128_t>(15, 30));
+
+  prescale = scale_dict.at(scale);
+
+  // Configure the requested lane.
+  eyescan_config(fd, x, y);
+
+  // Perform the sweep on the requested lane.
+  eyescan_sweep(fd, x, y, scale, i, mode);
+
+  cout << "Eyescan completed for GT_" << x << "_" << y << endl;
+}

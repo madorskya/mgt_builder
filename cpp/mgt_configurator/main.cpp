@@ -48,7 +48,7 @@ void device_select (string cmd)
 	if (fld[2].compare("all") == 0) // user wants all devices selected
 	{
 		memset(device_selected, 0, sizeof(device_selected)); // unselect all devices initially
-		for (int i = 0; i < device_count; i++) 
+		for (int i = 0; i < device_count; i++)
 		{
 			if (fd[i] >= 0) // enable all devices that were opened
 				device_selected[i] = true;
@@ -76,7 +76,7 @@ void register_write (string cmd)
 {
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			printf ("index: %d name: %s writing registers\n", i, device_name[i].c_str());
@@ -102,7 +102,7 @@ void register_read (string cmd)
 
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			// find MGT
@@ -115,11 +115,36 @@ void register_read (string cmd)
 	}
 }
 
+void eyescan (string cmd)
+{
+  vector <string> argv;
+	boost::split(argv, cmd, boost::is_any_of("\t ")); // split on tabs,spaces
+
+	int x      = strtol (argv[1].c_str(), NULL, 10);
+	int y      = strtol (argv[2].c_str(), NULL, 10);
+	int scale  = strtol (argv[3].c_str(), NULL, 10);
+        int mode   = strtol (argv[4].c_str(), NULL, 10);
+
+	for (int i = 0; i < device_count; i++)
+	{
+		if (fd[i] >= 0 && device_selected[i])
+		{
+			if (chip.lock_board (i) < 0) exit(-1);
+			// find MGT
+			drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
+			//if (common) uit = *(uit.common_unit);
+
+			uit.eyescan_complete(fd[i], x, y, scale, i, mode);
+			if (chip.unlock_board (i) < 0) exit(-1);
+		}
+	}
+}
+
 void device_reset (string cmd)
 {
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			printf ("index: %d name: %s reset\n", i, device_name[i].c_str());
@@ -137,7 +162,7 @@ void prbs_pattern (string cmd)
 	int prbs_type = (strtol(fld[1].c_str(), NULL, 10) + 1)/8;
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			cout << "device: " << i << endl;
@@ -175,7 +200,7 @@ void prbs_read (string cmd)
 {
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			cout << "device: " << i << endl;
@@ -212,6 +237,11 @@ node_record nr[] =
 	{3,         "([0-9]+)",  "common (1|0)",    NULL,           NULL},
 	{4,         "([0-1])",   "reg name",        NULL,           NULL},
 	{5,         "([A-Z0-9_]+)", "<Enter>",      register_read,  NULL},
+	{0, "scan",              "link X",          NULL,           NULL},
+	{1,     "([0-1])",       "link Y",          NULL,           NULL},
+	{2,     "([0-9]+)",      "scale(6-15)",     NULL,           NULL},
+        {3,     "([0-9]+)",      "mode:normal(0)|bathtub(1)",       NULL,       NULL},
+        {4,     "([0-9]+)",      "<Enter>",         eyescan,        NULL},
 	{0, "reset",             "<Enter>",         device_reset,   NULL},
 	{0, "prbs",              "pattern|read",    NULL,           NULL},
 	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},
@@ -266,7 +296,7 @@ int main(int argc, char *argv[])
 
 		linenoise ln(nr, "mgtb_history.txt");
 
-		while((buf = ln.prompt("mgtc> ")) != NULL) 
+		while((buf = ln.prompt("mgtc> ")) != NULL)
 		{
 			bline = (string) buf;
 			int ei = ln.get_enter_index();
