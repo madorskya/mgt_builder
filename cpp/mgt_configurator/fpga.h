@@ -25,6 +25,7 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <sys/sem.h>
+#include <sys/stat.h>
 #include "drp_unit.h"
 
 #define MAX_DEVICES 100

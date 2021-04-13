@@ -1,5 +1,7 @@
 //    FPGA MGT builder quickly builds complex configurations with multiple MGTs
-//    2020 Alex Madorsky, University of Florida/Physics
+//    Original work 2020 Alex Madorsky, University of Florida/Physics
+//    Modified work 2021 Aleksei Greshilov, University of Florida/Physics
+//    - eyescan option
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -1137,16 +1139,36 @@ The following attributes are configured for the given transceiver lane:
                           ...
                        es_sdata_mask[4] -> ES_SDATA_MASK[79:64]
 */
-  boost::multiprecision::uint128_t es_qualifier = 0x0, es_qual_mask = 0x0, es_sdata_mask = 0x0, 
-                                   es_prescale = 0x0, es_eye_scan_en_rb = 0x0;
+  boost::multiprecision::uint128_t es_qualifier = 0x0, es_qual_mask_0 = 0x0, es_qual_mask_1 = 0x0, 
+				   es_qual_mask = 0x0, es_sdata_mask = 0x0, es_prescale = 0x0, 
+				   es_eye_scan_en_rb = 0x0, es_smd_0 = 0x0, es_smd_0_0 = 0x0, 
+				   es_smd_1 = 0x0, es_smd_1_1 = 0x0, es_smd_2 = 0x0,
+				   es_smd_2_2 = 0x0, es_smd_3 = 0x0, es_smd_3_3 = 0x0;
+
+  es_smd_0 = 0xFFFFFF0000FFFFFFULL;
+  es_smd_0_0 = 0xFFFFULL;
+  es_smd_0 |= es_smd_0_0 << 64;
+  es_smd_1 = 0xFFFFFF00000FFFFFULL;
+  es_smd_1_1 = 0xFFFFULL;
+  es_smd_1 |= es_smd_1_1 << 64;
+  es_smd_2 = 0xFFFFFF00000000FFULL;
+  es_smd_2_2 = 0xFFFFULL;
+  es_smd_2 |= es_smd_2_2 << 64;
+  es_smd_3 = 0xFFFFFF0000000000ULL;
+  es_smd_3_3 = 0xFFFFULL;
+  es_smd_3 |= es_smd_3_3 << 64;
+
 
   map<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t> es_sdata_mask_dict;
-  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(2, 0xFFFFFFFFFF0000FFFFFF));
-  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(3, 0xFFFFFFFFFF00000FFFFF));
-  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(4, 0xFFFFFFFFFF00000000FF));
-  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(5, 0xFFFFFFFFFF0000000000));
-  es_qualifier = 0x00000000000000000000;
-  es_qual_mask = 0xFFFFFFFFFFFFFFFFFFFF;
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(2, es_smd_0));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(3, es_smd_1));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(4, es_smd_2));
+  es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t>(5, es_smd_3));
+  es_qualifier = 0x0;
+  es_qual_mask_0 = 0xFFFFFFFFFFFFFFFFULL;
+  es_qual_mask_1 = 0xFFFFULL;
+  es_qual_mask = es_qual_mask_0 | (es_qual_mask_1 << 64);
+  
 
   rx_data_width = att_read_prn(fd, "RX_DATA_WIDTH");
   //int rx_datawidth = rx_data_width.convert_to<int>();
@@ -1502,9 +1524,48 @@ This function creates a .csv file containing the sweep results.
   v_step = 2;
   vert_step = v_step;
 
+  // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+  time_t now = time(0);
+  struct tm tstruct;
+  char 	 buftime[80];
+  tstruct = *localtime(&now);
+  strftime(buftime, sizeof(buftime), "%Y-%m-%d.%X", &tstruct);
+
+  // Eyescan directory for .csv and .pdf files
+  ostringstream osfolderpath_csv, osfolderpath_pdf;
+  osfolderpath_csv << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/csv";
+  osfolderpath_pdf << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/pdf";
+  string folderpath_csv = osfolderpath_csv.str();
+  string folderpath_pdf = osfolderpath_pdf.str();
+ 
+  if (!boost::filesystem::is_directory(boost::filesystem::path(folderpath_csv)))
+  {
+    try 
+    {
+      boost::filesystem::create_directories(boost::filesystem::path(folderpath_csv));
+    }
+    catch (boost::filesystem::filesystem_error const & e)
+    {
+      cerr << e.what() << endl;	
+    }  
+  }
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(folderpath_pdf)))
+  {
+    try
+    {
+      boost::filesystem::create_directories(boost::filesystem::path(folderpath_pdf));
+    }
+    catch (boost::filesystem::filesystem_error const & e)
+    {
+      cerr << e.what() << endl;
+    }
+  }
+
   // Pre-fill .csv result file.
   ostringstream osfilename;
-  osfilename << "/tmp/eyescan_" << dec << i << "_" << dec << x << "_" << dec << y << ".csv";
+  osfilename << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/csv/UF_MGT_builder_eyescan_" 
+  << dec << i << "_" << dec << x << "_" << dec << y << "_" << buftime << ".csv";
   string filename = osfilename.str();
   ofstream f(filename.c_str(), ios::app);
 

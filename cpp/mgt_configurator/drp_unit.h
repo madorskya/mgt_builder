@@ -1,5 +1,7 @@
 //    FPGA MGT builder quickly builds complex configurations with multiple MGTs
-//    2020 Alex Madorsky, University of Florida/Physics
+//    Original work 2020 Alex Madorsky, University of Florida/Physics
+//    Modified work 2021 Aleksei Greshilov, University of Florida/Physics
+//    - eyescan option
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,9 +26,15 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/system/error_code.hpp>
 
 using namespace std;
 

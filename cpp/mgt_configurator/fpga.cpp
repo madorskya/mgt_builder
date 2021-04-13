@@ -683,6 +683,8 @@ int fpga::create_semaphore (int dev_ind)
 		return -1;
 	}
 
+	chmod("/tmp/mgtb_semaphore.txt", 0666);
+
     /* generate key */
     if ((sem_key = ftok(sem_fn, (char)dev_ind)) == -1)
 	{

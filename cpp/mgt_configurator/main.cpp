@@ -1,5 +1,7 @@
 //    FPGA MGT builder quickly builds complex configurations with multiple MGTs
-//    2020 Alex Madorsky, University of Florida/Physics
+//    Original work 2020 Alex Madorsky, University of Florida/Physics
+//    Modified work 2021 Aleksei Greshilov, University of Florida/Physics
+//    - eyescan option
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
