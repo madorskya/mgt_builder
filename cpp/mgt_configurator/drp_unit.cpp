@@ -829,6 +829,12 @@ boost::multiprecision::uint128_t drp_unit::att_read_prn(int fd, string name)
     return v;
 }
 
+boost::multiprecision::uint128_t drp_unit::att_read_eye(int fd, string name)
+{
+    string svalue;
+    boost::multiprecision::uint128_t v  = att_read(fd, name, svalue);
+    return v;
+}
 
 void drp_unit::wait_for (int fd, string name, int t)
 {
@@ -1245,12 +1251,12 @@ Parameters:
   boost::multiprecision::uint128_t es_errdet_en = 0x0,  es_eye_scan_en = 0x1, 
                                    es_control = 0x0,  es_errdet_en_rb = 0x0,  
                                    es_eye_scan_en_rb = 0x0, es_control_rb = 0x0;
-  cout << "Eyescan state machine control for MGT_" << x << "_" << y << " ..." << endl;
+  //cout << "Eyescan state machine control for MGT_" << x << "_" << y << " ..." << endl;
 
   // Read the current register values.
-  es_errdet_en_rb = att_read_prn(fd, "ES_ERRDET_EN");
-  es_eye_scan_en_rb = att_read_prn(fd, "ES_EYE_SCAN_EN");
-  es_control_rb = att_read_prn(fd, "ES_CONTROL");
+  es_errdet_en_rb = att_read_eye(fd, "ES_ERRDET_EN");
+  es_eye_scan_en_rb = att_read_eye(fd, "ES_EYE_SCAN_EN");
+  es_control_rb = att_read_eye(fd, "ES_CONTROL");
 
   // Determine the GT Channel attributes to be changed.
   es_errdet_en = (boost::multiprecision::uint128_t) err_det_en;
@@ -1258,9 +1264,9 @@ Parameters:
                ((boost::multiprecision::uint128_t) arm  << 1)| 
                ( arm_trigger_on.at("error_detected")    << 2);
 
-  cout << "Control attributes... ES_ERRDET_EN:0b{0:b} " << es_errdet_en 
-  << " ES_EYE_SCAN_EN:0b{1:b} " << es_eye_scan_en << " ES_CONTROL:0b{2:06b} " 
-  << es_control << endl;
+  //cout << "Control attributes... ES_ERRDET_EN:0b{0:b} " << es_errdet_en 
+  //<< " ES_EYE_SCAN_EN:0b{1:b} " << es_eye_scan_en << " ES_CONTROL:0b{2:06b} " 
+  //<< es_control << endl;
 
   // Write the new register values.
   att_write(fd, "ES_ERRDET_EN", es_errdet_en);
@@ -1295,13 +1301,13 @@ UT_SIGN_BIT = {'+UT': 0b0, '-UT': 0b1}
   int offset_magn = 0;
   int phase_offset = 0;
 
-  cout << "Offset configuration for MGT_" << x << "_" << y << " ..." << endl;
-  cout << "GT_" << x << "_" << y << " Horizontal offset: " << hor_offset << 
-  " Vertical offset: " << ver_offset << " UT: " << ut_sign << endl;
+  //cout << "Offset configuration for MGT_" << x << "_" << y << " ..." << endl;
+  //cout << "GT_" << x << "_" << y << " Horizontal offset: " << hor_offset << 
+  //" Vertical offset: " << ver_offset << " UT: " << ut_sign << endl;
 
   // Read the current register values.
-  es_vert_offset_rb = att_read_prn(fd, "ES_VERT_OFFSET");
-  es_horz_offset_rb = att_read_prn(fd, "ES_HORZ_OFFSET");
+  es_vert_offset_rb = att_read_eye(fd, "ES_VERT_OFFSET");
+  es_horz_offset_rb = att_read_eye(fd, "ES_HORZ_OFFSET");
 
   // Determine the GT channel attributes to be changed.
   if (ver_offset < 0)
@@ -1317,8 +1323,8 @@ UT_SIGN_BIT = {'+UT': 0b0, '-UT': 0b1}
   es_horz_offset = ((boost::multiprecision::uint128_t) phase_offset << 0) | 
                    ((boost::multiprecision::uint128_t) phase_uni    << 11);
 
-  cout << "Offset attributes... ES_HORZ_OFFSET:0b{0:012b} " << es_horz_offset 
-  << " ES_VERT_OFFSET:0b{1:09b} "<< es_vert_offset << endl;
+  //cout << "Offset attributes... ES_HORZ_OFFSET:0b{0:012b} " << es_horz_offset 
+  //<< " ES_VERT_OFFSET:0b{1:09b} "<< es_vert_offset << endl;
 
   // Write new register values.
   att_write(fd, "ES_VERT_OFFSET", es_vert_offset);
@@ -1348,8 +1354,8 @@ Parameters:
   state_decode.insert(pair<string,boost::multiprecision::uint128_t>("ARMED", 0x5));
   state_decode.insert(pair<string,boost::multiprecision::uint128_t>("READ", 0x4));
 
-  cout << "Waiting for " << state_decode.at(wait_for) << " state at MGT_" << x 
-  << "_" << y << endl;
+  //cout << "Waiting for " << state_decode.at(wait_for) << " state at MGT_" << x 
+  //<< "_" << y << endl;
 
   // Poll the es_control_status GT attribute until the FSM transistions to
   // the given state.
@@ -1370,10 +1376,10 @@ Parameters:
   while (!state_reached)
   {
     // Read the status register.
-    es_control_status_rb = att_read_prn(fd, "es_control_status");
+    es_control_status_rb = att_read_eye(fd, "es_control_status");
     done = es_control_status_rb & 0x0001;
     current_state = es_control_status_rb >> 1;
-    cout << "Current state: 0b{0:03b}  Status: " << done << " (0b0:'Not Done!', 0b1: 'Done!')" << endl;
+    //cout << "Current state: 0b{0:03b}  Status: " << done << " (0b0:'Not Done!', 0b1: 'Done!')" << endl;
 
     // Compare current state with expected state.
     state_reached = (current_state == state_decode.at(wait_for));
@@ -1398,7 +1404,7 @@ Parameters:
     throw runtime_error("Eyescan status timed out.");
   }
 
-  cout << wait_for << " state reached at GT_" << x << "_" << y << endl;
+  //cout << wait_for << " state reached at GT_" << x << "_" << y << endl;
 
   return state_reached;
 }
@@ -1414,7 +1420,7 @@ Parameters:
   ver_offset -> Vertical voltage offset.
                 [-127, 127] corresponding to 0.39% increments.
 */
-  cout << "Starting acquisition for GT_" << x << "_" << y << " ..." << endl;
+  //cout << "Starting acquisition for GT_" << x << "_" << y << " ..." << endl;
 
   map<string,boost::multiprecision::uint128_t> acq_counters;
   boost::multiprecision::uint128_t error_count_pUT = 0x0, error_count_nUT = 0x0, 
@@ -1423,7 +1429,7 @@ Parameters:
 
   // Check equalizer mode: LPM linear eq. or DFE eq.
   eq_mode = "LPM";
-  e_mode = att_read_prn(fd, "RXLPMEN");
+  e_mode = att_read_eye(fd, "RXLPMEN");
   if (e_mode == 0x0)
   {
     eq_mode = "DFE";
@@ -1431,7 +1437,7 @@ Parameters:
 
   // First eye scan measurement (LPM | DFE)
   // Start the FSM on the requested lane.
-  cout << "Starting +UT acquisition for GT_" << x << "_" << y << " ..." << endl;
+  //cout << "Starting +UT acquisition for GT_" << x << "_" << y << " ..." << endl;
 
   // Clear run & arm bits in the Eyescan control.
   eyescan_control(fd, x, y, true, false, false);
@@ -1449,12 +1455,12 @@ Parameters:
   eyescan_control(fd, x, y, true, false, false);
 
   // Read counters with +UT.
-  error_count_pUT = att_read_prn(fd, "es_error_count");
-  sample_count_pUT = att_read_prn(fd, "es_sample_count");
+  error_count_pUT = att_read_eye(fd, "es_error_count");
+  sample_count_pUT = att_read_eye(fd, "es_sample_count");
   acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("error_count_pUT", error_count_pUT));
   acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("sample_count_pUT", sample_count_pUT));
-  cout << "Results +UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_pUT") 
-  << " Samples = " << acq_counters.at("sample_count_pUT") << endl;
+  //cout << "Results +UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_pUT") 
+  //<< " Samples = " << acq_counters.at("sample_count_pUT") << endl;
 
   // Start second eye scan measurement (DFE eq. only)
   if (eq_mode == "DFE")
@@ -1467,8 +1473,8 @@ Parameters:
   }
   else
   {
-    cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
-    << hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
+    //cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
+    //<< hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
   }
 
   // Wait for the FSM (-UT, DFE only) to complete on each lane, and read counters.
@@ -1481,14 +1487,14 @@ Parameters:
     eyescan_control(fd, x, y, true, false, false);
 
     // Read counters with -UT.
-    error_count_nUT = att_read_prn(fd, "es_error_count");
-    sample_count_nUT = att_read_prn(fd, "es_sample_count");
+    error_count_nUT = att_read_eye(fd, "es_error_count");
+    sample_count_nUT = att_read_eye(fd, "es_sample_count");
     acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("error_count_nUT", error_count_nUT));
     acq_counters.insert(pair<string, boost::multiprecision::uint128_t> ("sample_count_nUT", sample_count_nUT));
-    cout << "Results -UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_nUT") 
-    << " Samples = " << acq_counters.at("sample_count_nUT") << endl;
-    cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
-    << hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
+    //cout << "Results -UT GT_" << x << "_" << y << " ... Errors = " << acq_counters.at("error_count_nUT") 
+    //<< " Samples = " << acq_counters.at("sample_count_nUT") << endl;
+    //cout << "Single measurement finalized for GT_" << x << "_" << y << " (H = " 
+    //<< hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
   }
 
   // Return the error and sample counters for the current lane, both +UT and -UT.
@@ -1502,7 +1508,9 @@ Performs Eye Scan "measurement loop" (error counting) acquisitions across the
 given phase and voltage offset ranges.
 This function creates a .csv file containing the sweep results.
 */
-  int horz_max = 0, vert_max = 0, horz_step = 0, vert_step = 0, rxdiv = 0;
+  int horz_max = 0, vert_max = 0, horz_step = 0, vert_step = 0, rxdiv = 0,
+      iterations = 0, total_iterations = 0, horz_iterations = 0, vert_iterations = 0,
+      progress = 0, old_progress = 0, print_status_every = 10;
   double BER_calculated = 0, ber_0 = 0, ber_1 = 0, error_count_0 = 0, error_count_1 = 0;
   boost::multiprecision::uint128_t ber128_0 = 0x0, ber128_1 = 0x0,
 				   error_count128_0 = 0x0, error_count128_1 = 0x0;
@@ -1523,20 +1531,25 @@ This function creates a .csv file containing the sweep results.
   vert_max = v_max;
   v_step = 2;
   vert_step = v_step;
+  horz_iterations = (2*horz_max + 1) / horz_step;
+  vert_iterations = (2*vert_max + 1) / vert_step;
+  total_iterations = horz_iterations * vert_iterations;
 
   // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
   time_t now = time(0);
   struct tm tstruct;
-  char 	 buftime[80];
+  char 	 buftime_0[80];
+  char   buftime_1[80];
   tstruct = *localtime(&now);
-  strftime(buftime, sizeof(buftime), "%Y-%m-%d.%X", &tstruct);
+  strftime(buftime_0, sizeof(buftime_0), "%Y-%b-%d_%X", &tstruct);
+  strftime(buftime_1, sizeof(buftime_1), "%Y-%b-%d %X", &tstruct);
 
   // Eyescan directory for .csv and .pdf files
-  ostringstream osfolderpath_csv, osfolderpath_pdf;
-  osfolderpath_csv << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/csv";
-  osfolderpath_pdf << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/pdf";
+  ostringstream osfolderpath_csv, osfolderpath_png;
+  osfolderpath_csv << getenv("HOME") << "/github/mgt_builder/scans/csv";
+  osfolderpath_png << getenv("HOME") << "/github/mgt_builder/scans/png";
   string folderpath_csv = osfolderpath_csv.str();
-  string folderpath_pdf = osfolderpath_pdf.str();
+  string folderpath_png = osfolderpath_png.str();
  
   if (!boost::filesystem::is_directory(boost::filesystem::path(folderpath_csv)))
   {
@@ -1550,11 +1563,11 @@ This function creates a .csv file containing the sweep results.
     }  
   }
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(folderpath_pdf)))
+  if (!boost::filesystem::is_directory(boost::filesystem::path(folderpath_png)))
   {
     try
     {
-      boost::filesystem::create_directories(boost::filesystem::path(folderpath_pdf));
+      boost::filesystem::create_directories(boost::filesystem::path(folderpath_png));
     }
     catch (boost::filesystem::filesystem_error const & e)
     {
@@ -1564,11 +1577,13 @@ This function creates a .csv file containing the sweep results.
 
   // Pre-fill .csv result file.
   ostringstream osfilename;
-  osfilename << getenv("HOME") << "/github/mgt_builder/python/UF_MGT_builder_eyescan/scans/csv/UF_MGT_builder_eyescan_" 
-  << dec << i << "_" << dec << x << "_" << dec << y << "_" << buftime << ".csv";
+  osfilename << getenv("HOME") << "/github/mgt_builder/scans/csv/eyescan_" 
+  << dec << i << "_" << dec << x << "_" << dec << y << "_" << buftime_0 << ".csv";
   string filename = osfilename.str();
   ofstream f(filename.c_str(), ios::app);
 
+  f << "Date and Time Started," << buftime_1  << endl;
+  f << "Scan Name,UF MGT builder eyescan" << endl;
   f << "Dwell,BER" << endl;
   f << "Dwell BER,1e-" << dec << scale  << endl;
   f << "Dwell Time,0" << endl;
@@ -1601,19 +1616,19 @@ This function creates a .csv file containing the sweep results.
        if (eq_mode == "DFE")
        {
 	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
-         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));	
+         (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));	
 
          if (ber128_0 == 0)
          {
-           ber128_0 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+           ber128_0 = 1 * (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
          }
 
 	 ber128_1 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_nUT") *
-         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+         (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_1 == 0)
          {
-           ber128_1 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+           ber128_1 = 1 * (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
          }
 
 	 ber_0 = ber128_0.convert_to<double>();
@@ -1639,11 +1654,11 @@ This function creates a .csv file containing the sweep results.
        else
        {
 	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") * 
-         (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+         (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_0 == 0)
          {
-           ber128_0 = 1 * (att_read_prn(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
+           ber128_0 = 1 * (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
          }
 
 	 ber_0 = ber128_0.convert_to<double>();
@@ -1657,6 +1672,7 @@ This function creates a .csv file containing the sweep results.
 
 	 BER_calculated = error_count_0 / ber_0;
        }
+
        if (i_horz == horz_max)
        {
          f << BER_calculated << endl;
@@ -1664,6 +1680,15 @@ This function creates a .csv file containing the sweep results.
        else
        {
          f << BER_calculated << ",";
+       }
+
+       iterations++;
+       progress = (iterations * 100) / total_iterations;
+
+       if (iterations % print_status_every == 0 && old_progress != progress)
+       {
+         old_progress = progress;
+         cout << "Eye Scan progress ... " << dec << progress << "%" << endl;
        }
     }
   }

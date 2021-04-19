@@ -199,6 +199,7 @@ public:
     void wait_for (int fd, string name, int t);
     boost::multiprecision::uint128_t att_read  (int fd, string name, string &svalue);
     boost::multiprecision::uint128_t att_read_prn  (int fd, string name);
+    boost::multiprecision::uint128_t att_read_eye  (int fd, string name);
     boost::multiprecision::uint128_t verilog_value (string s);
 
     uint64_t reg_read  (int fd, int addr);
