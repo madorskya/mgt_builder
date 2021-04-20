@@ -158,7 +158,7 @@ def eyescan_plot(filename_i, filename_o, minlog10ber, colorbar=True, xaxis=True,
         except ValueError:
             break
 
-    title = header + "\n\n" + " Device: " + device + ", GTx: " + GTx + ", GTy: " + GTy + ", Date: " + date + ", Time: " + time + "\n"
+    title = "UF MGT builder eyescan" + "\n\n" + " Device: " + device + ", GTx: " + GTx + ", GTy: " + GTy + ", Date: " + date + ", Time: " + time + "\n"
 
     # formating colorbar axis
     if colorbar:
