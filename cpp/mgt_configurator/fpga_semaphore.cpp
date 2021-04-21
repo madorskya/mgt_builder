@@ -16,7 +16,7 @@ std::map<int,int> fd_semid; // file_descriptor to semaphore ID map
 
 void lock_board(int fd);
 void unlock_board(int fd);
-
+/*
 void mwrite(uint64_t a, void* b, size_t c, off_t d)
 {
     lock_board((int)a);
@@ -24,14 +24,12 @@ void mwrite(uint64_t a, void* b, size_t c, off_t d)
     {
         c = 8;
         uint64_t b8 = *((uint32_t*)b);
-//        if (lseek((int)a,d,SEEK_SET) == -1 || write ((int)a,&b8,c) != (ssize_t)c)
         if (pwrite ((int)a,&b8,c,d) != (ssize_t)c)
             log_printf ("pwrite error: w: %d a: %08x file: %s line: %d\n",
                         c, d, __FILE__, __LINE__);
     }
     else
     {
-//        if (lseek((int)a,d,SEEK_SET) == -1 || write ((int)a,b,c) != (ssize_t)c)
         if (pwrite ((int)a,b,c,d) != (ssize_t)c)
             log_printf ("pwrite error: w: %d a: %08x file: %s line: %d\n",
                         c, d, __FILE__, __LINE__);
@@ -47,7 +45,6 @@ void mread(uint64_t a, void* b, size_t c, off_t d)
     {
          c = 8;
          uint64_t b8;
-//         if (lseek(fd,d,SEEK_SET) == -1 || read (fd,&b8,c) != (ssize_t)c)
          if (pread (fd,&b8,c,d) != (ssize_t)c)
              log_printf ("pread error: w: %d a: %08x file: %s line: %d\n",
                          c, d, __FILE__, __LINE__);
@@ -55,14 +52,13 @@ void mread(uint64_t a, void* b, size_t c, off_t d)
     }
     else
     {
-//        if (lseek(fd,d,SEEK_SET) == -1 || read (fd,b,c) != (ssize_t)c)
         if (pread (fd,b,c,d) != (ssize_t)c)
             log_printf ("pread error: w: %d a: %08x file: %s line: %d\n",
                         c, d, __FILE__, __LINE__);
     }
     unlock_board((int)a);
 }
-
+*/
 void create_semaphore (int fd, int dev_ind)
 {
     /* generate key */

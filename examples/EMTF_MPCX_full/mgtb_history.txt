@@ -1,12 +1,3 @@
-exit
-device select all 
-register write all
-reset 
-device list 
-device select 0,1,2
-register write all 
-help
-reset 
 help
 device select 0
 exit
@@ -98,3 +89,12 @@ register read 1 32 0 RX_OS_CFG
 register read 1 32 0 RX_DFE_LPM_HOLD_DURING_EIDLE 
 register read 1 32 0 ES_QUAL_MASK
 register read 1 32 0 ES_SDATA_MASK
+device select 1,2
+register write all 
+device select 1
+register write all 
+reset v7_gth
+device select 1,2
+register write all 
+reset v7_gth
+exit

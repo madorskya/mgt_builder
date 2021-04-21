@@ -60,7 +60,7 @@ void fpga::read_mgt_list()
         string mgt_ports_atts_unit_fn = "chips/" + mgt_path + "/mgt_ports_atts_unit.tab";
 
         // create MGT unit
-        drp_unit mgt_unit (mgt_base, full_drp_addr_width);
+        drp_unit mgt_unit (mgt_base, mem_base, full_drp_addr_width);
         mgt_unit.x = x;
         mgt_unit.y = y;
 
@@ -87,7 +87,7 @@ void fpga::read_mgt_list()
         {
         // not yet
         // create COMMON unit as new so we can reference its pointer
-            com_unit = new drp_unit(com_base, full_drp_addr_width);
+            com_unit = new drp_unit(com_base, mem_base, full_drp_addr_width);
             com_unit->common = true; // mark this unit as common
             com_unit->quad_drp_addr1  = quad_drp_addr1;
             com_unit->quad_drp_addr0  = quad_drp_addr0;
@@ -389,7 +389,7 @@ void fpga::check_atts ()
 }
 
 
-void fpga::reset (int fd)
+void fpga::reset_v7_gth (int fd)
 {
 
     // QPLL reset
@@ -397,7 +397,40 @@ void fpga::reset (int fd)
     for (map<int, drp_unit*>::iterator it = common_map.begin(); it != common_map.end(); ++it)
     {
         drp_unit* dup = it->second;
-        dup->reset_qpll(fd);
+        dup->reset_qpll_v7_gth(fd);
+    }
+
+    // CPLL reset
+    for (map<int, drp_unit>::iterator it = mgt_map.begin(); it != mgt_map.end(); ++it)
+    {
+        drp_unit du = it->second;
+        du.reset_cpll (fd);
+    }
+
+    // TX reset
+    for (map<int, drp_unit>::iterator it = mgt_map.begin(); it != mgt_map.end(); ++it)
+    {
+        drp_unit du = it->second;
+        du.reset_tx (fd);
+    }
+
+    // RX reset
+    for (map<int, drp_unit>::iterator it = mgt_map.begin(); it != mgt_map.end(); ++it)
+    {
+        drp_unit du = it->second;
+        du.reset_rx (fd);
+    }
+}
+
+void fpga::reset_usplus_gth (int fd)
+{
+
+    // QPLL reset
+    // scan common map
+    for (map<int, drp_unit*>::iterator it = common_map.begin(); it != common_map.end(); ++it)
+    {
+        drp_unit* dup = it->second;
+        dup->reset_qpll_usplus_gth(fd);
     }
 
     // CPLL reset
@@ -481,6 +514,7 @@ void fpga::read_top_config(string fname)
 {
     ifstream file(fname.c_str(), std::ifstream::in);
     string str;
+	bool mem_base_set = false;
     while (getline(file, str)) // read line by line
     {
 
@@ -515,16 +549,21 @@ void fpga::read_top_config(string fname)
             if (sf[0].compare("board"                 ) == 0)  board_path            = sf[1]; else
             if (sf[0].compare("device_prefix"         ) == 0)  device_prefix         = sf[1]; else
             if (sf[0].compare("device_count"          ) == 0)  device_count          = strtol (sf[1].c_str(), NULL, 10); else
+            if (sf[0].compare("mem_base"              ) == 0)  {mem_base    = strtol (sf[1].c_str(), NULL, 16); mem_base_set = true;} else
             if (sf[0].compare("root_config"           ) == 0)  {} else // unused
             if (sf[0].compare("phalg_tx_iface"        ) == 0)  {} else // unused
             if (sf[0].compare("top_module_name"       ) == 0)  {} else // unused
+            if (sf[0].compare("xymap_fn"              ) == 0)  {} else // unused
             {
                 printf ("Unsupported parameter in top config file: %s = %s\n", sf[0].c_str(), sf[1].c_str());
             }
         }
     }
 
+	if (!mem_base_set) 
+		printf ("WARNING: mem_base parameter is not set\n");
 
+	mem_base /= 8; // convert from bytes
     root_path = "."; // always running from inside main config directory
     base_addr_fn      = "fpga_base_addr.tab";
     // create file names from MGT and board paths
@@ -619,6 +658,8 @@ void fpga::read_mgt_config()
     quad_drp_addr0   = (1 << full_drp_addr_width) - 3;
     quad_drp_addr1   = (1 << full_drp_addr_width) - 4;
     fpga_in_out_addr = (1 << full_drp_addr_width) - 5;
+
+//	cout << "quad_port_addr0 " << hex << quad_port_addr0 << endl;
 
     // register in each drp_unit that returns its own XY location
     // has to be read as port

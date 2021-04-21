@@ -1,0 +1,100 @@
+register read 0 6 0 RX_PRBS_ERR_CNT
+device select all
+register read 0 4 0 CDR_SWAP_MODE_EN
+register read 0 5 0 CDR_SWAP_MODE_EN
+register read 0 4 0 CDR_SWAP_MODE_EN
+register read 0 4 0 RXBUFRESET_TIME
+register read 0 5 0 RXBUFRESET_TIME
+register read 0 5 0 CDR_SWAP_MODE_EN = 1
+register read 0 5 0 CFOK_PWRSVE_EN
+register read 0 4 0 CFOK_PWRSVE_EN
+register read 0 4 0 CDR_SWAP_MODE_EN
+register read 0 5 0 CDR_SWAP_MODE_EN
+exit
+device select all
+register read 0 5 0 CDR_SWAP_MODE_EN
+register read 0 4 0 CDR_SWAP_MODE_EN
+device list 
+register read 0 4 0 RX_PRBS_ERR_CNT
+register read 0 5 0 RX_PRBS_ERR_CNT
+device list 
+device select all
+register read 0 4 0 DRPRST
+register read 0 5 0 DRPRST
+exit
+device select all
+register write all 
+reset
+exit
+device select all 
+register write all 
+reset
+exit
+device select all 
+register write all 
+reset
+device select all 
+register write all 
+reset
+exit
+device select all
+reset usplus_gth 
+exit
+device select all
+reset usplus_gth 
+register read 0 4 1 QPLL0PD
+register read 0 4 1 QPLL1PD
+register read 0 5 1 QPLL0PD
+register read 0 5 1 QPLL1PD
+reset usplus_gth 
+device select all
+register write all 
+device select all 
+register write all 
+reset usplus_gth 
+device select all 
+register write all 
+reset usplus_gth 
+register write all 
+reset usplus_gth 
+register read 0 4 0 RXBUF_EN
+register read 0 5 0 RXBUF_EN
+register read 0 4 0 RX_XCLK_SEL
+register read 0 4 0 RXOUTCLKSEL
+register read 0 4 0 RXSYNC_MULTILANE
+register read 0 4 0 RXSYNC_OVRD
+register read 0 4 0 RXSYNCIN
+register read 0 4 0 RXSYNCMODE
+exit
+device select all
+register write all 
+reset usplus_gth 
+register read 0 4 0 RXBUF_EN
+register read 0 4 0 RX_XCLK_SEL
+register read 0 4 0 RXOUTCLKSEL
+register read 0 4 0 RXSYNC_MULTILANE
+register read 0 4 0 RXSYNC_OVRD
+register read 0 4 0 RXSYNCIN
+register read 0 4 0 RXSYNCMODE
+register read 0 4 0 RXDLYSRESETDONE
+register read 0 4 0 RXPHALIGNDONE
+register read 0 4 0 RXRESETDONE
+exit
+device select all 
+register write all 
+reset usplus_gth 
+device select all 
+register write all 
+device select all 
+register write all 
+device select all 
+register write all 
+reset usplus_gth 
+device select all 
+register write all 
+device select all 
+register write all 
+device select all 
+register write all 
+device select all 
+register write all 

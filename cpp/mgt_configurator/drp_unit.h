@@ -28,6 +28,9 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
@@ -37,10 +40,29 @@
 #include <boost/system/error_code.hpp>
 
 using namespace std;
-
+#ifdef MTF7 // MTF7 hardware access via PCIE
 #define mwrite(a,b,c,d) if (pwrite (a,b,c,d) != c) printf ("pwrite error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
 // read twice because of DRP interface peculiarity in MTF7
 #define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__); pread (a,b,c,d);
+
+	#define mopen(d) ::open(d, O_RDWR)
+
+#endif 
+#ifdef AXI // AXI hardware, memory mapping access
+	
+	#include <sys/mman.h> 
+	// two parameters below should come from config file
+	#define DRP_SIZE 0x10000 // 13 bits of DRP address x 32 bit words = 15 bits of address
+	#define DRP_BASE 0x54000000 // DRP area base address
+	// AXI versions of mwrite and mread support only 8-byte transfers
+	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
+	#define mread(a,b,c,d)  {*b = *((uint64_t*)(sys_vptr + d));}
+// debug versions of the macros 
+//	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
+//	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}
+	#define mopen(d) open_dev_mem()
+
+#endif
 
 #define PORT_MARK   0x40000000 // port marker for register offsets
 #define PORT_UNMARK 0x3FFFFFFF // mask for removing PORT_MARK from offsets
@@ -166,7 +188,7 @@ public:
     uint32_t MEM_BASE; // core fpga base addr, in 64-bit words
     vector<drp_unit> tx_mmcm_slaves; // list of txoutclk clock-sharing slaves
 
-    drp_unit    (int base_a, int full_drp_addr_width);
+    drp_unit    (int base_a, int mem_base, int full_drp_addr_width);
     drp_unit ()
     {
         prescale = 0;
@@ -193,7 +215,8 @@ public:
     void reset_rx (int fd);
     void tx_phase_align (int fd);
     void reset_cpll (int fd);
-    void reset_qpll (int fd);
+    void reset_qpll_v7_gth (int fd);
+    void reset_qpll_usplus_gth (int fd);
     void read_registers_prn (int fd);
     void att_write (int fd, string name, boost::multiprecision::uint128_t value);
     void wait_for (int fd, string name, int t);

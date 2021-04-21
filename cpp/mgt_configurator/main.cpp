@@ -24,7 +24,24 @@
 #include <readline/history.h>
 #include "../linenoise_cpp/linenoise.h"
 
+// should be coming from config file
 #define MAX_DEVICE_COUNT 12
+
+// section for AXI devices only
+#ifdef AXI
+	// sys_vptr is byte pointer
+	uint8_t *sys_vptr;
+	int sys_fd;
+	int open_dev_mem () 
+	{
+		sys_fd = ::open("/dev/mem", O_RDWR | O_SYNC); 
+		if (sys_fd != -1)
+			sys_vptr = (uint8_t *)mmap(NULL, DRP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, sys_fd, DRP_BASE);
+		else sys_vptr = NULL;
+		return sys_fd;
+	}
+#endif
+// end section for AXI devices
 
 int fd[MAX_DEVICE_COUNT];
 string device_name[MAX_DEVICE_COUNT];
@@ -92,6 +109,33 @@ void register_write (string cmd)
 	}
 }
 
+void register_wr1 (string cmd)
+{
+    vector <string> argv;
+	boost::split(argv, cmd, boost::is_any_of("\t ")); // split on tabs,spaces
+
+	int x        = strtol (argv[2].c_str(), NULL, 10);
+	int y        = strtol (argv[3].c_str(), NULL, 10);
+	int common   = strtol (argv[4].c_str(), NULL, 10);
+	string rname = argv[5];
+	int wr_data  = strtol (argv[6].c_str(), NULL, 16);
+ 
+
+	for (int i = 0; i < device_count; i++)
+	{
+		if (fd[i] >= 0 && device_selected[i]) 
+		{
+			if (chip.lock_board (i) < 0) exit(-1);
+			// find MGT
+			drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
+			if (common) uit = *(uit.common_unit);
+
+			uit.att_write(fd[i], rname, wr_data);
+			if (chip.unlock_board (i) < 0) exit(-1);
+		}
+	}
+}
+
 void register_read (string cmd)
 {
     vector <string> argv;
@@ -144,13 +188,33 @@ void eyescan (string cmd)
 
 void device_reset (string cmd)
 {
+    vector <string> argv;
+	boost::split(argv, cmd, boost::is_any_of("\t ")); // split on tabs,spaces
+
+	if (argv.size() < 2)
+	{
+		cout << "please specify device family" << endl;
+		return;
+	}
+
+	bool v7_gth = false, usplus_gth = false;
+	if (argv[1].compare("v7_gth") == 0) v7_gth = true;
+	if (argv[1].compare("usplus_gth") == 0) usplus_gth = true;
+
+	if (!v7_gth && !usplus_gth) 
+	{
+		cout << "please specify supported device family" << endl;
+		return;
+	}
+
 	for (int i = 0; i < device_count; i++)
 	{
 		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			printf ("index: %d name: %s reset\n", i, device_name[i].c_str());
-			chip.reset (fd[i]);
+			if (v7_gth)     chip.reset_v7_gth     (fd[i]);
+			if (usplus_gth) chip.reset_usplus_gth (fd[i]);
 			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
@@ -160,14 +224,24 @@ void prbs_pattern (string cmd)
 {
 	vector <string> fld;
 	boost::split(fld, cmd, boost::is_any_of("\t ,")); // split on tabs,spaces,commas
+	int prbs_type = -1;
 	// program trasmitters first
-	int prbs_type = (strtol(fld[1].c_str(), NULL, 10) + 1)/8;
+	if (fld[1].compare("reset") == 0)
+	{
+		prbs_type = -1;
+	}
+	else
+	{
+		prbs_type = (strtol(fld[1].c_str(), NULL, 10) + 1)/8;
+	}
 	for (int i = 0; i < device_count; i++)
 	{
 		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			cout << "device: " << i << endl;
+			if (prbs_type >= 0) // not reset, need to program transmitters
+			{
 			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
 			{
 				drp_unit du = it->second;
@@ -177,17 +251,20 @@ void prbs_pattern (string cmd)
 					du.att_write(fd[i], "TXPRBSSEL", prbs_type);
 				}
 			}
+			}
 			// now receivers
 			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
 			{
 				drp_unit du = it->second;
 				if (du.rx_group_index >= 0)
 				{
+					if (prbs_type >= 0) // not reset
+					{
 					cout << "programming RX PRBS " << dec << prbs_type << " " << du.rx_group_name << du.rx_group_index << endl;
 					du.att_write(fd[i], "RXSLIDE_MODE", 0); // have to set RXSLIDE_MODE=OFF for PRBS test
 					du.att_write(fd[i], "RXPRBSSEL", prbs_type);
 					usleep (10000); // give DFE time to train
-
+					}
 					// reset error counter
 					du.att_write(fd[i], "RXPRBSCNTRESET", 1);
 					du.att_write(fd[i], "RXPRBSCNTRESET", 0);
@@ -213,6 +290,8 @@ void prbs_read (string cmd)
 				if (du.rx_group_index >= 0)
 				{
 					printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
+					du.att_read_prn(fd[i], "RXPRBSLOCKED");
+					printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
 					du.att_read_prn(fd[i], "RX_PRBS_ERR_CNT");
 				}
 			}
@@ -232,8 +311,13 @@ node_record nr[] =
 	{2,			"([0-9,]+)", "<Enter>",         device_select,  NULL},
 	{2,			"all",       "<Enter>",         device_select,  NULL},
 	{0, "register",          "write|read",      NULL,           NULL},
-	{1,     "write",         "all",             NULL,           NULL},
+	{1,     "write",         "all|linkX",       NULL,           NULL},
 	{2,         "all",       "<Enter>",         register_write, NULL},
+	{2,         "([0-1])",   "link Y",          NULL,           NULL},
+	{3,         "([0-9]+)",  "common (1|0)",    NULL,           NULL},
+	{4,         "([0-1])",   "reg name",        NULL,           NULL},
+	{5,         "([A-Z0-9_]+)", "value",        NULL,           NULL},
+	{6,         "([xXA-Fa-f0-9]+)", "<Enter>",  register_wr1,   NULL},
 	{1,     "read",          "link X",          NULL,           NULL},
 	{2,         "([0-1])",   "link Y",          NULL,           NULL},
 	{3,         "([0-9]+)",  "common (1|0)",    NULL,           NULL},
@@ -244,9 +328,12 @@ node_record nr[] =
 	{2,     "([0-9]+)",      "scale(6-15)",     NULL,           NULL},
   {3,     "([0-9]+)",      "mode:normal-2d(0)|bathtub(1)",    NULL,       NULL},
   {4,     "([0-9]+)",      "<Enter>",         eyescan,        NULL},
-	{0, "reset",             "<Enter>",         device_reset,   NULL},
-	{0, "prbs",              "pattern|read",    NULL,           NULL},
+	{0, "reset",             "device family",   NULL,           NULL},
+	{1,     "v7_gth",        "<Enter>",         device_reset,   NULL},
+	{1,     "usplus_gth",    "<Enter>",         device_reset,   NULL},
+	{0, "prbs",              "pattern|read|reset",  NULL,       NULL},
 	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},
+	{1,     "reset",         "<Enter>",         prbs_pattern,   NULL},
 	{1,     "read",          "<Enter>",         prbs_read,      NULL},
 	{0, "exit",              "<Enter>",         eject,          NULL},
 	{-1,"help",              "<Enter>",         NULL,           &help_general} // end marker
@@ -281,7 +368,8 @@ int main(int argc, char *argv[])
  			dev_name << device_prefix << i;
 			device_name[i] = dev_name.str().c_str();
             // open device
-            fd[i] = ::open(device_name[i].c_str(), O_RDWR);
+            //fd[i] = ::open(device_name[i].c_str(), O_RDWR);
+            fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
             if (fd[i] < 0)
             {
                 printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());

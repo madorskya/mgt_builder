@@ -104,6 +104,7 @@ public:
     int quad_port_addr1;
     int quad_port_addr0;
     int fpga_in_out_addr;
+	int mem_base;
 
     int xy_reg_addr;
 	int fd_semid[MAX_DEVICES];
@@ -117,7 +118,8 @@ public:
     void read_registers  (int fd);
     void check_registers (int fd);
     void check_atts ();
-    void reset (int fd);
+    void reset_v7_gth (int fd);
+    void reset_usplus_gth (int fd);
     void reset_steps (int fd);
     void read_top_config(string fname);
     void read_mgt_config();

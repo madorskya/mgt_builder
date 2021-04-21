@@ -1,0 +1,7 @@
+//clocks	label	frequency	pin	
+refclk	232_0	160.3144	R12	
+refclk	232_1	322.265625	P10	
+refclk	229_0	160.3144	AA12	
+refclk	229_1	322.265625	Y10	
+refclk	226_0	160.3144	AG12	
+refclk	226_1	322.265625	AF10	

@@ -19,6 +19,8 @@
 
 #include "drp_unit.h"
 
+extern uint8_t *sys_vptr;
+extern int sys_fd;
 
 // constructor from verilog-style bit range
 bit_range::bit_range(string s)
@@ -35,7 +37,7 @@ string bit_range::print()
     return res.str();
 }
 
-drp_unit::drp_unit(int base_a, int full_drp_addr_width)
+drp_unit::drp_unit(int base_a, int mem_base, int full_drp_addr_width)
 {
     // convert to actual base address, taking device base into account
     // base_addr is in 64-bit words
@@ -44,7 +46,8 @@ drp_unit::drp_unit(int base_a, int full_drp_addr_width)
     quad_address = base_a >> full_drp_addr_width;
     int base_a_noq = base_a & ((1<<full_drp_addr_width)-1); // leave only addres inside quad
 
-    MEM_BASE = 0xC0000/8;
+ //   MEM_BASE = 0xC0000/8;
+	MEM_BASE = mem_base;
     base_addr = base_a_noq + MEM_BASE; // true base address without quad number
 //    printf("new drp_unit: %05x %05x %02x %05x\n", base_a, base_a_noq, quad_address, base_addr);
 
@@ -508,6 +511,11 @@ void drp_unit::read_registers (int fd)
     {
         int offset = (it->first) & PORT_UNMARK;
         register_prop reg = it->second;
+
+		// read only writable registers
+		// this is necessary because in US+ reading read-only registers with XCLK missing may lead to missing DRPRDY
+		if (!reg.read_only) 
+		{
         uint64_t rb = 0;
         int saddr = (base_addr + offset)*8; // full register address, converted to bytes
 
@@ -517,6 +525,9 @@ void drp_unit::read_registers (int fd)
         mread (fd, &rb, 8, saddr);
 
         reg.value = rb;
+		}
+		else reg.value = 0; // zero the value for read-only regs
+
         reg_rd.insert(make_pair(it->first, reg)); // insert into new map, keep original offset for ports
     }
     registers = reg_rd; // replace map with the new one
@@ -544,8 +555,8 @@ void drp_unit::check_registers (int fd)
 
             rb &= 0xffffULL; // only 16 lower bits matter
             if (value != rb)
-                printf ("ERROR: drp: %d off: %04x w: %04lx r: %04lx e: %04lx\n",
-                       reg.drp_reg, offset, value, rb, (rb ^ value));
+                printf ("ERROR: drp: %d off: %04x w: %04x r: %04x e: %04x\n",
+                       reg.drp_reg, offset, (uint32_t)value, (uint32_t)rb, (uint32_t)(rb ^ value));
         }
     }
 }
@@ -773,7 +784,10 @@ boost::multiprecision::uint128_t drp_unit::att_read  (int fd, string name, strin
                 rb = (boost::multiprecision::uint128_t) rb64;
             }
             else
+			{
                 rb = -1; // invalid value if the attribute/port was not in registers
+				cout << "register not found, offset: 0x" << hex << offset_reg << endl;
+			}
 
 
             rb &= reg_rng.mask; // leave only relevant bits
@@ -875,7 +889,7 @@ void drp_unit::reset_cpll(int fd)
     }
 }
 
-void drp_unit::reset_qpll(int fd)
+void drp_unit::reset_qpll_v7_gth(int fd)
 {
     string dum;
     if (common_is_used) // only if this QPLL is used
@@ -896,6 +910,30 @@ void drp_unit::reset_qpll(int fd)
     {
         cout << "power down QPLL in quad: " << quad_address << endl;
         att_write(fd, "QPLLPD", 1);
+    }
+}
+
+void drp_unit::reset_qpll_usplus_gth(int fd)
+{
+    string dum;
+    if (common_is_used) // only if this QPLL is used
+    {
+        if (att_read(fd, "QPLL0PD", dum) != 0)
+        {
+            cout << "power up QPLL0: " << dec << x << " " << y << endl;
+            att_write(fd, "QPLL0PD", 0);
+            usleep (10000);
+        }
+
+        cout << "resetting QPLL0 in quad: " << quad_address << endl;
+        att_write (fd, "QPLL0RESET", 1);
+        att_write (fd, "QPLL0RESET", 0);
+        wait_for  (fd, "QPLL0LOCK", 1);
+    }
+    else
+    {
+        cout << "power down QPLL0 in quad: " << quad_address << endl;
+        att_write(fd, "QPLL0PD", 1);
     }
 }
 #define each_slave(s) for (vector<drp_unit>::iterator s = tx_mmcm_slaves.begin(); s != tx_mmcm_slaves.end(); ++s)
