@@ -1,0 +1,7 @@
+//clocks	label	frequency	pin	
+refclk	131_0	160.3144	V32	
+refclk	131_1	250	U30	
+refclk	134_0	160.3144	M32	
+refclk	134_1	250	L30	
+refclk	128_0	160.3144	AD32	
+refclk	128_1	250	AC30	

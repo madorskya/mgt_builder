@@ -1,0 +1,3 @@
+// direction	x	y	prototocol	Q/CPLL	refclk F	interface	index	
+rx	0	0	25g	Q	250	p25g	0	
+tx	0	0	25g	Q	250	p25g	0	

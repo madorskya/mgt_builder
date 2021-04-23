@@ -12,6 +12,6 @@ set pins [get_pins -of_objects [get_cells CELL_NAME]]
 
 regsub -all {\s+} $pins "\n"
 
-puts [llength $pins]
+# puts [llength $pins]
 
 foreach pin $pins { set nets [get_nets -top -segments -of [get_pins $pin]] ; puts "$pin $nets" }
