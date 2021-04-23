@@ -24,8 +24,9 @@
 #include <readline/history.h>
 #include "../linenoise_cpp/linenoise.h"
 
-// should be coming from config file
-#define MAX_DEVICE_COUNT 12
+// max count of devices in the system
+// the actual device count is set in the top-level config
+#define MAX_DEVICE_COUNT 100
 
 // section for AXI devices only
 #ifdef AXI
