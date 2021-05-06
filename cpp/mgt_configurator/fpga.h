@@ -32,10 +32,92 @@
 
 using namespace std;
 
-
-
 class fpga
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+      ar& int_reg_offset    ;
+      ar& reg_width_bits    ;
+      ar& mgt_rx_iface          ;
+      ar& mgt_tx_iface          ;
+      ar& drp_iface             ;
+      ar& interfaces_fname      ;
+      ar& mgt_module_fn         ;
+      ar& common_module_fn      ;
+      ar& quad_module_fn        ;
+      ar& mgt_port_offsets_fn   ;
+      ar& common_port_offsets_fn;
+      ar& mgt_drp_offsets_fn    ;
+      ar& common_drp_offsets_fn ;
+      ar& mgt_atts_fn           ;
+      ar& common_atts_fn        ;
+      ar& mgt_path              ;
+      ar& board_path            ;
+      ar& device_prefix         ;
+      ar& device_count          ;
+      ar& board_full_path;
+      ar& root_path             ;
+      ar& sv_path;
+
+      ar& mgt_config_fn         ;
+      ar& mgt_ports_fn          ;
+      ar& common_ports_fn       ;
+      ar& quad_connections_fn   ;
+      ar& fpga_mgts_fn	      ;
+      ar& refclk_buf_inst_fn  ;
+      ar& reference_clocks_fn   ;
+      ar& links_fn              ;
+      ar& interfaces_fn         ;
+      ar& mgt_inversions_fn;
+      ar& base_addr_fn;
+      ar& tx_mmcm_map_fn;
+
+      ar& mgts_per_quad         ;
+      ar& commons_per_quad      ;
+      ar& max_drp_addr_width    ;
+      ar& max_mgt_x             ;
+      ar& max_mgt_y             ;
+      ar& max_common_x          ;
+      ar& max_common_y          ;
+      ar& mgt_refclk_name     ;
+      ar& common_refclk_name   ;
+      ar& mgt_channel_name      ;
+      ar& mgt_common_name       ;
+      ar& mgt_quad_name         ;
+      ar& mgt_txoutclk_name     ;
+      ar& mgt_txusrclk_name     ;
+      ar& mgt_rxoutclk_name     ;
+      ar& mgt_rxusrclk_name     ;
+      ar& mgt_txpolarity_name  ;
+      ar& mgt_rxpolarity_name  ;
+      ar& mgt_tx_powerdown_name;
+      ar& mgt_rx_powerdown_name;
+      ar& cppl_powerdown_name  ;
+      ar& qpll_powerdown_name  ;
+
+      ar& full_drp_addr_width;
+
+      ar& quad_drp_addr1 ;
+      ar& quad_drp_addr0 ;
+      ar& quad_port_addr1;
+      ar& quad_port_addr0;
+      ar& fpga_in_out_addr;
+      ar& mem_base;
+
+      ar& xy_reg_addr;
+      ar& fd_semid;
+
+      ar& mgt_map;
+      ar& com_map;
+      ar& mgt_name_map;
+      ar& com_name_map;
+      ar& tx_mmcm_masters;
+      ar& common_map;
+    }
+
 public:
 
     int int_reg_offset    ;
@@ -55,8 +137,8 @@ public:
     string common_atts_fn        ;
     string mgt_path              ;
     string board_path            ;
-	string device_prefix         ;
-	int    device_count          ;
+    string device_prefix         ;
+    int    device_count          ;
     string board_full_path;
     string root_path             ;
     string sv_path;
@@ -104,10 +186,10 @@ public:
     int quad_port_addr1;
     int quad_port_addr0;
     int fpga_in_out_addr;
-	int mem_base;
+    int mem_base;
 
     int xy_reg_addr;
-	int fd_semid[MAX_DEVICES];
+    int fd_semid[MAX_DEVICES];
 
     void read_mgt_list ();
     void read_links ();
@@ -126,9 +208,9 @@ public:
     void read_tx_mmcm_map();
     void tx_phase_align(int fd);
     int  mkxy (int x, int y) {return x*1000+y;} // make one integer out of X and Y, for maps
-	int  create_semaphore (int dev_ind);
-	int  lock_board(int fd);
-	int  unlock_board(int fd);
+    int  create_semaphore (int dev_ind);
+    int  lock_board(int fd);
+    int  unlock_board(int fd);
 
     map<int,drp_unit> mgt_map; // XY coordinate to MGT
     map<int,drp_unit> com_map; // XY coordinate to COMMON

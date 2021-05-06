@@ -39,25 +39,35 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/system/error_code.hpp>
 
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/array.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/version.hpp>
+#include <boost/multiprecision/cpp_int/serialize.hpp>
+
 using namespace std;
+
 #ifdef MTF7 // MTF7 hardware access via PCIE
 #define mwrite(a,b,c,d) if (pwrite (a,b,c,d) != c) printf ("pwrite error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
 // read twice because of DRP interface peculiarity in MTF7
 #define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__); pread (a,b,c,d);
 
-	#define mopen(d) ::open(d, O_RDWR)
+#define mopen(d) ::open(d, O_RDWR)
 
-#endif 
+#endif
 #ifdef AXI // AXI hardware, memory mapping access
-	
-	#include <sys/mman.h> 
+
+	#include <sys/mman.h>
 	// two parameters below should come from config file
 	#define DRP_SIZE 0x10000 // 13 bits of DRP address x 32 bit words = 15 bits of address
 	#define DRP_BASE 0x54000000 // DRP area base address
 	// AXI versions of mwrite and mread support only 8-byte transfers
 	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
 	#define mread(a,b,c,d)  {*b = *((uint64_t*)(sys_vptr + d));}
-// debug versions of the macros 
+// debug versions of the macros
 //	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
 //	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}
 	#define mopen(d) open_dev_mem()
@@ -73,6 +83,16 @@ using namespace std;
 
 class bit_range
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+	ar& low;
+	ar& high;
+	ar& mask;
+    }
+
 public:
     int low, high;
     boost::multiprecision::uint128_t mask;
@@ -89,6 +109,16 @@ public:
 // this class represents one part of such attribute
 class part_att
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+	ar& offset;
+	ar& reg_rng;
+	ar& att_rng;
+    }
+
 public:
     int offset;
     bit_range reg_rng; // bits in register representing this part
@@ -99,6 +129,22 @@ public:
 
 class attribute
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+	ar& name;
+	ar& brange;
+	ar& att_enc;
+	ar& p_reg;
+	ar& value;
+	ar& valid_value;
+	ar& drp_reg;
+	ar& read_only;
+	ar& unit;
+    }
+
 public:
     string name;
     bit_range brange; // full range of this attribute
@@ -109,6 +155,7 @@ public:
     bool drp_reg; // this is drp register, not a port
     bool read_only;
     string unit; // which unit inside MGT does this attribute/port belongs to (RX, TX, CPLL)
+    attribute(){}
     attribute(string nm, const bit_range& ar){name = nm; brange = ar; valid_value = false;}
     // add new attribute part to this attribute, expand range
     void add_part (part_att pa) {p_reg.push_back(pa); brange.expand(pa.att_rng);}
@@ -116,6 +163,16 @@ public:
 
 class register_prop
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+	ar& value;
+	ar& drp_reg;
+	ar& read_only;
+    }
+
 public:
     uint32_t value;
     bool drp_reg;
@@ -130,6 +187,53 @@ public:
 
 class drp_unit
 {
+private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar& prescale;
+	ar& rxout_div;
+	ar& rx_data_width;
+
+	ar& eq_mode;
+	ar& h_max;
+	ar& v_max;
+	ar& h_step;
+	ar& v_step;
+
+	ar& common;
+	ar& common_is_used;
+	ar& base_addr;
+	ar& rx_group_name;
+	ar& rx_group_index;
+	ar& tx_group_name;
+	ar& tx_group_index;
+
+	ar& rx_active;
+	ar& tx_active;
+	ar& x;
+	ar& y;
+	ar& tx_protocol_path;
+	ar& tx_pll;
+	ar& tx_refclk_f;
+
+	ar& rx_protocol_path;
+	ar& rx_pll;
+	ar& rx_refclk_f;
+	ar& quad_address;
+
+	ar& quad_drp_addr1 ;
+	ar& quad_drp_addr0 ;
+	ar& quad_port_addr1;
+	ar& quad_port_addr0;
+
+	ar& atts;
+	ar& registers;
+	ar& MEM_BASE;
+	ar& tx_mmcm_slaves;
+    }
+
 public:
     // Control the prescaling of the sample count to keep both sample
     // count and error count in reasonable precision within the 16-bit
@@ -237,7 +341,6 @@ public:
     void eyescan_complete (int fd, int x, int y, int scale, int i, int mode);
 
     string print();
-
 };
 
 #endif // DRP_UNIT_H

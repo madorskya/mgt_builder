@@ -33,11 +33,11 @@
 	// sys_vptr is byte pointer
 	uint8_t *sys_vptr;
 	int sys_fd;
-	int open_dev_mem () 
+	int open_dev_mem ()
 	{
-		sys_fd = ::open("/dev/mem", O_RDWR | O_SYNC); 
+		sys_fd = ::open("/dev/mem", O_RDWR | O_SYNC);
 		if (sys_fd != -1)
-			sys_vptr = (uint8_t *)mmap(NULL, DRP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, sys_fd, DRP_BASE);
+		sys_vptr = (uint8_t *)mmap(NULL, DRP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, sys_fd, DRP_BASE);
 		else sys_vptr = NULL;
 		return sys_fd;
 	}
@@ -120,11 +120,11 @@ void register_wr1 (string cmd)
 	int common   = strtol (argv[4].c_str(), NULL, 10);
 	string rname = argv[5];
 	int wr_data  = strtol (argv[6].c_str(), NULL, 16);
- 
+
 
 	for (int i = 0; i < device_count; i++)
 	{
-		if (fd[i] >= 0 && device_selected[i]) 
+		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
 			// find MGT
@@ -202,7 +202,7 @@ void device_reset (string cmd)
 	if (argv[1].compare("v7_gth") == 0) v7_gth = true;
 	if (argv[1].compare("usplus_gth") == 0) usplus_gth = true;
 
-	if (!v7_gth && !usplus_gth) 
+	if (!v7_gth && !usplus_gth)
 	{
 		cout << "please specify supported device family" << endl;
 		return;
@@ -327,8 +327,8 @@ node_record nr[] =
 	{0, "scan",              "link X",          NULL,           NULL},
 	{1,     "([0-1])",       "link Y",          NULL,           NULL},
 	{2,     "([0-9]+)",      "scale(6-15)",     NULL,           NULL},
-  {3,     "([0-9]+)",      "mode:normal-2d(0)|bathtub(1)",    NULL,       NULL},
-  {4,     "([0-9]+)",      "<Enter>",         eyescan,        NULL},
+  	{3,     "([0-9]+)",      "mode:normal-2d(0)|bathtub(1)",    NULL,       NULL},
+  	{4,     "([0-9]+)",      "<Enter>",         eyescan,        NULL},
 	{0, "reset",             "device family",   NULL,           NULL},
 	{1,     "v7_gth",        "<Enter>",         device_reset,   NULL},
 	{1,     "usplus_gth",    "<Enter>",         device_reset,   NULL},
@@ -347,15 +347,31 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
     {
-        // argv[1] is top config file name
-        chip.read_top_config (argv[1]); // top configuration file
-        chip.read_mgt_config (); // read MGT configuration
-        chip.read_mgt_list   (); // fpga link base addresses
-        chip.read_links      (); // link config file, same as what java script reads
-        chip.read_params     (); // DRP registers' and port settings for each link, according to protocol. File names are created automatically
-        chip.read_inversions (); // read inversion flags for each link
-        chip.fill_registers  (); // using this to only detect which registers are there, and fill map with offsets
-        chip.read_tx_mmcm_map(); // read map of TX clock-sharing MMCMs
+		if (!boost::filesystem::exists("/tmp/mgt_serialize.dat"))
+		{
+			// argv[1] is top config file name
+			chip.read_top_config (argv[1]); // top configuration file
+			chip.read_mgt_config (); // read MGT configuration
+			chip.read_mgt_list   (); // fpga link base addresses
+			chip.read_links      (); // link config file, same as what java script reads
+			chip.read_params     (); // DRP registers' and port settings for each link, according to protocol. File names are created automatically
+			chip.read_inversions (); // read inversion flags for each link
+			chip.fill_registers  (); // using this to only detect which registers are there, and fill map with offsets
+			chip.read_tx_mmcm_map(); // read map of TX clock-sharing MMCMs
+
+			std::ofstream ofs("/tmp/mgt_serialize.dat", std::ios::binary);
+			boost::archive::binary_oarchive oa(ofs);
+			oa << chip;
+			ofs.close();
+			chmod("/tmp/mgt_serialize.dat", 0666);
+		}
+		else
+		{
+			std::ifstream ifs("/tmp/mgt_serialize.dat", std::ios::binary);
+			boost::archive::binary_iarchive ia(ifs);
+			ia >> chip;
+			ifs.close();
+		}
 
 		// open devices
 		string device_prefix = chip.device_prefix;
@@ -368,13 +384,13 @@ int main(int argc, char *argv[])
  			dev_name.clear();
  			dev_name << device_prefix << i;
 			device_name[i] = dev_name.str().c_str();
-            // open device
-            //fd[i] = ::open(device_name[i].c_str(), O_RDWR);
-            fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
-            if (fd[i] < 0)
-            {
-                printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());
-            }
+            		// open device
+            		//fd[i] = ::open(device_name[i].c_str(), O_RDWR);
+            		fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
+            		if (fd[i] < 0)
+            		{
+                		printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());
+            		}
 			else
 			{
 				// create semaphore for this board
