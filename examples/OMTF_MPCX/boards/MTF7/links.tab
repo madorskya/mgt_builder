@@ -1,0 +1,5 @@
+// type	X	Y	Protocol	CPLL/QPLL	Refclk F	interface	index	
+rx	0	4	MPCX	C	640	mpc0_rx	0	
+rx	0	5	MPCX	C	640	mpc0_rx	1	
+rx	0	6	MPCX	C	640	mpc0_rx	2	
+rx	0	7	MPCX	C	640	mpc0_rx	3	
