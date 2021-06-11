@@ -28,6 +28,15 @@ module GTHE2_CHANNEL_tux
 	wire [15:0] XY = mgtxy[qind][mind];
 	reg  [31:0] reg_  [ 4: 0];
 	wire [31:0] wire_ [ 6: 5];
+
+    // manual addition: power down everything by default 
+    initial
+    begin
+       reg_[0][5] = 1'b1;
+       reg_[0][7:6] = 2'b11;
+       reg_[0][10:9] = 2'b11;
+    end
+
     reg         int_reg_rdy;
     reg  [31:0] drpdo_reg;
     wire        drprdy_mgt;

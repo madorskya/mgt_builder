@@ -20,6 +20,13 @@ module GTHE2_COMMON_tux
 	wire [15:0] XY = mgtxy[qind][mind];
 	reg  [31:0] reg_  [ 0: 0];
 	wire [31:0] wire_ [ 1: 1];
+
+    // manual addition: power down everything by default 
+    initial
+    begin
+       reg_[0][0] = 1'b1;
+    end
+
     reg         int_reg_rdy;
     reg  [31:0] drpdo_reg;
     wire        drprdy_mgt;
