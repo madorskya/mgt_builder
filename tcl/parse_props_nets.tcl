@@ -1,12 +1,26 @@
 #!/usr/bin/tclsh
 
-# Put next command in Vivado Tcl console: set args "YOUR GTs CELL NAME PATTERNS"; source /path/to/parse_props_nets.tcl
+# This script extracts MGT and COMMON modules attributes and nets from a synthesized Vivado project. 
+# How to use:
+# Use Vivado Transceiver Wizard to generate the MGT IP with the configuration that you need to implement as an MGT Builder protocol
+# Open example design for that IP from inside Vivado
+# Synthesize the example and open the synthesized design
+# Using TCL console in Vivado cd into directory where you want to place generated files with MGT attributes and nets
+# Execute this command in Vivado Tcl console: set args "YOUR GTs CELL NAME PATTERNS"; source /path/to/parse_props_nets.tcl
+# Example: set args "GTYE4_CHANNEL GTYE4_COMMON"; source /path/to/parse_props_nets.tcl
+# Command must be single line, as shown above
+# args may include more than one item, such as channel and common modules
+# The resulting attributes and nets will be written into separate files for each item
+# Output files are created in the directory that Vivado is currently in 
+# Use pwd command in TCL console to find which directory is it if you forgot
+# Import generated files directly into Excel spreadsheets for the corresponding protocol
 
 proc parse_props {arg} {
 	puts "Parsing props ..."
 	set filename $arg
 	append filename "_props.out"
-	set f [open "$::env(HOME)/$filename" "w"]
+#	set f [open "$::env(HOME)/$filename" "w"]
+	set f [open "$filename" "w"]
 	set reg ".*$arg\[A-Za-z_\]+"
 	set props [report_property -all [lindex [get_cells -hierarchical -regexp $reg] end] -return_string]
 	foreach prop [split $props "\n"] {
@@ -29,7 +43,8 @@ proc parse_nets {arg} {
 	puts "Parsing nets ..."
 	set filename $arg
 	append filename "_nets.out"
-	set f [open "$::env(HOME)/$filename" "w"]
+#	set f [open "$::env(HOME)/$filename" "w"]
+	set f [open "$filename" "w"]
 	set pin_mbits ""
 	set net_mbits "m'b"
 	set mbits 0
