@@ -1,7 +1,17 @@
-For getting Vivado project parameters (props, pins, nets) you need to use parse_props_nets.tcl script.
-1. Run Vivado 
-2. Run Sysnthesis
-3. Open Synthesized Design
-4. Run in Tcl Console command: set args "YOUR GTs CELL NAME PATTERNS"; source /path/to/parse_props_nets.tcl
+Instructions for parse_props_nets.tcl script
 
-For example: "YOUR GTs CELL NAME PATTERNS" as "GTYE4_CHANNEL GTYE4_COMMON etc."
+This script extracts MGT and COMMON modules attributes and nets from a synthesized Vivado project. 
+How to use:
+Use Vivado Transceiver Wizard to generate the MGT IP with the configuration that you need to implement as an MGT Builder protocol
+Open example design for that IP from inside Vivado
+Synthesize the example and open the synthesized design
+Using TCL console in Vivado cd into directory where you want to place generated files with MGT attributes and nets
+Execute this command in Vivado Tcl console: set args "YOUR GTs CELL NAME PATTERNS"; source /path/to/parse_props_nets.tcl
+Example: set args "GTYE4_CHANNEL GTYE4_COMMON"; source /path/to/parse_props_nets.tcl
+Command must be single line, as shown above
+args may include more than one item, such as channel and common modules
+The resulting attributes and nets will be written into separate files for each item
+Output files are created in the directory that Vivado is currently in 
+Use pwd command in TCL console to find which directory is it if you forgot
+Import generated files directly into Excel spreadsheets for the corresponding protocol
+
