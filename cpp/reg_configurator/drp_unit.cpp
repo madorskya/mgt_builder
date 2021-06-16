@@ -19,10 +19,41 @@
 
 
 // constructor from verilog-style bit range
+// or from hex mask
+// it decides which version to use by detecting ":" symbol
 bit_range::bit_range(string s)
 {
-    int n = sscanf(s.c_str(), "%d:%d", &high, &low);
-    if (n < 2) low = high; // single bit range
+    if (s.find_first_of(':') == std::string::npos) // no separator, hex mask style
+    {
+        uint64_t txt_mask = strtoull(s.c_str(),NULL, 16); // convert mask to u64
+        int i;
+        high = 63;
+        for (i = 0; i < 64; i++) // find low bit
+        {
+            if ((txt_mask & 1ULL) == 1ULL)
+            {
+                low = i;
+                break;
+            }
+            else txt_mask >>= 1;
+        }
+        for (; i < 64; i++)
+        {
+            if ((txt_mask & 1ULL) == 0ULL)
+            {
+                high = i-1;
+                break;
+            }
+            else
+                txt_mask >>= 1;
+
+        }
+    }
+    else // verilog style
+    {
+        int n = sscanf(s.c_str(), "%d:%d", &high, &low);
+        if (n < 2) low = high; // single bit range
+    }
     make_mask();
 }
 
@@ -119,6 +150,76 @@ int drp_unit::read_config (std::string fname, bool drp_reg)
     }
     return line_count;
 }
+
+// reads register table in legacy EMTF format
+int drp_unit::read_config_emtf (std::string fname, bool drp_reg)
+{
+    ifstream file(fname.c_str(), ifstream::in);
+    string str;
+    string att_name, att_name_old;
+    int line_count = 0;
+    while (getline(file, str)) // read line by line
+    {
+
+        if (str.find("//") != string::npos) continue; // skip commented lines
+
+        vector <string> fld;
+
+        boost::split(fld, str, boost::is_any_of("\t")); // split on tabs
+        if (fld.size() < 14) continue; // malformed line
+
+        for (int bi = 0; bi < 14; bi++) boost::trim(fld[bi]);
+
+        // check if first field has contents, for new register
+        att_name_old = att_name; // remember name for the entries with just encoded attributes
+        att_name = fld.at(13);
+
+        if (!att_name.empty()) // this line contains attribute name
+        {
+
+            string reg_addr_fld = string("0x") + fld.at(4); // add prefix to register address
+            int reg_addr = strtol (reg_addr_fld.c_str(), NULL, 16); // register address converted
+            bit_range reg_range (fld.at(6)); // register bit range from mask
+            bit_range att_range (fld.at(6)); // corresponding attribute bit range from mask
+            // att_range needs correction so that low bit is always 0
+            att_range.high -= att_range.low;
+            att_range.low = 0;
+            int xfer_bytes = strtol(fld.at(5).c_str(), NULL, 16); // how wide the transfer should be for this register
+            if (xfer_bytes > 8) xfer_bytes = 8; // can only be 4 or 8
+            if (xfer_bytes != 4 && xfer_bytes != 8)
+            {
+                cout << "WARNING: unusual transfer length: " << xfer_bytes << " line: " << str << endl;
+                xfer_bytes = 8;
+            }
+            reg_addr /= xfer_bytes; // register address in this format is in bytes, convert to u64 or u32 words
+            bool read_only = fld.at(8).compare("0") == 0; // read-only attribute
+
+            if (atts.find(att_name) == atts.end()) // no record of this attribute, make one
+            {
+//                if (reg_addr == 0 && drp_reg)
+//                    cout << "creating new attribute: " << att_name << "   " << att_range.high << ":" << att_range.low
+//                         << " off: " << reg_addr << endl;
+
+                attribute na(att_name, att_range);
+                na.drp_reg = drp_reg;
+                na.read_only = read_only;
+                na.xfer_bytes = xfer_bytes;
+                atts.insert(make_pair(att_name, na));
+            }
+
+            attribute ea = atts.at(att_name); // get existing attribute (which may or may not have been just created above)
+            part_att pa (reg_addr, reg_range, att_range); // new attribute part
+            ea.add_part(pa); // add this part into attribute's list of parts, expand bit range
+
+            atts.erase  (att_name);
+            atts.insert (make_pair(att_name, ea)); // re-insert the attribute
+        }
+
+        line_count++;
+    }
+    return line_count;
+}
+
 
 boost::multiprecision::uint128_t drp_unit::verilog_value (string s)
 {
@@ -678,6 +779,7 @@ void drp_unit::att_write (int fd, string name, boost::multiprecision::uint128_t 
     if (atts.count(name) == 1)
     {
         attribute a = atts.at(name);
+        int xfer_bytes = a.xfer_bytes;
 
         // scan all register parts
         for (vector<part_att>::iterator it = a.p_reg.begin(); it != a.p_reg.end(); ++it)
@@ -687,13 +789,13 @@ void drp_unit::att_write (int fd, string name, boost::multiprecision::uint128_t 
             bit_range reg_rng = pa.reg_rng; // range of this part in register
 
             // find that register
-            register_prop reg = registers.at(pa.offset + (a.drp_reg ? 0 : PORT_MARK));
+//            register_prop reg = registers.at(pa.offset + (a.drp_reg ? 0 : PORT_MARK));
             // write quad selector
-            reg_write (fd, reg.drp_reg ? quad_drp_addr0 : quad_port_addr0, 1 << quad_address);
+//            reg_write (fd, reg.drp_reg ? quad_drp_addr0 : quad_port_addr0, 1 << quad_address);
 
             // read this part
-            int saddr = (base_addr + pa.offset)*8; // full register address, converted to bytes
-            mread (fd, &rb64, 8, saddr);
+            int saddr = (base_addr + pa.offset)*xfer_bytes; // full register address, converted to bytes
+            mread (fd, &rb64, xfer_bytes, saddr);
 
             rb = (boost::multiprecision::uint128_t) rb64;
 
@@ -739,6 +841,7 @@ boost::multiprecision::uint128_t drp_unit::att_read  (int fd, string name, strin
     if (atts.count(name) == 1)
     {
         attribute a = atts.at(name);
+        int xfer_bytes = a.xfer_bytes;
 
         // scan all register parts
         for (vector<part_att>::iterator it = a.p_reg.begin(); it != a.p_reg.end(); ++it)
@@ -752,14 +855,15 @@ boost::multiprecision::uint128_t drp_unit::att_read  (int fd, string name, strin
             // find that register
             if (registers.count(offset_reg) > 0)
             {
-                register_prop reg = registers.at(offset_reg);
+//                register_prop reg = registers.at(offset_reg);
                 // write quad selector
-                reg_write (fd, reg.drp_reg ? quad_drp_addr0 : quad_port_addr0, 1 << quad_address);
+//                reg_write (fd, reg.drp_reg ? quad_drp_addr0 : quad_port_addr0, 1 << quad_address);
                 // read this part
-                int saddr = (base_addr + pa.offset)*8; // full register address, converted to bytes
-                mread (fd, &rb64, 8, saddr);
-                //cout << "offset: " << hex << pa.offset << dec << " reg_rng: " << pa.reg_rng.print()
-                //     << " att_rng: " << pa.att_rng.print() << " data: " << hex << rb64 << endl;
+                int saddr = (base_addr + pa.offset)*xfer_bytes; // full register address, converted to bytes
+                mread (fd, &rb64, xfer_bytes, saddr);
+//                cout << "saddr: " << hex << saddr
+//                     << " offset: " << hex << pa.offset << dec << " reg_rng: " << pa.reg_rng.print()
+//                     << " att_rng: " << pa.att_rng.print() << " data: " << hex << rb64 << endl;
 
                 rb = (boost::multiprecision::uint128_t) rb64;
             }

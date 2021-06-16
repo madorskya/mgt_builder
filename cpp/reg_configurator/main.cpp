@@ -24,11 +24,11 @@ int main(int argc, char *argv[])
 {
 
     // argv[1] is top config file name
-    int base = 0xB6000; // base address of register bank, bytes
+    int base = 0; // base address of register bank, bytes
     drp_unit bank (base);
 
-    string register_offsets = "registers/register_offsets.tab";
-    int mgt_port_ln  = bank.read_config (register_offsets, false); // read port map
+    string register_offsets = "emtf_pcie_registers.tab";
+    int mgt_port_ln  = bank.read_config_emtf (register_offsets, false); // read port map
     cout << "read " << mgt_port_ln << " lines from file: " << register_offsets << endl;
 
 //    bank.read_params     (); // registers' settings. File names are created automatically
@@ -59,6 +59,17 @@ int main(int argc, char *argv[])
         bank.att_read_prn(device_d, "core_fpga_fw_min");
         bank.att_read_prn(device_d, "core_fpga_fw_sec");
 
+        bank.att_read_prn(device_d, "ctl_fpga_fw_year");
+        bank.att_read_prn(device_d, "ctl_fpga_fw_month");
+        bank.att_read_prn(device_d, "ctl_fpga_fw_day");
+        bank.att_read_prn(device_d, "ctl_fpga_fw_hour");
+        bank.att_read_prn(device_d, "ctl_fpga_fw_min");
+        bank.att_read_prn(device_d, "ctl_fpga_fw_sec");
+
+        bank.att_read_prn(device_d, "daq_l1a_del");
+        boost::multiprecision::uint128_t value = 0x123;
+        bank.att_write (device_d, "daq_l1a_del", value);
+        bank.att_read_prn(device_d, "daq_l1a_del");
     }
 
     return 0;

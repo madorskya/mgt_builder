@@ -31,8 +31,7 @@
 using namespace std;
 
 #define mwrite(a,b,c,d) if (pwrite (a,b,c,d) != c) printf ("pwrite error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
-// read twice because of DRP interface peculiarity in MTF7
-#define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__); pread (a,b,c,d);
+#define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
 
 #define PORT_MARK   0x40000000 // port marker for register offsets
 #define PORT_UNMARK 0x3FFFFFFF // mask for removing PORT_MARK from offsets
@@ -74,6 +73,7 @@ public:
     bool valid_value;
     bool drp_reg; // this is drp register, not a port
     bool read_only;
+    int xfer_bytes; // how wide the transfer should be
     string unit; // which unit inside MGT does this attribute/port belongs to (RX, TX, CPLL)
     attribute(string nm, const bit_range& ar){name = nm; brange = ar; valid_value = false;}
     // add new attribute part to this attribute, expand range
@@ -131,6 +131,7 @@ public:
     drp_unit    (int base_a);
     drp_unit (){}
     int  read_config (std::string fname, bool drp_reg);
+    int  read_config_emtf (std::string fname, bool drp_reg);
     void read_params ();
     int  read_params_rx_tx (string param_fname, string unit);
     int  read_units  (string fname);
