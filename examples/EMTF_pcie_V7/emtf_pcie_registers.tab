@@ -1,0 +1,1488 @@
+// base	ch	sel	offset	address hex	length (bytes, hex)	mask	read	write	description	station	chID	Chamber	Suggested parameter name	
+0			0	00000000	40000	ffffffffffffffff	1	1	loopback memory area				lb_memory	
+														
+0			c	0000000C	4	ffffffff	0	1	external PLL configuration word				ext_pll_config_word	
+0			c	0000000C	4	0000ffff	1	0	PLL unlock counter				ext_pll_unlock_cnt	
+0			c	0000000C	4	00010000	1	0	PLL lock status				ext_pll_lock	
+0			c	0000000C	4	00020000	1	0	PLL hold status				ext_pll_hold	
+0			c	0000000C	4	00040000	1	0	PLL loss of signal				ext_pll_los	
+0			c	0000000C	4	fff80000	1	0	Hard Reset counter value				hard_reset_cnt	
+														
+0			10	00000010	4	00000001	0	1	generate internal L1A				gen_int_l1a	
+0			10	00000010	4	00000fff	1	0	BC0 period counter value				bc0_period_cnt	
+0			10	00000010	4	fffff000	1	0	Resync counter value				resync_cnt	
+0			14	00000014	4	ffffffff	1	0	LHC clock counter				lhc_clk_cnt	
+0			18	00000018	4	ffffffff	1	0	PLL clock counter				ext_pll_clk_cnt	
+														
+0			1c	0000001C	4	0000003f	1	0	Control FPGA Firmware timestamp, sec				ctl_fpga_fw_sec	
+0			1c	0000001C	4	00000fc0	1	0	Control FPGA Firmware timestamp, min 				ctl_fpga_fw_min	
+0			1c	0000001C	4	0001f000	1	0	Control FPGA Firmware timestamp, hour 				ctl_fpga_fw_hour	
+0			1c	0000001C	4	007e0000	1	0	Control FPGA Firmware timestamp, year (add 2000) 				ctl_fpga_fw_year	
+0			1c	0000001C	4	07800000	1	0	Control FPGA Firmware timestamp, month 				ctl_fpga_fw_month	
+0			1c	0000001C	4	f8000000	1	0	Control FPGA Firmware timestamp, day 				ctl_fpga_fw_day	
+														
+20			0	00000020	4	00000000	0	1	Flash timer reset				flash_timer_rst	
+20			0	00000020	4	ffffffff	1	0	hardcoded 0xbabeface				flash_babeface	
+20			4	00000024	4	07ffffff	1	1	Flash address				flash_address	
+20			8	00000028	4	0000ffff	1	1	Flash data				flash_data	
+20			c	0000002C	4	00000001	1	1	Core FPGA configuration start				flash_core_config_start	
+20			c	0000002C	4	00000004	0	1	Core FPGA unconfigure				flash_core_unconfig	
+20			c	0000002C	4	00000002	1	0	Core FPGA INIT signal				flash_core_init	
+20			c	0000002C	4	00000004	1	0	Core FPGA DONE signal				flash_core_done	
+20			c	0000002C	4	00000008	1	0	Core FPGA config state machine completed				flash_core_config_sm_completed	
+20			10	00000030	4	07ffffff	1	0	Core FPGA firmware start address in Flash				flash_core_fw_start	
+20			14	00000034	4	07ffffff	1	0	Control FPGA firmware start address in Flash				flash_cnt_fw_start	
+20			18	00000038	4	0000000f	1	0	Core FPGA config state machine state				flash_core_config_sm_state	
+20			18	00000038	4	ffffffff	0	1	ICAP write word, used to reconfigure Control FPGA				flash_icap_word	
+														
+40			14	00000054	4	00000001	0	1	Core link reset				core_link_rst	
+														
+80000	0	0	0	00080000	30	0000000000001fff	1	1	Primitive converter parameters	1a	01	ME1a/01	prim_conv_params_me1a_01	
+80000	0	1	0	00080400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	01	ME1a/01	prim_conv_th_lut_me1a_01	
+80000	0	2	0	00080800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1a	01	ME1a/01	prim_conv_th_cor_me1a_01	
+80000	0	3	0	00080C00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	01	ME1a/01	prim_conv_id_me1a_01	
+80000	1	0	0	00081000	30	0000000000001fff	1	1	Primitive converter parameters	1a	02	ME1a/02	prim_conv_params_me1a_02	
+80000	1	1	0	00081400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	02	ME1a/02	prim_conv_th_lut_me1a_02	
+80000	1	2	0	00081800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1a	02	ME1a/02	prim_conv_th_cor_me1a_02	
+80000	1	3	0	00081C00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	02	ME1a/02	prim_conv_id_me1a_02	
+80000	2	0	0	00082000	30	0000000000001fff	1	1	Primitive converter parameters	1a	03	ME1a/03	prim_conv_params_me1a_03	
+80000	2	1	0	00082400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	03	ME1a/03	prim_conv_th_lut_me1a_03	
+80000	2	2	0	00082800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1a	03	ME1a/03	prim_conv_th_cor_me1a_03	
+80000	2	3	0	00082C00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	03	ME1a/03	prim_conv_id_me1a_03	
+80000	3	0	0	00083000	20	0000000000001fff	1	1	Primitive converter parameters	1a	04	ME1a/04	prim_conv_params_me1a_04	
+80000	3	1	0	00083400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	04	ME1a/04	prim_conv_th_lut_me1a_04	
+80000	3	2	0	00083800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	04	ME1a/04	prim_conv_id_me1a_04	
+80000	4	0	0	00084000	20	0000000000001fff	1	1	Primitive converter parameters	1a	05	ME1a/05	prim_conv_params_me1a_05	
+80000	4	1	0	00084400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	05	ME1a/05	prim_conv_th_lut_me1a_05	
+80000	4	2	0	00084800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	05	ME1a/05	prim_conv_id_me1a_05	
+80000	5	0	0	00085000	20	0000000000001fff	1	1	Primitive converter parameters	1a	06	ME1a/06	prim_conv_params_me1a_06	
+80000	5	1	0	00085400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	06	ME1a/06	prim_conv_th_lut_me1a_06	
+80000	5	2	0	00085800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	06	ME1a/06	prim_conv_id_me1a_06	
+80000	6	0	0	00086000	20	0000000000001fff	1	1	Primitive converter parameters	1a	07	ME1a/07	prim_conv_params_me1a_07	
+80000	6	1	0	00086400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	07	ME1a/07	prim_conv_th_lut_me1a_07	
+80000	6	2	0	00086800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	07	ME1a/07	prim_conv_id_me1a_07	
+80000	7	0	0	00087000	20	0000000000001fff	1	1	Primitive converter parameters	1a	08	ME1a/08	prim_conv_params_me1a_08	
+80000	7	1	0	00087400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	08	ME1a/08	prim_conv_th_lut_me1a_08	
+80000	7	2	0	00087800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	08	ME1a/08	prim_conv_id_me1a_08	
+80000	8	0	0	00088000	20	0000000000001fff	1	1	Primitive converter parameters	1a	09	ME1a/09	prim_conv_params_me1a_09	
+80000	8	1	0	00088400	400	000000000000003f	1	1	Primitive converter theta LUT	1a	09	ME1a/09	prim_conv_th_lut_me1a_09	
+80000	8	2	0	00088800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1a	09	ME1a/09	prim_conv_id_me1a_09	
+80000	9	0	0	00089000	30	0000000000001fff	1	1	Primitive converter parameters	1b	01	ME1b/01	prim_conv_params_me1b_01	
+80000	9	1	0	00089400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	01	ME1b/01	prim_conv_th_lut_me1b_01	
+80000	9	2	0	00089800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1b	01	ME1b/01	prim_conv_th_cor_me1b_01	
+80000	9	3	0	00089C00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	01	ME1b/01	prim_conv_id_me1b_01	
+80000	10	0	0	0008A000	30	0000000000001fff	1	1	Primitive converter parameters	1b	02	ME1b/02	prim_conv_params_me1b_02	
+80000	10	1	0	0008A400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	02	ME1b/02	prim_conv_th_lut_me1b_02	
+80000	10	2	0	0008A800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1b	02	ME1b/02	prim_conv_th_cor_me1b_02	
+80000	10	3	0	0008AC00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	02	ME1b/02	prim_conv_id_me1b_02	
+80000	11	0	0	0008B000	30	0000000000001fff	1	1	Primitive converter parameters	1b	03	ME1b/03	prim_conv_params_me1b_03	
+80000	11	1	0	0008B400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	03	ME1b/03	prim_conv_th_lut_me1b_03	
+80000	11	2	0	0008B800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1b	03	ME1b/03	prim_conv_th_cor_me1b_03	
+80000	11	3	0	0008BC00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	03	ME1b/03	prim_conv_id_me1b_03	
+80000	12	0	0	0008C000	20	0000000000001fff	1	1	Primitive converter parameters	1b	04	ME1b/04	prim_conv_params_me1b_04	
+80000	12	1	0	0008C400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	04	ME1b/04	prim_conv_th_lut_me1b_04	
+80000	12	2	0	0008C800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	04	ME1b/04	prim_conv_id_me1b_04	
+80000	13	0	0	0008D000	20	0000000000001fff	1	1	Primitive converter parameters	1b	05	ME1b/05	prim_conv_params_me1b_05	
+80000	13	1	0	0008D400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	05	ME1b/05	prim_conv_th_lut_me1b_05	
+80000	13	2	0	0008D800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	05	ME1b/05	prim_conv_id_me1b_05	
+80000	14	0	0	0008E000	20	0000000000001fff	1	1	Primitive converter parameters	1b	06	ME1b/06	prim_conv_params_me1b_06	
+80000	14	1	0	0008E400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	06	ME1b/06	prim_conv_th_lut_me1b_06	
+80000	14	2	0	0008E800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	06	ME1b/06	prim_conv_id_me1b_06	
+80000	15	0	0	0008F000	20	0000000000001fff	1	1	Primitive converter parameters	1b	07	ME1b/07	prim_conv_params_me1b_07	
+80000	15	1	0	0008F400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	07	ME1b/07	prim_conv_th_lut_me1b_07	
+80000	15	2	0	0008F800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	07	ME1b/07	prim_conv_id_me1b_07	
+80000	16	0	0	00090000	20	0000000000001fff	1	1	Primitive converter parameters	1b	08	ME1b/08	prim_conv_params_me1b_08	
+80000	16	1	0	00090400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	08	ME1b/08	prim_conv_th_lut_me1b_08	
+80000	16	2	0	00090800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	08	ME1b/08	prim_conv_id_me1b_08	
+80000	17	0	0	00091000	20	0000000000001fff	1	1	Primitive converter parameters	1b	09	ME1b/09	prim_conv_params_me1b_09	
+80000	17	1	0	00091400	400	000000000000003f	1	1	Primitive converter theta LUT	1b	09	ME1b/09	prim_conv_th_lut_me1b_09	
+80000	17	2	0	00091800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1b	09	ME1b/09	prim_conv_id_me1b_09	
+80000	18	0	0	00092000	20	0000000000001fff	1	1	Primitive converter parameters	2	01	ME2/01	prim_conv_params_me2_01	
+80000	18	1	0	00092400	400	000000000000003f	1	1	Primitive converter theta LUT	2	01	ME2/01	prim_conv_th_lut_me2_01	
+80000	18	2	0	00092800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	01	ME2/01	prim_conv_id_me2_01	
+80000	19	0	0	00093000	20	0000000000001fff	1	1	Primitive converter parameters	2	02	ME2/02	prim_conv_params_me2_02	
+80000	19	1	0	00093400	400	000000000000003f	1	1	Primitive converter theta LUT	2	02	ME2/02	prim_conv_th_lut_me2_02	
+80000	19	2	0	00093800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	02	ME2/02	prim_conv_id_me2_02	
+80000	20	0	0	00094000	20	0000000000001fff	1	1	Primitive converter parameters	2	03	ME2/03	prim_conv_params_me2_03	
+80000	20	1	0	00094400	400	000000000000003f	1	1	Primitive converter theta LUT	2	03	ME2/03	prim_conv_th_lut_me2_03	
+80000	20	2	0	00094800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	03	ME2/03	prim_conv_id_me2_03	
+80000	21	0	0	00095000	20	0000000000001fff	1	1	Primitive converter parameters	2	04	ME2/04	prim_conv_params_me2_04	
+80000	21	1	0	00095400	400	000000000000003f	1	1	Primitive converter theta LUT	2	04	ME2/04	prim_conv_th_lut_me2_04	
+80000	21	2	0	00095800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	04	ME2/04	prim_conv_id_me2_04	
+80000	22	0	0	00096000	20	0000000000001fff	1	1	Primitive converter parameters	2	05	ME2/05	prim_conv_params_me2_05	
+80000	22	1	0	00096400	400	000000000000003f	1	1	Primitive converter theta LUT	2	05	ME2/05	prim_conv_th_lut_me2_05	
+80000	22	2	0	00096800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	05	ME2/05	prim_conv_id_me2_05	
+80000	23	0	0	00097000	20	0000000000001fff	1	1	Primitive converter parameters	2	06	ME2/06	prim_conv_params_me2_06	
+80000	23	1	0	00097400	400	000000000000003f	1	1	Primitive converter theta LUT	2	06	ME2/06	prim_conv_th_lut_me2_06	
+80000	23	2	0	00097800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	06	ME2/06	prim_conv_id_me2_06	
+80000	24	0	0	00098000	20	0000000000001fff	1	1	Primitive converter parameters	2	07	ME2/07	prim_conv_params_me2_07	
+80000	24	1	0	00098400	400	000000000000003f	1	1	Primitive converter theta LUT	2	07	ME2/07	prim_conv_th_lut_me2_07	
+80000	24	2	0	00098800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	07	ME2/07	prim_conv_id_me2_07	
+80000	25	0	0	00099000	20	0000000000001fff	1	1	Primitive converter parameters	2	08	ME2/08	prim_conv_params_me2_08	
+80000	25	1	0	00099400	400	000000000000003f	1	1	Primitive converter theta LUT	2	08	ME2/08	prim_conv_th_lut_me2_08	
+80000	25	2	0	00099800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	08	ME2/08	prim_conv_id_me2_08	
+80000	26	0	0	0009A000	20	0000000000001fff	1	1	Primitive converter parameters	2	09	ME2/09	prim_conv_params_me2_09	
+80000	26	1	0	0009A400	400	000000000000003f	1	1	Primitive converter theta LUT	2	09	ME2/09	prim_conv_th_lut_me2_09	
+80000	26	2	0	0009A800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2	09	ME2/09	prim_conv_id_me2_09	
+80000	27	0	0	0009B000	20	0000000000001fff	1	1	Primitive converter parameters	3	01	ME3/01	prim_conv_params_me3_01	
+80000	27	1	0	0009B400	400	000000000000003f	1	1	Primitive converter theta LUT	3	01	ME3/01	prim_conv_th_lut_me3_01	
+80000	27	2	0	0009B800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	01	ME3/01	prim_conv_id_me3_01	
+80000	28	0	0	0009C000	20	0000000000001fff	1	1	Primitive converter parameters	3	02	ME3/02	prim_conv_params_me3_02	
+80000	28	1	0	0009C400	400	000000000000003f	1	1	Primitive converter theta LUT	3	02	ME3/02	prim_conv_th_lut_me3_02	
+80000	28	2	0	0009C800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	02	ME3/02	prim_conv_id_me3_02	
+80000	29	0	0	0009D000	20	0000000000001fff	1	1	Primitive converter parameters	3	03	ME3/03	prim_conv_params_me3_03	
+80000	29	1	0	0009D400	400	000000000000003f	1	1	Primitive converter theta LUT	3	03	ME3/03	prim_conv_th_lut_me3_03	
+80000	29	2	0	0009D800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	03	ME3/03	prim_conv_id_me3_03	
+80000	30	0	0	0009E000	20	0000000000001fff	1	1	Primitive converter parameters	3	04	ME3/04	prim_conv_params_me3_04	
+80000	30	1	0	0009E400	400	000000000000003f	1	1	Primitive converter theta LUT	3	04	ME3/04	prim_conv_th_lut_me3_04	
+80000	30	2	0	0009E800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	04	ME3/04	prim_conv_id_me3_04	
+80000	31	0	0	0009F000	20	0000000000001fff	1	1	Primitive converter parameters	3	05	ME3/05	prim_conv_params_me3_05	
+80000	31	1	0	0009F400	400	000000000000003f	1	1	Primitive converter theta LUT	3	05	ME3/05	prim_conv_th_lut_me3_05	
+80000	31	2	0	0009F800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	05	ME3/05	prim_conv_id_me3_05	
+80000	32	0	0	000A0000	20	0000000000001fff	1	1	Primitive converter parameters	3	06	ME3/06	prim_conv_params_me3_06	
+80000	32	1	0	000A0400	400	000000000000003f	1	1	Primitive converter theta LUT	3	06	ME3/06	prim_conv_th_lut_me3_06	
+80000	32	2	0	000A0800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	06	ME3/06	prim_conv_id_me3_06	
+80000	33	0	0	000A1000	20	0000000000001fff	1	1	Primitive converter parameters	3	07	ME3/07	prim_conv_params_me3_07	
+80000	33	1	0	000A1400	400	000000000000003f	1	1	Primitive converter theta LUT	3	07	ME3/07	prim_conv_th_lut_me3_07	
+80000	33	2	0	000A1800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	07	ME3/07	prim_conv_id_me3_07	
+80000	34	0	0	000A2000	20	0000000000001fff	1	1	Primitive converter parameters	3	08	ME3/08	prim_conv_params_me3_08	
+80000	34	1	0	000A2400	400	000000000000003f	1	1	Primitive converter theta LUT	3	08	ME3/08	prim_conv_th_lut_me3_08	
+80000	34	2	0	000A2800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	08	ME3/08	prim_conv_id_me3_08	
+80000	35	0	0	000A3000	20	0000000000001fff	1	1	Primitive converter parameters	3	09	ME3/09	prim_conv_params_me3_09	
+80000	35	1	0	000A3400	400	000000000000003f	1	1	Primitive converter theta LUT	3	09	ME3/09	prim_conv_th_lut_me3_09	
+80000	35	2	0	000A3800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3	09	ME3/09	prim_conv_id_me3_09	
+80000	36	0	0	000A4000	20	0000000000001fff	1	1	Primitive converter parameters	4	01	ME4/01	prim_conv_params_me4_01	
+80000	36	1	0	000A4400	400	000000000000003f	1	1	Primitive converter theta LUT	4	01	ME4/01	prim_conv_th_lut_me4_01	
+80000	36	2	0	000A4800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	01	ME4/01	prim_conv_id_me4_01	
+80000	37	0	0	000A5000	20	0000000000001fff	1	1	Primitive converter parameters	4	02	ME4/02	prim_conv_params_me4_02	
+80000	37	1	0	000A5400	400	000000000000003f	1	1	Primitive converter theta LUT	4	02	ME4/02	prim_conv_th_lut_me4_02	
+80000	37	2	0	000A5800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	02	ME4/02	prim_conv_id_me4_02	
+80000	38	0	0	000A6000	20	0000000000001fff	1	1	Primitive converter parameters	4	03	ME4/03	prim_conv_params_me4_03	
+80000	38	1	0	000A6400	400	000000000000003f	1	1	Primitive converter theta LUT	4	03	ME4/03	prim_conv_th_lut_me4_03	
+80000	38	2	0	000A6800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	03	ME4/03	prim_conv_id_me4_03	
+80000	39	0	0	000A7000	20	0000000000001fff	1	1	Primitive converter parameters	4	04	ME4/04	prim_conv_params_me4_04	
+80000	39	1	0	000A7400	400	000000000000003f	1	1	Primitive converter theta LUT	4	04	ME4/04	prim_conv_th_lut_me4_04	
+80000	39	2	0	000A7800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	04	ME4/04	prim_conv_id_me4_04	
+80000	40	0	0	000A8000	20	0000000000001fff	1	1	Primitive converter parameters	4	05	ME4/05	prim_conv_params_me4_05	
+80000	40	1	0	000A8400	400	000000000000003f	1	1	Primitive converter theta LUT	4	05	ME4/05	prim_conv_th_lut_me4_05	
+80000	40	2	0	000A8800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	05	ME4/05	prim_conv_id_me4_05	
+80000	41	0	0	000A9000	20	0000000000001fff	1	1	Primitive converter parameters	4	06	ME4/06	prim_conv_params_me4_06	
+80000	41	1	0	000A9400	400	000000000000003f	1	1	Primitive converter theta LUT	4	06	ME4/06	prim_conv_th_lut_me4_06	
+80000	41	2	0	000A9800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	06	ME4/06	prim_conv_id_me4_06	
+80000	42	0	0	000AA000	20	0000000000001fff	1	1	Primitive converter parameters	4	07	ME4/07	prim_conv_params_me4_07	
+80000	42	1	0	000AA400	400	000000000000003f	1	1	Primitive converter theta LUT	4	07	ME4/07	prim_conv_th_lut_me4_07	
+80000	42	2	0	000AA800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	07	ME4/07	prim_conv_id_me4_07	
+80000	43	0	0	000AB000	20	0000000000001fff	1	1	Primitive converter parameters	4	08	ME4/08	prim_conv_params_me4_08	
+80000	43	1	0	000AB400	400	000000000000003f	1	1	Primitive converter theta LUT	4	08	ME4/08	prim_conv_th_lut_me4_08	
+80000	43	2	0	000AB800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	08	ME4/08	prim_conv_id_me4_08	
+80000	44	0	0	000AC000	20	0000000000001fff	1	1	Primitive converter parameters	4	09	ME4/09	prim_conv_params_me4_09	
+80000	44	1	0	000AC400	400	000000000000003f	1	1	Primitive converter theta LUT	4	09	ME4/09	prim_conv_th_lut_me4_09	
+80000	44	2	0	000AC800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4	09	ME4/09	prim_conv_id_me4_09	
+80000	45	0	0	000AD000	20	0000000000001fff	1	1	Primitive converter parameters	1n	03	ME1n/03	prim_conv_params_me1n_03	
+80000	45	1	0	000AD400	400	000000000000003f	1	1	Primitive converter theta LUT	1n	03	ME1n/03	prim_conv_th_lut_me1n_03	
+80000	45	2	0	000AD800	400	000000000000003f	1	1	Primitive converter theta correction LUT	1n	03	ME1n/03	prim_conv_th_cor_me1n_03	
+80000	45	3	0	000ADC00	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1n	03	ME1n/03	prim_conv_id_me1n_03	
+80000	46	0	0	000AE000	20	0000000000001fff	1	1	Primitive converter parameters	1n	06	ME1n/06	prim_conv_params_me1n_06	
+80000	46	1	0	000AE400	400	000000000000003f	1	1	Primitive converter theta LUT	1n	06	ME1n/06	prim_conv_th_lut_me1n_06	
+80000	46	2	0	000AE800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1n	06	ME1n/06	prim_conv_id_me1n_06	
+80000	47	0	0	000AF000	20	0000000000001fff	1	1	Primitive converter parameters	1n	09	ME1n/09	prim_conv_params_me1n_09	
+80000	47	1	0	000AF400	400	000000000000003f	1	1	Primitive converter theta LUT	1n	09	ME1n/09	prim_conv_th_lut_me1n_09	
+80000	47	2	0	000AF800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	1n	09	ME1n/09	prim_conv_id_me1n_09	
+80000	48	0	0	000B0000	20	0000000000001fff	1	1	Primitive converter parameters	2n	03	ME2n/03	prim_conv_params_me2n_03	
+80000	48	1	0	000B0400	400	000000000000003f	1	1	Primitive converter theta LUT	2n	03	ME2n/03	prim_conv_th_lut_me2n_03	
+80000	48	2	0	000B0800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2n	03	ME2n/03	prim_conv_id_me2n_03	
+80000	49	0	0	000B1000	20	0000000000001fff	1	1	Primitive converter parameters	2n	09	ME2n/09	prim_conv_params_me2n_09	
+80000	49	1	0	000B1400	400	000000000000003f	1	1	Primitive converter theta LUT	2n	09	ME2n/09	prim_conv_th_lut_me2n_09	
+80000	49	2	0	000B1800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	2n	09	ME2n/09	prim_conv_id_me2n_09	
+80000	50	0	0	000B2000	20	0000000000001fff	1	1	Primitive converter parameters	3n	03	ME3n/03	prim_conv_params_me3n_03	
+80000	50	1	0	000B2400	400	000000000000003f	1	1	Primitive converter theta LUT	3n	03	ME3n/03	prim_conv_th_lut_me3n_03	
+80000	50	2	0	000B2800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3n	03	ME3n/03	prim_conv_id_me3n_03	
+80000	51	0	0	000B3000	20	0000000000001fff	1	1	Primitive converter parameters	3n	09	ME3n/09	prim_conv_params_me3n_09	
+80000	51	1	0	000B3400	400	000000000000003f	1	1	Primitive converter theta LUT	3n	09	ME3n/09	prim_conv_th_lut_me3n_09	
+80000	51	2	0	000B3800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	3n	09	ME3n/09	prim_conv_id_me3n_09	
+80000	52	0	0	000B4000	20	0000000000001fff	1	1	Primitive converter parameters	4n	03	ME4n/03	prim_conv_params_me4n_03	
+80000	52	1	0	000B4400	400	000000000000003f	1	1	Primitive converter theta LUT	4n	03	ME4n/03	prim_conv_th_lut_me4n_03	
+80000	52	2	0	000B4800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4n	03	ME4n/03	prim_conv_id_me4n_03	
+80000	53	0	0	000B5000	20	0000000000001fff	1	1	Primitive converter parameters	4n	09	ME4n/09	prim_conv_params_me4n_09	
+80000	53	1	0	000B5400	400	000000000000003f	1	1	Primitive converter theta LUT	4n	09	ME4n/09	prim_conv_th_lut_me4n_09	
+80000	53	2	0	000B5800	8	00000000000000ff	1	0	Primitive converter ID, [7:4]=station, [3:0]=chamber	4n	09	ME4n/09	prim_conv_id_me4n_09	
+														
+80000	54	0	0	000B6000	8	0000000000000001	1	1	GTH reset				gth_rst	
+80000	54	0	0	000B6000	8	0000000000000002	1	1	inject test data				inject_test_data	
+80000	54	0	0	000B6000	8	0000000000000004	1	1	spy memory reset				spy_mem_rst	
+80000	54	0	0	000B6000	8	0000000000000008	1	1	reset PT LUT clock manager				ptlut_clk_rst	
+80000	54	0	0	000B6000	8	0000000000000010	1	1	reset PT LUT memory ICs				ptlut_chips_rst	
+80000	54	0	0	000B6000	8	0000000000000020	1	1	PT LUT MRS command				ptlut_mrs_cmd	
+80000	54	0	0	000B6000	8	0000000000000040	1	1	PT LUT write command				ptlut_write_cmd	
+80000	54	0	0	000B6000	8	0000000000000080	1	1	PT LUT read command				ptlut_read_cmd	
+80000	54	0	0	000B6000	8	0000000000000100	1	1	reserved					
+80000	54	0	0	000B6000	8	0000000000000200	1	1	reserved					
+80000	54	0	0	000B6000	8	0000000000000400	1	1	PT LUT data bus delays clock enable				ptlut_dbdel_clk_en	
+80000	54	0	0	000B6000	8	0000000000000800	1	1	reserved					
+80000	54	0	0	000B6000	8	0000000000001000	1	1	PT LUT data bus delays load				ptlut_dbdel_ld	
+80000	54	0	0	000B6000	8	0000000000002000	1	1	PT LUT data bus delays reset				ptlut_dbdel_rst	
+80000	54	0	0	000B6000	8	0000000000004000	1	1	reserved					
+80000	54	0	0	000B6000	8	0000000000008000	1	1	GTH RX buffers reset				gth_rx_buf_rst	
+80000	54	0	0	000B6000	8	0000000000010000	1	1	Enable Latency test				latency_test_en	
+80000	54	0	0	000B6000	8	0000000000020000	1	1	DAQ module reset				daq_rst	
+80000	54	0	0	000B6000	8	0000000000040000	1	1	Force Out-Of-Sync state				force_oos	
+80000	54	0	0	000B6000	8	0000000000080000	1	1	Enable MPC links reset on Hard Reset				mpc_links_hr_en	
+80000	54	0	0	000B6000	8	0000000000100000	1	1	AMC13 TX reset done				amc13_txresetdone	
+80000	54	0	0	000B6000	8	0000000000200000	1	1	Error flag reset				flag_reset	
+80000	54	0	0	000B6000	8	0000000000400000	1	1	PCIe command for Orbit counter reset				pcie_or_cnt_reset	
+80000	54	0	0	000B6000	8	0000000000800000	1	1	PCIe command for Event counter reset				pcie_ev_cnt_reset	
+80000	54	0	0	000B6000	8	0000000001000000	1	1	PCIe command for BC0				pcie_bc0	
+80000	54	0	0	000B6000	8	0000000002000000	1	1	GE1/1 link logic reset, including error counters				ge11_link_reset	
+														
+80000	54	0	1	000B6008	8	00000000000003ff	1	0	Link ID	1a	02	ME1a/02	link_id_me1a_02	
+80000	54	0	1	000B6008	8	00000000000ffc00	1	0	Link ID	1a	03	ME1a/03	link_id_me1a_03	
+80000	54	0	1	000B6008	8	000000003ff00000	1	0	Link ID	1a	04	ME1a/04	link_id_me1a_04	
+80000	54	0	1	000B6008	8	000000ffc0000000	1	0	Link ID	1a	05	ME1a/05	link_id_me1a_05	
+80000	54	0	1	000B6008	8	0003ff0000000000	1	0	Link ID	1a	06	ME1a/06	link_id_me1a_06	
+80000	54	0	1	000B6008	8	0ffc000000000000	1	0	Link ID	1a	07	ME1a/07	link_id_me1a_07	
+80000	54	0	2	000B6010	8	00000000000003ff	1	0	Link ID	1a	08	ME1a/08	link_id_me1a_08	
+80000	54	0	2	000B6010	8	00000000000ffc00	1	0	Link ID	1a	09	ME1a/09	link_id_me1a_09	
+80000	54	0	2	000B6010	8	000000003ff00000	1	0	Link ID	1b	02	ME1b/02	link_id_me1b_02	
+80000	54	0	2	000B6010	8	000000ffc0000000	1	0	Link ID	1b	03	ME1b/03	link_id_me1b_03	
+80000	54	0	2	000B6010	8	0003ff0000000000	1	0	Link ID	1b	04	ME1b/04	link_id_me1b_04	
+80000	54	0	2	000B6010	8	0ffc000000000000	1	0	Link ID	1b	05	ME1b/05	link_id_me1b_05	
+80000	54	0	3	000B6018	8	00000000000003ff	1	0	Link ID	1b	06	ME1b/06	link_id_me1b_06	
+80000	54	0	3	000B6018	8	00000000000ffc00	1	0	Link ID	1b	07	ME1b/07	link_id_me1b_07	
+80000	54	0	3	000B6018	8	000000003ff00000	1	0	Link ID	1b	08	ME1b/08	link_id_me1b_08	
+80000	54	0	3	000B6018	8	000000ffc0000000	1	0	Link ID	1b	09	ME1b/09	link_id_me1b_09	
+80000	54	0	3	000B6018	8	0003ff0000000000	1	0	Link ID	2	02	ME2/02	link_id_me2_02	
+80000	54	0	3	000B6018	8	0ffc000000000000	1	0	Link ID	2	03	ME2/03	link_id_me2_03	
+80000	54	0	4	000B6020	8	00000000000003ff	1	0	Link ID	2	04	ME2/04	link_id_me2_04	
+80000	54	0	4	000B6020	8	00000000000ffc00	1	0	Link ID	2	05	ME2/05	link_id_me2_05	
+80000	54	0	4	000B6020	8	000000003ff00000	1	0	Link ID	2	06	ME2/06	link_id_me2_06	
+80000	54	0	4	000B6020	8	000000ffc0000000	1	0	Link ID	2	07	ME2/07	link_id_me2_07	
+80000	54	0	4	000B6020	8	0003ff0000000000	1	0	Link ID	2	08	ME2/08	link_id_me2_08	
+80000	54	0	4	000B6020	8	0ffc000000000000	1	0	Link ID	2	09	ME2/09	link_id_me2_09	
+80000	54	0	5	000B6028	8	00000000000003ff	1	0	Link ID	3	02	ME3/02	link_id_me3_02	
+80000	54	0	5	000B6028	8	00000000000ffc00	1	0	Link ID	3	03	ME3/03	link_id_me3_03	
+80000	54	0	5	000B6028	8	000000003ff00000	1	0	Link ID	3	04	ME3/04	link_id_me3_04	
+80000	54	0	5	000B6028	8	000000ffc0000000	1	0	Link ID	3	05	ME3/05	link_id_me3_05	
+80000	54	0	5	000B6028	8	0003ff0000000000	1	0	Link ID	3	06	ME3/06	link_id_me3_06	
+80000	54	0	5	000B6028	8	0ffc000000000000	1	0	Link ID	3	07	ME3/07	link_id_me3_07	
+80000	54	0	6	000B6030	8	00000000000003ff	1	0	Link ID	3	08	ME3/08	link_id_me3_08	
+80000	54	0	6	000B6030	8	00000000000ffc00	1	0	Link ID	3	09	ME3/09	link_id_me3_09	
+80000	54	0	6	000B6030	8	000000003ff00000	1	0	Link ID	4	02	ME4/02	link_id_me4_02	
+80000	54	0	6	000B6030	8	000000ffc0000000	1	0	Link ID	4	03	ME4/03	link_id_me4_03	
+80000	54	0	6	000B6030	8	0003ff0000000000	1	0	Link ID	4	04	ME4/04	link_id_me4_04	
+80000	54	0	6	000B6030	8	0ffc000000000000	1	0	Link ID	4	05	ME4/05	link_id_me4_05	
+80000	54	0	7	000B6038	8	00000000000003ff	1	0	Link ID	4	06	ME4/06	link_id_me4_06	
+80000	54	0	7	000B6038	8	00000000000ffc00	1	0	Link ID	4	07	ME4/07	link_id_me4_07	
+80000	54	0	7	000B6038	8	000000003ff00000	1	0	Link ID	4	08	ME4/08	link_id_me4_08	
+80000	54	0	7	000B6038	8	000000ffc0000000	1	0	Link ID	4	09	ME4/09	link_id_me4_09	
+80000	54	0	8	000B6040	8	00000000000003ff	1	0	Link ID	1n	03	ME1n/03	link_id_me1n_03	
+80000	54	0	8	000B6040	8	00000000000ffc00	1	0	Link ID	1n	06	ME1n/06	link_id_me1n_06	
+80000	54	0	8	000B6040	8	000000003ff00000	1	0	Link ID	1n	09	ME1n/09	link_id_me1n_09	
+80000	54	0	8	000B6040	8	000000ffc0000000	1	0	Link ID	2n	03	ME2n/03	link_id_me2n_03	
+80000	54	0	8	000B6040	8	0003ff0000000000	1	0	Link ID	2n	09	ME2n/09	link_id_me2n_09	
+80000	54	0	8	000B6040	8	0ffc000000000000	1	0	Link ID	3n	03	ME3n/03	link_id_me3n_03	
+80000	54	0	9	000B6048	8	00000000000003ff	1	0	Link ID	3n	09	ME3n/09	link_id_me3n_09	
+80000	54	0	9	000B6048	8	00000000000ffc00	1	0	Link ID	4n	03	ME4n/03	link_id_me4n_03	
+80000	54	0	9	000B6048	8	000000003ff00000	1	0	Link ID	4n	09	ME4n/09	link_id_me4n_09	
+														
+80000	54	0	51	000B6288	8	00000000000000ff	1	0	CPPF link id	1			cppf_link_id_1	
+80000	54	0	51	000B6288	8	000000000000ff00	1	0	CPPF link id	2			cppf_link_id_2	
+80000	54	0	51	000B6288	8	0000000000ff0000	1	0	CPPF link id	3			cppf_link_id_3	
+80000	54	0	51	000B6288	8	00000000ff000000	1	0	CPPF link id	4			cppf_link_id_4	
+80000	54	0	51	000B6288	8	000000ff00000000	1	0	CPPF link id	5			cppf_link_id_5	
+80000	54	0	51	000B6288	8	0000ff0000000000	1	0	CPPF link id	6			cppf_link_id_6	
+80000	54	0	51	000B6288	8	00ff000000000000	1	0	CPPF link id	7			cppf_link_id_7	
+80000	54	0	51	000B6288	8	0100000000000000	1	0	CPPF CRC match	1			cppf_crc_match_1	
+80000	54	0	51	000B6288	8	0200000000000000	1	0	CPPF CRC match	2			cppf_crc_match_2	
+80000	54	0	51	000B6288	8	0400000000000000	1	0	CPPF CRC match	3			cppf_crc_match_3	
+80000	54	0	51	000B6288	8	0800000000000000	1	0	CPPF CRC match	4			cppf_crc_match_4	
+80000	54	0	51	000B6288	8	1000000000000000	1	0	CPPF CRC match	5			cppf_crc_match_5	
+80000	54	0	51	000B6288	8	2000000000000000	1	0	CPPF CRC match	6			cppf_crc_match_6	
+80000	54	0	51	000B6288	8	4000000000000000	1	0	CPPF CRC match	7			cppf_crc_match_7	
+														
+80000	54	0	b	000B6058	8	0000000000000001	1	1	Fiber enable	1a	02	ME1a/02	fiber_en_me1a_02	
+80000	54	0	b	000B6058	8	0000000000000002	1	1	Fiber enable	1a	03	ME1a/03	fiber_en_me1a_03	
+80000	54	0	b	000B6058	8	0000000000000004	1	1	Fiber enable	1a	04	ME1a/04	fiber_en_me1a_04	
+80000	54	0	b	000B6058	8	0000000000000008	1	1	Fiber enable	1a	05	ME1a/05	fiber_en_me1a_05	
+80000	54	0	b	000B6058	8	0000000000000010	1	1	Fiber enable	1a	06	ME1a/06	fiber_en_me1a_06	
+80000	54	0	b	000B6058	8	0000000000000020	1	1	Fiber enable	1a	07	ME1a/07	fiber_en_me1a_07	
+80000	54	0	b	000B6058	8	0000000000000040	1	1	Fiber enable	1a	08	ME1a/08	fiber_en_me1a_08	
+80000	54	0	b	000B6058	8	0000000000000080	1	1	Fiber enable	1a	09	ME1a/09	fiber_en_me1a_09	
+80000	54	0	b	000B6058	8	0000000000000100	1	1	Fiber enable	1b	02	ME1b/02	fiber_en_me1b_02	
+80000	54	0	b	000B6058	8	0000000000000200	1	1	Fiber enable	1b	03	ME1b/03	fiber_en_me1b_03	
+80000	54	0	b	000B6058	8	0000000000000400	1	1	Fiber enable	1b	04	ME1b/04	fiber_en_me1b_04	
+80000	54	0	b	000B6058	8	0000000000000800	1	1	Fiber enable	1b	05	ME1b/05	fiber_en_me1b_05	
+80000	54	0	b	000B6058	8	0000000000001000	1	1	Fiber enable	1b	06	ME1b/06	fiber_en_me1b_06	
+80000	54	0	b	000B6058	8	0000000000002000	1	1	Fiber enable	1b	07	ME1b/07	fiber_en_me1b_07	
+80000	54	0	b	000B6058	8	0000000000004000	1	1	Fiber enable	1b	08	ME1b/08	fiber_en_me1b_08	
+80000	54	0	b	000B6058	8	0000000000008000	1	1	Fiber enable	1b	09	ME1b/09	fiber_en_me1b_09	
+80000	54	0	b	000B6058	8	0000000000010000	1	1	Fiber enable	2	02	ME2/02	fiber_en_me2_02	
+80000	54	0	b	000B6058	8	0000000000020000	1	1	Fiber enable	2	03	ME2/03	fiber_en_me2_03	
+80000	54	0	b	000B6058	8	0000000000040000	1	1	Fiber enable	2	04	ME2/04	fiber_en_me2_04	
+80000	54	0	b	000B6058	8	0000000000080000	1	1	Fiber enable	2	05	ME2/05	fiber_en_me2_05	
+80000	54	0	b	000B6058	8	0000000000100000	1	1	Fiber enable	2	06	ME2/06	fiber_en_me2_06	
+80000	54	0	b	000B6058	8	0000000000200000	1	1	Fiber enable	2	07	ME2/07	fiber_en_me2_07	
+80000	54	0	b	000B6058	8	0000000000400000	1	1	Fiber enable	2	08	ME2/08	fiber_en_me2_08	
+80000	54	0	b	000B6058	8	0000000000800000	1	1	Fiber enable	2	09	ME2/09	fiber_en_me2_09	
+80000	54	0	b	000B6058	8	0000000001000000	1	1	Fiber enable	3	02	ME3/02	fiber_en_me3_02	
+80000	54	0	b	000B6058	8	0000000002000000	1	1	Fiber enable	3	03	ME3/03	fiber_en_me3_03	
+80000	54	0	b	000B6058	8	0000000004000000	1	1	Fiber enable	3	04	ME3/04	fiber_en_me3_04	
+80000	54	0	b	000B6058	8	0000000008000000	1	1	Fiber enable	3	05	ME3/05	fiber_en_me3_05	
+80000	54	0	b	000B6058	8	0000000010000000	1	1	Fiber enable	3	06	ME3/06	fiber_en_me3_06	
+80000	54	0	b	000B6058	8	0000000020000000	1	1	Fiber enable	3	07	ME3/07	fiber_en_me3_07	
+80000	54	0	b	000B6058	8	0000000040000000	1	1	Fiber enable	3	08	ME3/08	fiber_en_me3_08	
+80000	54	0	b	000B6058	8	0000000080000000	1	1	Fiber enable	3	09	ME3/09	fiber_en_me3_09	
+80000	54	0	b	000B6058	8	0000000100000000	1	1	Fiber enable	4	02	ME4/02	fiber_en_me4_02	
+80000	54	0	b	000B6058	8	0000000200000000	1	1	Fiber enable	4	03	ME4/03	fiber_en_me4_03	
+80000	54	0	b	000B6058	8	0000000400000000	1	1	Fiber enable	4	04	ME4/04	fiber_en_me4_04	
+80000	54	0	b	000B6058	8	0000000800000000	1	1	Fiber enable	4	05	ME4/05	fiber_en_me4_05	
+80000	54	0	b	000B6058	8	0000001000000000	1	1	Fiber enable	4	06	ME4/06	fiber_en_me4_06	
+80000	54	0	b	000B6058	8	0000002000000000	1	1	Fiber enable	4	07	ME4/07	fiber_en_me4_07	
+80000	54	0	b	000B6058	8	0000004000000000	1	1	Fiber enable	4	08	ME4/08	fiber_en_me4_08	
+80000	54	0	b	000B6058	8	0000008000000000	1	1	Fiber enable	4	09	ME4/09	fiber_en_me4_09	
+80000	54	0	b	000B6058	8	0000010000000000	1	1	Fiber enable	1n	03	ME1n/03	fiber_en_me1n_03	
+80000	54	0	b	000B6058	8	0000020000000000	1	1	Fiber enable	1n	06	ME1n/06	fiber_en_me1n_06	
+80000	54	0	b	000B6058	8	0000040000000000	1	1	Fiber enable	1n	09	ME1n/09	fiber_en_me1n_09	
+80000	54	0	b	000B6058	8	0000080000000000	1	1	Fiber enable	2n	03	ME2n/03	fiber_en_me2n_03	
+80000	54	0	b	000B6058	8	0000100000000000	1	1	Fiber enable	2n	09	ME2n/09	fiber_en_me2n_09	
+80000	54	0	b	000B6058	8	0000200000000000	1	1	Fiber enable	3n	03	ME3n/03	fiber_en_me3n_03	
+80000	54	0	b	000B6058	8	0000400000000000	1	1	Fiber enable	3n	09	ME3n/09	fiber_en_me3n_09	
+80000	54	0	b	000B6058	8	0000800000000000	1	1	Fiber enable	4n	03	ME4n/03	fiber_en_me4n_03	
+80000	54	0	b	000B6058	8	0001000000000000	1	1	Fiber enable	4n	09	ME4n/09	fiber_en_me4n_09	
+80000	54	0	b	000B6058	8	0002000000000000	1	1	Fiber enable	rpc	0	rpc_0	fiber_en_rpc_0	
+80000	54	0	b	000B6058	8	0004000000000000	1	1	Fiber enable	rpc	1	rpc_1	fiber_en_rpc_1	
+80000	54	0	b	000B6058	8	0008000000000000	1	1	Fiber enable	rpc	2	rpc_2	fiber_en_rpc_2	
+80000	54	0	b	000B6058	8	0010000000000000	1	1	Fiber enable	rpc	3	rpc_3	fiber_en_rpc_3	
+80000	54	0	b	000B6058	8	0020000000000000	1	1	Fiber enable	rpc	4	rpc_4	fiber_en_rpc_4	
+80000	54	0	b	000B6058	8	0040000000000000	1	1	Fiber enable	rpc	5	rpc_5	fiber_en_rpc_5	
+80000	54	0	b	000B6058	8	0080000000000000	1	1	Fiber enable	rpc	6	rpc_6	fiber_en_rpc_6	
+														
+80000	54	0	c	000B6060	8	00000000000000ff	1	1	Alignment FIFO delay	1a	02	ME1a/02	af_delay_me1a_02	
+80000	54	0	c	000B6060	8	000000000000ff00	1	1	Alignment FIFO delay	1a	03	ME1a/03	af_delay_me1a_03	
+80000	54	0	c	000B6060	8	0000000000ff0000	1	1	Alignment FIFO delay	1a	04	ME1a/04	af_delay_me1a_04	
+80000	54	0	c	000B6060	8	00000000ff000000	1	1	Alignment FIFO delay	1a	05	ME1a/05	af_delay_me1a_05	
+80000	54	0	c	000B6060	8	000000ff00000000	1	1	Alignment FIFO delay	1a	06	ME1a/06	af_delay_me1a_06	
+80000	54	0	c	000B6060	8	0000ff0000000000	1	1	Alignment FIFO delay	1a	07	ME1a/07	af_delay_me1a_07	
+80000	54	0	c	000B6060	8	00ff000000000000	1	1	Alignment FIFO delay	1a	08	ME1a/08	af_delay_me1a_08	
+80000	54	0	c	000B6060	8	ff00000000000000	1	1	Alignment FIFO delay	1a	09	ME1a/09	af_delay_me1a_09	
+80000	54	0	d	000B6068	8	00000000000000ff	1	1	Alignment FIFO delay	1b	02	ME1b/02	af_delay_me1b_02	
+80000	54	0	d	000B6068	8	000000000000ff00	1	1	Alignment FIFO delay	1b	03	ME1b/03	af_delay_me1b_03	
+80000	54	0	d	000B6068	8	0000000000ff0000	1	1	Alignment FIFO delay	1b	04	ME1b/04	af_delay_me1b_04	
+80000	54	0	d	000B6068	8	00000000ff000000	1	1	Alignment FIFO delay	1b	05	ME1b/05	af_delay_me1b_05	
+80000	54	0	d	000B6068	8	000000ff00000000	1	1	Alignment FIFO delay	1b	06	ME1b/06	af_delay_me1b_06	
+80000	54	0	d	000B6068	8	0000ff0000000000	1	1	Alignment FIFO delay	1b	07	ME1b/07	af_delay_me1b_07	
+80000	54	0	d	000B6068	8	00ff000000000000	1	1	Alignment FIFO delay	1b	08	ME1b/08	af_delay_me1b_08	
+80000	54	0	d	000B6068	8	ff00000000000000	1	1	Alignment FIFO delay	1b	09	ME1b/09	af_delay_me1b_09	
+80000	54	0	e	000B6070	8	00000000000000ff	1	1	Alignment FIFO delay	2	02	ME2/02	af_delay_me2_02	
+80000	54	0	e	000B6070	8	000000000000ff00	1	1	Alignment FIFO delay	2	03	ME2/03	af_delay_me2_03	
+80000	54	0	e	000B6070	8	0000000000ff0000	1	1	Alignment FIFO delay	2	04	ME2/04	af_delay_me2_04	
+80000	54	0	e	000B6070	8	00000000ff000000	1	1	Alignment FIFO delay	2	05	ME2/05	af_delay_me2_05	
+80000	54	0	e	000B6070	8	000000ff00000000	1	1	Alignment FIFO delay	2	06	ME2/06	af_delay_me2_06	
+80000	54	0	e	000B6070	8	0000ff0000000000	1	1	Alignment FIFO delay	2	07	ME2/07	af_delay_me2_07	
+80000	54	0	e	000B6070	8	00ff000000000000	1	1	Alignment FIFO delay	2	08	ME2/08	af_delay_me2_08	
+80000	54	0	e	000B6070	8	ff00000000000000	1	1	Alignment FIFO delay	2	09	ME2/09	af_delay_me2_09	
+80000	54	0	f	000B6078	8	00000000000000ff	1	1	Alignment FIFO delay	3	02	ME3/02	af_delay_me3_02	
+80000	54	0	f	000B6078	8	000000000000ff00	1	1	Alignment FIFO delay	3	03	ME3/03	af_delay_me3_03	
+80000	54	0	f	000B6078	8	0000000000ff0000	1	1	Alignment FIFO delay	3	04	ME3/04	af_delay_me3_04	
+80000	54	0	f	000B6078	8	00000000ff000000	1	1	Alignment FIFO delay	3	05	ME3/05	af_delay_me3_05	
+80000	54	0	f	000B6078	8	000000ff00000000	1	1	Alignment FIFO delay	3	06	ME3/06	af_delay_me3_06	
+80000	54	0	f	000B6078	8	0000ff0000000000	1	1	Alignment FIFO delay	3	07	ME3/07	af_delay_me3_07	
+80000	54	0	f	000B6078	8	00ff000000000000	1	1	Alignment FIFO delay	3	08	ME3/08	af_delay_me3_08	
+80000	54	0	f	000B6078	8	ff00000000000000	1	1	Alignment FIFO delay	3	09	ME3/09	af_delay_me3_09	
+80000	54	0	10	000B6080	8	00000000000000ff	1	1	Alignment FIFO delay	4	02	ME4/02	af_delay_me4_02	
+80000	54	0	10	000B6080	8	000000000000ff00	1	1	Alignment FIFO delay	4	03	ME4/03	af_delay_me4_03	
+80000	54	0	10	000B6080	8	0000000000ff0000	1	1	Alignment FIFO delay	4	04	ME4/04	af_delay_me4_04	
+80000	54	0	10	000B6080	8	00000000ff000000	1	1	Alignment FIFO delay	4	05	ME4/05	af_delay_me4_05	
+80000	54	0	10	000B6080	8	000000ff00000000	1	1	Alignment FIFO delay	4	06	ME4/06	af_delay_me4_06	
+80000	54	0	10	000B6080	8	0000ff0000000000	1	1	Alignment FIFO delay	4	07	ME4/07	af_delay_me4_07	
+80000	54	0	10	000B6080	8	00ff000000000000	1	1	Alignment FIFO delay	4	08	ME4/08	af_delay_me4_08	
+80000	54	0	10	000B6080	8	ff00000000000000	1	1	Alignment FIFO delay	4	09	ME4/09	af_delay_me4_09	
+80000	54	0	a	000B6050	8	00000000000000ff	1	1	Alignment FIFO delay	1n	03	ME1n/03	af_delay_me1n_03	
+80000	54	0	a	000B6050	8	000000000000ff00	1	1	Alignment FIFO delay	1n	06	ME1n/06	af_delay_me1n_06	
+80000	54	0	a	000B6050	8	0000000000ff0000	1	1	Alignment FIFO delay	1n	09	ME1n/09	af_delay_me1n_09	
+80000	54	0	a	000B6050	8	00000000ff000000	1	1	Alignment FIFO delay	2n	03	ME2n/03	af_delay_me2n_03	
+80000	54	0	a	000B6050	8	000000ff00000000	1	1	Alignment FIFO delay	2n	09	ME2n/09	af_delay_me2n_09	
+80000	54	0	a	000B6050	8	0000ff0000000000	1	1	Alignment FIFO delay	3n	03	ME3n/03	af_delay_me3n_03	
+80000	54	0	a	000B6050	8	00ff000000000000	1	1	Alignment FIFO delay	3n	09	ME3n/09	af_delay_me3n_09	
+80000	54	0	a	000B6050	8	ff00000000000000	1	1	Alignment FIFO delay	4n	03	ME4n/03	af_delay_me4n_03	
+80000	54	0	9	000B6048	8	0000003fc0000000	1	1	Alignment FIFO delay	4n	09	ME4n/09	af_delay_me4n_09	
+														
+80000	54	0	11	000B6088	8	0000000000000001	1	1	Endcap (0=ME+, 1=ME-)				endcap	
+80000	54	0	11	000B6088	8	000000000000000e	1	1	Sector (1..6)				sector	
+80000	54	0	11	000B6088	8	000000000000ff80	1	1	spy memory data delay				spy_data_delay	
+80000	54	0	11	000B6088	8	0000000000010000	1	1	start writing spy memory at L1A				spy_write_at_l1a	
+80000	54	0	11	000B6088	8	0000000000020000	1	1	start writing spy memory at any valid track stub				spy_write_at_stub	
+80000	54	0	11	000B6088	8	0000000000040000	1	1	start writing spy memory at valid track rank				spy_write_at_rank	
+80000	54	0	11	000B6088	8	0000000000080000	1	1	alignment FIFO enable				af_en	
+80000	54	0	11	000B6088	8	0000000000100000	1	1	enable test data injection to the logic core				tst_data_inj_en	
+80000	54	0	11	000B6088	8	0000000000200000	1	0	PT LUT busy flag				ptlut_busy	
+80000	54	0	11	000B6088	8	000000003fc00000	1	0	PT LUT delay control modules locked status				ptlut_delay_ctl_locked	
+80000	54	0	11	000B6088	8	0000000040000000	1	1	enable test data injection on MPC inject command				tst_data_inj_on_mpc_inj_cmd	
+80000	54	0	11	000B6088	8	0000000380000000	1	1	GTH PRBS mode selection				gth_prbs_mode	
+80000	54	0	11	000B6088	8	000007fc00000000	1	1	TTC BC0 delay for input data alignment				af_ttc_bc0_delay	
+80000	54	0	11	000B6088	8	007ff80000000000	1	1	time offset for transmitting commas on GMT link				gmt_link_comma_delay	
+80000	54	0	11	000B6088	8	1f80000000000000	1	1	TTC BC0 delay for CPPF data alignment				cppf_ttc_bc0_delay	
+														
+80000	54	0	12	000B6090	8	0000000000000001	1	0	BC0 period error, link disabled	1a	02	ME1a/02	bc0_err_me1a_02	
+80000	54	0	12	000B6090	8	0000000000000002	1	0	BC0 period error, link disabled	1a	03	ME1a/03	bc0_err_me1a_03	
+80000	54	0	12	000B6090	8	0000000000000004	1	0	BC0 period error, link disabled	1a	04	ME1a/04	bc0_err_me1a_04	
+80000	54	0	12	000B6090	8	0000000000000008	1	0	BC0 period error, link disabled	1a	05	ME1a/05	bc0_err_me1a_05	
+80000	54	0	12	000B6090	8	0000000000000010	1	0	BC0 period error, link disabled	1a	06	ME1a/06	bc0_err_me1a_06	
+80000	54	0	12	000B6090	8	0000000000000020	1	0	BC0 period error, link disabled	1a	07	ME1a/07	bc0_err_me1a_07	
+80000	54	0	12	000B6090	8	0000000000000040	1	0	BC0 period error, link disabled	1a	08	ME1a/08	bc0_err_me1a_08	
+80000	54	0	12	000B6090	8	0000000000000080	1	0	BC0 period error, link disabled	1a	09	ME1a/09	bc0_err_me1a_09	
+80000	54	0	12	000B6090	8	0000000000000100	1	0	BC0 period error, link disabled	1b	02	ME1b/02	bc0_err_me1b_02	
+80000	54	0	12	000B6090	8	0000000000000200	1	0	BC0 period error, link disabled	1b	03	ME1b/03	bc0_err_me1b_03	
+80000	54	0	12	000B6090	8	0000000000000400	1	0	BC0 period error, link disabled	1b	04	ME1b/04	bc0_err_me1b_04	
+80000	54	0	12	000B6090	8	0000000000000800	1	0	BC0 period error, link disabled	1b	05	ME1b/05	bc0_err_me1b_05	
+80000	54	0	12	000B6090	8	0000000000001000	1	0	BC0 period error, link disabled	1b	06	ME1b/06	bc0_err_me1b_06	
+80000	54	0	12	000B6090	8	0000000000002000	1	0	BC0 period error, link disabled	1b	07	ME1b/07	bc0_err_me1b_07	
+80000	54	0	12	000B6090	8	0000000000004000	1	0	BC0 period error, link disabled	1b	08	ME1b/08	bc0_err_me1b_08	
+80000	54	0	12	000B6090	8	0000000000008000	1	0	BC0 period error, link disabled	1b	09	ME1b/09	bc0_err_me1b_09	
+80000	54	0	12	000B6090	8	0000000000010000	1	0	BC0 period error, link disabled	2	02	ME2/02	bc0_err_me2_02	
+80000	54	0	12	000B6090	8	0000000000020000	1	0	BC0 period error, link disabled	2	03	ME2/03	bc0_err_me2_03	
+80000	54	0	12	000B6090	8	0000000000040000	1	0	BC0 period error, link disabled	2	04	ME2/04	bc0_err_me2_04	
+80000	54	0	12	000B6090	8	0000000000080000	1	0	BC0 period error, link disabled	2	05	ME2/05	bc0_err_me2_05	
+80000	54	0	12	000B6090	8	0000000000100000	1	0	BC0 period error, link disabled	2	06	ME2/06	bc0_err_me2_06	
+80000	54	0	12	000B6090	8	0000000000200000	1	0	BC0 period error, link disabled	2	07	ME2/07	bc0_err_me2_07	
+80000	54	0	12	000B6090	8	0000000000400000	1	0	BC0 period error, link disabled	2	08	ME2/08	bc0_err_me2_08	
+80000	54	0	12	000B6090	8	0000000000800000	1	0	BC0 period error, link disabled	2	09	ME2/09	bc0_err_me2_09	
+80000	54	0	12	000B6090	8	0000000001000000	1	0	BC0 period error, link disabled	3	02	ME3/02	bc0_err_me3_02	
+80000	54	0	12	000B6090	8	0000000002000000	1	0	BC0 period error, link disabled	3	03	ME3/03	bc0_err_me3_03	
+80000	54	0	12	000B6090	8	0000000004000000	1	0	BC0 period error, link disabled	3	04	ME3/04	bc0_err_me3_04	
+80000	54	0	12	000B6090	8	0000000008000000	1	0	BC0 period error, link disabled	3	05	ME3/05	bc0_err_me3_05	
+80000	54	0	12	000B6090	8	0000000010000000	1	0	BC0 period error, link disabled	3	06	ME3/06	bc0_err_me3_06	
+80000	54	0	12	000B6090	8	0000000020000000	1	0	BC0 period error, link disabled	3	07	ME3/07	bc0_err_me3_07	
+80000	54	0	12	000B6090	8	0000000040000000	1	0	BC0 period error, link disabled	3	08	ME3/08	bc0_err_me3_08	
+80000	54	0	12	000B6090	8	0000000080000000	1	0	BC0 period error, link disabled	3	09	ME3/09	bc0_err_me3_09	
+80000	54	0	12	000B6090	8	0000000100000000	1	0	BC0 period error, link disabled	4	02	ME4/02	bc0_err_me4_02	
+80000	54	0	12	000B6090	8	0000000200000000	1	0	BC0 period error, link disabled	4	03	ME4/03	bc0_err_me4_03	
+80000	54	0	12	000B6090	8	0000000400000000	1	0	BC0 period error, link disabled	4	04	ME4/04	bc0_err_me4_04	
+80000	54	0	12	000B6090	8	0000000800000000	1	0	BC0 period error, link disabled	4	05	ME4/05	bc0_err_me4_05	
+80000	54	0	12	000B6090	8	0000001000000000	1	0	BC0 period error, link disabled	4	06	ME4/06	bc0_err_me4_06	
+80000	54	0	12	000B6090	8	0000002000000000	1	0	BC0 period error, link disabled	4	07	ME4/07	bc0_err_me4_07	
+80000	54	0	12	000B6090	8	0000004000000000	1	0	BC0 period error, link disabled	4	08	ME4/08	bc0_err_me4_08	
+80000	54	0	12	000B6090	8	0000008000000000	1	0	BC0 period error, link disabled	4	09	ME4/09	bc0_err_me4_09	
+80000	54	0	12	000B6090	8	0000010000000000	1	0	BC0 period error, link disabled	1n	03	ME1n/03	bc0_err_me1n_03	
+80000	54	0	12	000B6090	8	0000020000000000	1	0	BC0 period error, link disabled	1n	06	ME1n/06	bc0_err_me1n_06	
+80000	54	0	12	000B6090	8	0000040000000000	1	0	BC0 period error, link disabled	1n	09	ME1n/09	bc0_err_me1n_09	
+80000	54	0	12	000B6090	8	0000080000000000	1	0	BC0 period error, link disabled	2n	03	ME2n/03	bc0_err_me2n_03	
+80000	54	0	12	000B6090	8	0000100000000000	1	0	BC0 period error, link disabled	2n	09	ME2n/09	bc0_err_me2n_09	
+80000	54	0	12	000B6090	8	0000200000000000	1	0	BC0 period error, link disabled	3n	03	ME3n/03	bc0_err_me3n_03	
+80000	54	0	12	000B6090	8	0000400000000000	1	0	BC0 period error, link disabled	3n	09	ME3n/09	bc0_err_me3n_09	
+80000	54	0	12	000B6090	8	0000800000000000	1	0	BC0 period error, link disabled	4n	03	ME4n/03	bc0_err_me4n_03	
+80000	54	0	12	000B6090	8	0001000000000000	1	0	BC0 period error, link disabled	4n	09	ME4n/09	bc0_err_me4n_09	
+														
+80000	54	0	16	000B60B0	8	00000000000001ff	1	0	current spy memory address				spy_current_addr	
+														
+80000	54	0	17	000B60B8	8	00000000ffffffff	1	0	absolute time counter, runs at 160 MHz from MMCM				abs_time_cnt	
+80000	54	0	17	000B60B8	8	ffffffff00000000	1	0	reserved					
+														
+80000	54	0	18	000B60C0	8	000000000000003f	1	0	Core FPGA Firmware timestamp, sec				core_fpga_fw_sec	
+80000	54	0	18	000B60C0	8	0000000000000fc0	1	0	Core FPGA Firmware timestamp, min 				core_fpga_fw_min	
+80000	54	0	18	000B60C0	8	000000000001f000	1	0	Core FPGA Firmware timestamp, hour 				core_fpga_fw_hour	
+80000	54	0	18	000B60C0	8	00000000007e0000	1	0	Core FPGA Firmware timestamp, year (add 2000) 				core_fpga_fw_year	
+80000	54	0	18	000B60C0	8	0000000007800000	1	0	Core FPGA Firmware timestamp, month 				core_fpga_fw_month	
+80000	54	0	18	000B60C0	8	00000000f8000000	1	0	Core FPGA Firmware timestamp, day 				core_fpga_fw_day	
+														
+80000	54	0	19	000B60C8	8	00000000ffffffff	1	1	PT LUT clock manager configuration word				ptlut_clk_config_word	
+														
+80000	54	0	1a	000B60D0	8	000000000000001f	1	1	PT LUT data bus input delay, bit 0				ptlut_db_inp_del_0	
+80000	54	0	1a	000B60D0	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 1				ptlut_db_inp_del_1	
+80000	54	0	1a	000B60D0	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 2				ptlut_db_inp_del_2	
+80000	54	0	1a	000B60D0	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 3				ptlut_db_inp_del_3	
+80000	54	0	1a	000B60D0	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 4				ptlut_db_inp_del_4	
+80000	54	0	1a	000B60D0	8	000000003e000000	1	1	PT LUT data bus input delay, bit 5				ptlut_db_inp_del_5	
+80000	54	0	1a	000B60D0	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 6				ptlut_db_inp_del_6	
+80000	54	0	1a	000B60D0	8	000000f800000000	1	1	PT LUT data bus input delay, bit 7				ptlut_db_inp_del_7	
+80000	54	0	1a	000B60D0	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 8				ptlut_db_inp_del_8	
+80000	54	0	1a	000B60D0	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 9				ptlut_db_inp_del_9	
+80000	54	0	1a	000B60D0	8	007c000000000000	1	1	PT LUT data bus input delay, bit 10				ptlut_db_inp_del_10	
+80000	54	0	1a	000B60D0	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 11				ptlut_db_inp_del_11	
+80000	54	0	1b	000B60D8	8	000000000000001f	1	1	PT LUT data bus input delay, bit 12				ptlut_db_inp_del_12	
+80000	54	0	1b	000B60D8	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 13				ptlut_db_inp_del_13	
+80000	54	0	1b	000B60D8	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 14				ptlut_db_inp_del_14	
+80000	54	0	1b	000B60D8	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 15				ptlut_db_inp_del_15	
+80000	54	0	1b	000B60D8	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 16				ptlut_db_inp_del_16	
+80000	54	0	1b	000B60D8	8	000000003e000000	1	1	PT LUT data bus input delay, bit 17				ptlut_db_inp_del_17	
+80000	54	0	1b	000B60D8	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 18				ptlut_db_inp_del_18	
+80000	54	0	1b	000B60D8	8	000000f800000000	1	1	PT LUT data bus input delay, bit 19				ptlut_db_inp_del_19	
+80000	54	0	1b	000B60D8	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 20				ptlut_db_inp_del_20	
+80000	54	0	1b	000B60D8	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 21				ptlut_db_inp_del_21	
+80000	54	0	1b	000B60D8	8	007c000000000000	1	1	PT LUT data bus input delay, bit 22				ptlut_db_inp_del_22	
+80000	54	0	1b	000B60D8	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 23				ptlut_db_inp_del_23	
+80000	54	0	1c	000B60E0	8	000000000000001f	1	1	PT LUT data bus input delay, bit 24				ptlut_db_inp_del_24	
+80000	54	0	1c	000B60E0	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 25				ptlut_db_inp_del_25	
+80000	54	0	1c	000B60E0	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 26				ptlut_db_inp_del_26	
+80000	54	0	1c	000B60E0	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 27				ptlut_db_inp_del_27	
+80000	54	0	1c	000B60E0	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 28				ptlut_db_inp_del_28	
+80000	54	0	1c	000B60E0	8	000000003e000000	1	1	PT LUT data bus input delay, bit 29				ptlut_db_inp_del_29	
+80000	54	0	1c	000B60E0	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 30				ptlut_db_inp_del_30	
+80000	54	0	1c	000B60E0	8	000000f800000000	1	1	PT LUT data bus input delay, bit 31				ptlut_db_inp_del_31	
+80000	54	0	1c	000B60E0	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 32				ptlut_db_inp_del_32	
+80000	54	0	1c	000B60E0	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 33				ptlut_db_inp_del_33	
+80000	54	0	1c	000B60E0	8	007c000000000000	1	1	PT LUT data bus input delay, bit 34				ptlut_db_inp_del_34	
+80000	54	0	1c	000B60E0	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 35				ptlut_db_inp_del_35	
+80000	54	0	1d	000B60E8	8	000000000000001f	1	1	PT LUT data bus input delay, bit 36				ptlut_db_inp_del_36	
+80000	54	0	1d	000B60E8	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 37				ptlut_db_inp_del_37	
+80000	54	0	1d	000B60E8	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 38				ptlut_db_inp_del_38	
+80000	54	0	1d	000B60E8	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 39				ptlut_db_inp_del_39	
+80000	54	0	1d	000B60E8	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 40				ptlut_db_inp_del_40	
+80000	54	0	1d	000B60E8	8	000000003e000000	1	1	PT LUT data bus input delay, bit 41				ptlut_db_inp_del_41	
+80000	54	0	1d	000B60E8	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 42				ptlut_db_inp_del_42	
+80000	54	0	1d	000B60E8	8	000000f800000000	1	1	PT LUT data bus input delay, bit 43				ptlut_db_inp_del_43	
+80000	54	0	1d	000B60E8	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 44				ptlut_db_inp_del_44	
+80000	54	0	1d	000B60E8	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 45				ptlut_db_inp_del_45	
+80000	54	0	1d	000B60E8	8	007c000000000000	1	1	PT LUT data bus input delay, bit 46				ptlut_db_inp_del_46	
+80000	54	0	1d	000B60E8	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 47				ptlut_db_inp_del_47	
+80000	54	0	1e	000B60F0	8	000000000000001f	1	1	PT LUT data bus input delay, bit 48				ptlut_db_inp_del_48	
+80000	54	0	1e	000B60F0	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 49				ptlut_db_inp_del_49	
+80000	54	0	1e	000B60F0	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 50				ptlut_db_inp_del_50	
+80000	54	0	1e	000B60F0	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 51				ptlut_db_inp_del_51	
+80000	54	0	1e	000B60F0	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 52				ptlut_db_inp_del_52	
+80000	54	0	1e	000B60F0	8	000000003e000000	1	1	PT LUT data bus input delay, bit 53				ptlut_db_inp_del_53	
+80000	54	0	1e	000B60F0	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 54				ptlut_db_inp_del_54	
+80000	54	0	1e	000B60F0	8	000000f800000000	1	1	PT LUT data bus input delay, bit 55				ptlut_db_inp_del_55	
+80000	54	0	1e	000B60F0	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 56				ptlut_db_inp_del_56	
+80000	54	0	1e	000B60F0	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 57				ptlut_db_inp_del_57	
+80000	54	0	1e	000B60F0	8	007c000000000000	1	1	PT LUT data bus input delay, bit 58				ptlut_db_inp_del_58	
+80000	54	0	1e	000B60F0	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 59				ptlut_db_inp_del_59	
+80000	54	0	1f	000B60F8	8	000000000000001f	1	1	PT LUT data bus input delay, bit 60				ptlut_db_inp_del_60	
+80000	54	0	1f	000B60F8	8	00000000000003e0	1	1	PT LUT data bus input delay, bit 61				ptlut_db_inp_del_61	
+80000	54	0	1f	000B60F8	8	0000000000007c00	1	1	PT LUT data bus input delay, bit 62				ptlut_db_inp_del_62	
+80000	54	0	1f	000B60F8	8	00000000000f8000	1	1	PT LUT data bus input delay, bit 63				ptlut_db_inp_del_63	
+80000	54	0	1f	000B60F8	8	0000000001f00000	1	1	PT LUT data bus input delay, bit 64				ptlut_db_inp_del_64	
+80000	54	0	1f	000B60F8	8	000000003e000000	1	1	PT LUT data bus input delay, bit 65				ptlut_db_inp_del_65	
+80000	54	0	1f	000B60F8	8	00000007c0000000	1	1	PT LUT data bus input delay, bit 66				ptlut_db_inp_del_66	
+80000	54	0	1f	000B60F8	8	000000f800000000	1	1	PT LUT data bus input delay, bit 67				ptlut_db_inp_del_67	
+80000	54	0	1f	000B60F8	8	00001f0000000000	1	1	PT LUT data bus input delay, bit 68				ptlut_db_inp_del_68	
+80000	54	0	1f	000B60F8	8	0003e00000000000	1	1	PT LUT data bus input delay, bit 69				ptlut_db_inp_del_69	
+80000	54	0	1f	000B60F8	8	007c000000000000	1	1	PT LUT data bus input delay, bit 70				ptlut_db_inp_del_70	
+80000	54	0	1f	000B60F8	8	0f80000000000000	1	1	PT LUT data bus input delay, bit 71				ptlut_db_inp_del_71	
+														
+80000	54	0	20	000B6100	8	000000000000001f	1	1	PT LUT data bus output delay, bit 0				ptlut_db_out_del_0	
+80000	54	0	20	000B6100	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 1				ptlut_db_out_del_1	
+80000	54	0	20	000B6100	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 2				ptlut_db_out_del_2	
+80000	54	0	20	000B6100	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 3				ptlut_db_out_del_3	
+80000	54	0	20	000B6100	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 4				ptlut_db_out_del_4	
+80000	54	0	20	000B6100	8	000000003e000000	1	1	PT LUT data bus output delay, bit 5				ptlut_db_out_del_5	
+80000	54	0	20	000B6100	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 6				ptlut_db_out_del_6	
+80000	54	0	20	000B6100	8	000000f800000000	1	1	PT LUT data bus output delay, bit 7				ptlut_db_out_del_7	
+80000	54	0	20	000B6100	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 8				ptlut_db_out_del_8	
+80000	54	0	20	000B6100	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 9				ptlut_db_out_del_9	
+80000	54	0	20	000B6100	8	007c000000000000	1	1	PT LUT data bus output delay, bit 10				ptlut_db_out_del_10	
+80000	54	0	20	000B6100	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 11				ptlut_db_out_del_11	
+80000	54	0	21	000B6108	8	000000000000001f	1	1	PT LUT data bus output delay, bit 12				ptlut_db_out_del_12	
+80000	54	0	21	000B6108	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 13				ptlut_db_out_del_13	
+80000	54	0	21	000B6108	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 14				ptlut_db_out_del_14	
+80000	54	0	21	000B6108	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 15				ptlut_db_out_del_15	
+80000	54	0	21	000B6108	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 16				ptlut_db_out_del_16	
+80000	54	0	21	000B6108	8	000000003e000000	1	1	PT LUT data bus output delay, bit 17				ptlut_db_out_del_17	
+80000	54	0	21	000B6108	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 18				ptlut_db_out_del_18	
+80000	54	0	21	000B6108	8	000000f800000000	1	1	PT LUT data bus output delay, bit 19				ptlut_db_out_del_19	
+80000	54	0	21	000B6108	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 20				ptlut_db_out_del_20	
+80000	54	0	21	000B6108	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 21				ptlut_db_out_del_21	
+80000	54	0	21	000B6108	8	007c000000000000	1	1	PT LUT data bus output delay, bit 22				ptlut_db_out_del_22	
+80000	54	0	21	000B6108	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 23				ptlut_db_out_del_23	
+80000	54	0	22	000B6110	8	000000000000001f	1	1	PT LUT data bus output delay, bit 24				ptlut_db_out_del_24	
+80000	54	0	22	000B6110	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 25				ptlut_db_out_del_25	
+80000	54	0	22	000B6110	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 26				ptlut_db_out_del_26	
+80000	54	0	22	000B6110	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 27				ptlut_db_out_del_27	
+80000	54	0	22	000B6110	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 28				ptlut_db_out_del_28	
+80000	54	0	22	000B6110	8	000000003e000000	1	1	PT LUT data bus output delay, bit 29				ptlut_db_out_del_29	
+80000	54	0	22	000B6110	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 30				ptlut_db_out_del_30	
+80000	54	0	22	000B6110	8	000000f800000000	1	1	PT LUT data bus output delay, bit 31				ptlut_db_out_del_31	
+80000	54	0	22	000B6110	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 32				ptlut_db_out_del_32	
+80000	54	0	22	000B6110	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 33				ptlut_db_out_del_33	
+80000	54	0	22	000B6110	8	007c000000000000	1	1	PT LUT data bus output delay, bit 34				ptlut_db_out_del_34	
+80000	54	0	22	000B6110	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 35				ptlut_db_out_del_35	
+80000	54	0	23	000B6118	8	000000000000001f	1	1	PT LUT data bus output delay, bit 36				ptlut_db_out_del_36	
+80000	54	0	23	000B6118	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 37				ptlut_db_out_del_37	
+80000	54	0	23	000B6118	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 38				ptlut_db_out_del_38	
+80000	54	0	23	000B6118	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 39				ptlut_db_out_del_39	
+80000	54	0	23	000B6118	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 40				ptlut_db_out_del_40	
+80000	54	0	23	000B6118	8	000000003e000000	1	1	PT LUT data bus output delay, bit 41				ptlut_db_out_del_41	
+80000	54	0	23	000B6118	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 42				ptlut_db_out_del_42	
+80000	54	0	23	000B6118	8	000000f800000000	1	1	PT LUT data bus output delay, bit 43				ptlut_db_out_del_43	
+80000	54	0	23	000B6118	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 44				ptlut_db_out_del_44	
+80000	54	0	23	000B6118	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 45				ptlut_db_out_del_45	
+80000	54	0	23	000B6118	8	007c000000000000	1	1	PT LUT data bus output delay, bit 46				ptlut_db_out_del_46	
+80000	54	0	23	000B6118	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 47				ptlut_db_out_del_47	
+80000	54	0	24	000B6120	8	000000000000001f	1	1	PT LUT data bus output delay, bit 48				ptlut_db_out_del_48	
+80000	54	0	24	000B6120	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 49				ptlut_db_out_del_49	
+80000	54	0	24	000B6120	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 50				ptlut_db_out_del_50	
+80000	54	0	24	000B6120	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 51				ptlut_db_out_del_51	
+80000	54	0	24	000B6120	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 52				ptlut_db_out_del_52	
+80000	54	0	24	000B6120	8	000000003e000000	1	1	PT LUT data bus output delay, bit 53				ptlut_db_out_del_53	
+80000	54	0	24	000B6120	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 54				ptlut_db_out_del_54	
+80000	54	0	24	000B6120	8	000000f800000000	1	1	PT LUT data bus output delay, bit 55				ptlut_db_out_del_55	
+80000	54	0	24	000B6120	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 56				ptlut_db_out_del_56	
+80000	54	0	24	000B6120	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 57				ptlut_db_out_del_57	
+80000	54	0	24	000B6120	8	007c000000000000	1	1	PT LUT data bus output delay, bit 58				ptlut_db_out_del_58	
+80000	54	0	24	000B6120	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 59				ptlut_db_out_del_59	
+80000	54	0	25	000B6128	8	000000000000001f	1	1	PT LUT data bus output delay, bit 60				ptlut_db_out_del_60	
+80000	54	0	25	000B6128	8	00000000000003e0	1	1	PT LUT data bus output delay, bit 61				ptlut_db_out_del_61	
+80000	54	0	25	000B6128	8	0000000000007c00	1	1	PT LUT data bus output delay, bit 62				ptlut_db_out_del_62	
+80000	54	0	25	000B6128	8	00000000000f8000	1	1	PT LUT data bus output delay, bit 63				ptlut_db_out_del_63	
+80000	54	0	25	000B6128	8	0000000001f00000	1	1	PT LUT data bus output delay, bit 64				ptlut_db_out_del_64	
+80000	54	0	25	000B6128	8	000000003e000000	1	1	PT LUT data bus output delay, bit 65				ptlut_db_out_del_65	
+80000	54	0	25	000B6128	8	00000007c0000000	1	1	PT LUT data bus output delay, bit 66				ptlut_db_out_del_66	
+80000	54	0	25	000B6128	8	000000f800000000	1	1	PT LUT data bus output delay, bit 67				ptlut_db_out_del_67	
+80000	54	0	25	000B6128	8	00001f0000000000	1	1	PT LUT data bus output delay, bit 68				ptlut_db_out_del_68	
+80000	54	0	25	000B6128	8	0003e00000000000	1	1	PT LUT data bus output delay, bit 69				ptlut_db_out_del_69	
+80000	54	0	25	000B6128	8	007c000000000000	1	1	PT LUT data bus output delay, bit 70				ptlut_db_out_del_70	
+80000	54	0	25	000B6128	8	0f80000000000000	1	1	PT LUT data bus output delay, bit 71				ptlut_db_out_del_71	
+														
+80000	54	0	26	000B6130	8	000000000000001f	1	1	PT LUT input clock delay				ptlut_inp_clk_del	
+														
+80000	54	0	27	000B6138	8	0000000000000fff	1	1	PT LUT write terminal count				ptlut_wr_term_count	
+80000	54	0	27	000B6138	8	0000000000fff000	1	1	PT LUT read terminal count				ptlut_rd_term_count	
+80000	54	0	27	000B6138	8	000000003f000000	1	1	PT LUT write latency				ptlut_wr_latency	
+80000	54	0	27	000B6138	8	0000000fc0000000	1	1	PT LUT read latency				ptlut_rd_latency	
+80000	54	0	27	000B6138	8	0000001000000000	1	1	PT LUT write phase shift				ptlut_wr_phase_shift	
+80000	54	0	27	000B6138	8	0000002000000000	1	1	PT LUT read phase shift				ptlut_rd_phase_shift	
+80000	54	0	27	000B6138	8	000007c000000000	1	1	PT LUT dual-port memory write delay				ptlut_dpm_wr_del	
+80000	54	0	27	000B6138	8	0000f80000000000	1	1	PT LUT write quad delay				ptlut_wr_quad_del	
+80000	54	0	27	000B6138	8	001f000000000000	1	1	PT LUT read quad delay				ptlut_rd_quad_del	
+80000	54	0	27	000B6138	8	0020000000000000	1	1	PT LUT refresh enable				ptlut_refresh_en	
+80000	54	0	27	000B6138	8	0040000000000000	1	1	reserved					
+80000	54	0	27	000B6138	8	0380000000000000	1	1	PT LUT bank timeout after read				ptlut_rd_bank_timeout	
+80000	54	0	27	000B6138	8	1c00000000000000	1	1	PT LUT bank timeout after refresh				ptlut_refresh_bank_timout	
+80000	54	0	27	000B6138	8	e000000000000000	1	1	PT LUT core request mask				ptlut_core_rq_mask	
+														
+80000	54	0	28	000B6140	8	0000000000000001	1	0	PRBS error detected	1a	02	ME1a/02	prbs_err_me1a_02	
+80000	54	0	28	000B6140	8	0000000000000002	1	0	PRBS error detected	1a	03	ME1a/03	prbs_err_me1a_03	
+80000	54	0	28	000B6140	8	0000000000000004	1	0	PRBS error detected	1a	04	ME1a/04	prbs_err_me1a_04	
+80000	54	0	28	000B6140	8	0000000000000008	1	0	PRBS error detected	1a	05	ME1a/05	prbs_err_me1a_05	
+80000	54	0	28	000B6140	8	0000000000000010	1	0	PRBS error detected	1a	06	ME1a/06	prbs_err_me1a_06	
+80000	54	0	28	000B6140	8	0000000000000020	1	0	PRBS error detected	1a	07	ME1a/07	prbs_err_me1a_07	
+80000	54	0	28	000B6140	8	0000000000000040	1	0	PRBS error detected	1a	08	ME1a/08	prbs_err_me1a_08	
+80000	54	0	28	000B6140	8	0000000000000080	1	0	PRBS error detected	1a	09	ME1a/09	prbs_err_me1a_09	
+80000	54	0	28	000B6140	8	0000000000000100	1	0	PRBS error detected	1b	02	ME1b/02	prbs_err_me1b_02	
+80000	54	0	28	000B6140	8	0000000000000200	1	0	PRBS error detected	1b	03	ME1b/03	prbs_err_me1b_03	
+80000	54	0	28	000B6140	8	0000000000000400	1	0	PRBS error detected	1b	04	ME1b/04	prbs_err_me1b_04	
+80000	54	0	28	000B6140	8	0000000000000800	1	0	PRBS error detected	1b	05	ME1b/05	prbs_err_me1b_05	
+80000	54	0	28	000B6140	8	0000000000001000	1	0	PRBS error detected	1b	06	ME1b/06	prbs_err_me1b_06	
+80000	54	0	28	000B6140	8	0000000000002000	1	0	PRBS error detected	1b	07	ME1b/07	prbs_err_me1b_07	
+80000	54	0	28	000B6140	8	0000000000004000	1	0	PRBS error detected	1b	08	ME1b/08	prbs_err_me1b_08	
+80000	54	0	28	000B6140	8	0000000000008000	1	0	PRBS error detected	1b	09	ME1b/09	prbs_err_me1b_09	
+80000	54	0	28	000B6140	8	0000000000010000	1	0	PRBS error detected	2	02	ME2/02	prbs_err_me2_02	
+80000	54	0	28	000B6140	8	0000000000020000	1	0	PRBS error detected	2	03	ME2/03	prbs_err_me2_03	
+80000	54	0	28	000B6140	8	0000000000040000	1	0	PRBS error detected	2	04	ME2/04	prbs_err_me2_04	
+80000	54	0	28	000B6140	8	0000000000080000	1	0	PRBS error detected	2	05	ME2/05	prbs_err_me2_05	
+80000	54	0	28	000B6140	8	0000000000100000	1	0	PRBS error detected	2	06	ME2/06	prbs_err_me2_06	
+80000	54	0	28	000B6140	8	0000000000200000	1	0	PRBS error detected	2	07	ME2/07	prbs_err_me2_07	
+80000	54	0	28	000B6140	8	0000000000400000	1	0	PRBS error detected	2	08	ME2/08	prbs_err_me2_08	
+80000	54	0	28	000B6140	8	0000000000800000	1	0	PRBS error detected	2	09	ME2/09	prbs_err_me2_09	
+80000	54	0	28	000B6140	8	0000000001000000	1	0	PRBS error detected	3	02	ME3/02	prbs_err_me3_02	
+80000	54	0	28	000B6140	8	0000000002000000	1	0	PRBS error detected	3	03	ME3/03	prbs_err_me3_03	
+80000	54	0	28	000B6140	8	0000000004000000	1	0	PRBS error detected	3	04	ME3/04	prbs_err_me3_04	
+80000	54	0	28	000B6140	8	0000000008000000	1	0	PRBS error detected	3	05	ME3/05	prbs_err_me3_05	
+80000	54	0	28	000B6140	8	0000000010000000	1	0	PRBS error detected	3	06	ME3/06	prbs_err_me3_06	
+80000	54	0	28	000B6140	8	0000000020000000	1	0	PRBS error detected	3	07	ME3/07	prbs_err_me3_07	
+80000	54	0	28	000B6140	8	0000000040000000	1	0	PRBS error detected	3	08	ME3/08	prbs_err_me3_08	
+80000	54	0	28	000B6140	8	0000000080000000	1	0	PRBS error detected	3	09	ME3/09	prbs_err_me3_09	
+80000	54	0	28	000B6140	8	0000000100000000	1	0	PRBS error detected	4	02	ME4/02	prbs_err_me4_02	
+80000	54	0	28	000B6140	8	0000000200000000	1	0	PRBS error detected	4	03	ME4/03	prbs_err_me4_03	
+80000	54	0	28	000B6140	8	0000000400000000	1	0	PRBS error detected	4	04	ME4/04	prbs_err_me4_04	
+80000	54	0	28	000B6140	8	0000000800000000	1	0	PRBS error detected	4	05	ME4/05	prbs_err_me4_05	
+80000	54	0	28	000B6140	8	0000001000000000	1	0	PRBS error detected	4	06	ME4/06	prbs_err_me4_06	
+80000	54	0	28	000B6140	8	0000002000000000	1	0	PRBS error detected	4	07	ME4/07	prbs_err_me4_07	
+80000	54	0	28	000B6140	8	0000004000000000	1	0	PRBS error detected	4	08	ME4/08	prbs_err_me4_08	
+80000	54	0	28	000B6140	8	0000008000000000	1	0	PRBS error detected	4	09	ME4/09	prbs_err_me4_09	
+80000	54	0	28	000B6140	8	0000010000000000	1	0	PRBS error detected	1n	03	ME1n/03	prbs_err_me1n_03	
+80000	54	0	28	000B6140	8	0000020000000000	1	0	PRBS error detected	1n	06	ME1n/06	prbs_err_me1n_06	
+80000	54	0	28	000B6140	8	0000040000000000	1	0	PRBS error detected	1n	09	ME1n/09	prbs_err_me1n_09	
+80000	54	0	28	000B6140	8	0000080000000000	1	0	PRBS error detected	2n	03	ME2n/03	prbs_err_me2n_03	
+80000	54	0	28	000B6140	8	0000100000000000	1	0	PRBS error detected	2n	09	ME2n/09	prbs_err_me2n_09	
+80000	54	0	28	000B6140	8	0000200000000000	1	0	PRBS error detected	3n	03	ME3n/03	prbs_err_me3n_03	
+80000	54	0	28	000B6140	8	0000400000000000	1	0	PRBS error detected	3n	09	ME3n/09	prbs_err_me3n_09	
+80000	54	0	28	000B6140	8	0000800000000000	1	0	PRBS error detected	4n	03	ME4n/03	prbs_err_me4n_03	
+80000	54	0	28	000B6140	8	0001000000000000	1	0	PRBS error detected	4n	09	ME4n/09	prbs_err_me4n_09	
+														
+80000	54	0	32	000B6190	8	000000000000007f	1	1	Theta window for track building in zones 1,2,3				th_window	
+80000	54	0	32	000B6190	8	0000000000000f00	1	1	stub delay for two-muon trigger				delay_two_mu	
+80000	54	0	32	000B6190	8	0000000000001000	1	1	enable single stub trigger				single_en	
+80000	54	0	32	000B6190	8	0000000000002000	1	1	enable two-muon trigger				two_mu_en	
+80000	54	0	32	000B6190	8	0000000000004000	1	1	enable low theta mode 7 promotion to mode 12				low_th_promote	
+80000	54	0	32	000B6190	8	0000000000008000	1	1	enable using RPC data for track finding				use_rpc	
+80000	54	0	32	000B6190	8	00000000007f0000	1	1	Theta window for track building in zone 0				th_window_z0	
+80000	54	0	32	000B6190	8	0000000000800000	1	1	enable same BX requirement for 2-station tracks				two_st_tight_timing	
+80000	54	0	32	000B6190	8	0000000007000000	1	1	single stub trigger delay				single_delay	
+80000	54	0	32	000B6190	8	00000000f0000000	1	1	high-multiplicity trigger delay				hmt_delay	
+														
+80000	54	0	33	000B6198	8	0000000003ffffff	1	0	LCT rate counter	1a	01	ME1a/01	rate_lct_me1a_01	
+80000	54	0	33	000B6198	8	03ffffff00000000	1	0	LCT rate counter	1a	02	ME1a/02	rate_lct_me1a_02	
+80000	54	0	34	000B61A0	8	0000000003ffffff	1	0	LCT rate counter	1a	03	ME1a/03	rate_lct_me1a_03	
+80000	54	0	34	000B61A0	8	03ffffff00000000	1	0	LCT rate counter	1a	04	ME1a/04	rate_lct_me1a_04	
+80000	54	0	35	000B61A8	8	0000000003ffffff	1	0	LCT rate counter	1a	05	ME1a/05	rate_lct_me1a_05	
+80000	54	0	35	000B61A8	8	03ffffff00000000	1	0	LCT rate counter	1a	06	ME1a/06	rate_lct_me1a_06	
+80000	54	0	36	000B61B0	8	0000000003ffffff	1	0	LCT rate counter	1a	07	ME1a/07	rate_lct_me1a_07	
+80000	54	0	36	000B61B0	8	03ffffff00000000	1	0	LCT rate counter	1a	08	ME1a/08	rate_lct_me1a_08	
+80000	54	0	37	000B61B8	8	0000000003ffffff	1	0	LCT rate counter	1a	09	ME1a/09	rate_lct_me1a_09	
+80000	54	0	37	000B61B8	8	03ffffff00000000	1	0	Track rate counter				rate_track_0_1	
+80000	54	0	38	000B61C0	8	0000000003ffffff	1	0	LCT rate counter	1b	01	ME1b/01	rate_lct_me1b_01	
+80000	54	0	38	000B61C0	8	03ffffff00000000	1	0	LCT rate counter	1b	02	ME1b/02	rate_lct_me1b_02	
+80000	54	0	39	000B61C8	8	0000000003ffffff	1	0	LCT rate counter	1b	03	ME1b/03	rate_lct_me1b_03	
+80000	54	0	39	000B61C8	8	03ffffff00000000	1	0	LCT rate counter	1b	04	ME1b/04	rate_lct_me1b_04	
+80000	54	0	3a	000B61D0	8	0000000003ffffff	1	0	LCT rate counter	1b	05	ME1b/05	rate_lct_me1b_05	
+80000	54	0	3a	000B61D0	8	03ffffff00000000	1	0	LCT rate counter	1b	06	ME1b/06	rate_lct_me1b_06	
+80000	54	0	3b	000B61D8	8	0000000003ffffff	1	0	LCT rate counter	1b	07	ME1b/07	rate_lct_me1b_07	
+80000	54	0	3b	000B61D8	8	03ffffff00000000	1	0	LCT rate counter	1b	08	ME1b/08	rate_lct_me1b_08	
+80000	54	0	3c	000B61E0	8	0000000003ffffff	1	0	LCT rate counter	1b	09	ME1b/09	rate_lct_me1b_09	
+80000	54	0	3c	000B61E0	8	03ffffff00000000	1	0	Track rate counter				rate_track_1_1	
+80000	54	0	3d	000B61E8	8	0000000003ffffff	1	0	LCT rate counter	2	01	ME2/01	rate_lct_me2_01	
+80000	54	0	3d	000B61E8	8	03ffffff00000000	1	0	LCT rate counter	2	02	ME2/02	rate_lct_me2_02	
+80000	54	0	3e	000B61F0	8	0000000003ffffff	1	0	LCT rate counter	2	03	ME2/03	rate_lct_me2_03	
+80000	54	0	3e	000B61F0	8	03ffffff00000000	1	0	LCT rate counter	2	04	ME2/04	rate_lct_me2_04	
+80000	54	0	3f	000B61F8	8	0000000003ffffff	1	0	LCT rate counter	2	05	ME2/05	rate_lct_me2_05	
+80000	54	0	3f	000B61F8	8	03ffffff00000000	1	0	LCT rate counter	2	06	ME2/06	rate_lct_me2_06	
+80000	54	0	40	000B6200	8	0000000003ffffff	1	0	LCT rate counter	2	07	ME2/07	rate_lct_me2_07	
+80000	54	0	40	000B6200	8	03ffffff00000000	1	0	LCT rate counter	2	08	ME2/08	rate_lct_me2_08	
+80000	54	0	41	000B6208	8	0000000003ffffff	1	0	LCT rate counter	2	09	ME2/09	rate_lct_me2_09	
+80000	54	0	41	000B6208	8	03ffffff00000000	1	0	Track rate counter				rate_track_2_1	
+80000	54	0	42	000B6210	8	0000000003ffffff	1	0	LCT rate counter	3	01	ME3/01	rate_lct_me3_01	
+80000	54	0	42	000B6210	8	03ffffff00000000	1	0	LCT rate counter	3	02	ME3/02	rate_lct_me3_02	
+80000	54	0	43	000B6218	8	0000000003ffffff	1	0	LCT rate counter	3	03	ME3/03	rate_lct_me3_03	
+80000	54	0	43	000B6218	8	03ffffff00000000	1	0	LCT rate counter	3	04	ME3/04	rate_lct_me3_04	
+80000	54	0	44	000B6220	8	0000000003ffffff	1	0	LCT rate counter	3	05	ME3/05	rate_lct_me3_05	
+80000	54	0	44	000B6220	8	03ffffff00000000	1	0	LCT rate counter	3	06	ME3/06	rate_lct_me3_06	
+80000	54	0	45	000B6228	8	0000000003ffffff	1	0	LCT rate counter	3	07	ME3/07	rate_lct_me3_07	
+80000	54	0	45	000B6228	8	03ffffff00000000	1	0	LCT rate counter	3	08	ME3/08	rate_lct_me3_08	
+80000	54	0	46	000B6230	8	0000000003ffffff	1	0	LCT rate counter	3	09	ME3/09	rate_lct_me3_09	
+80000	54	0	46	000B6230	8	03ffffff00000000	1	0	Track rate counter				rate_track_0_2	
+80000	54	0	47	000B6238	8	0000000003ffffff	1	0	LCT rate counter	4	01	ME4/01	rate_lct_me4_01	
+80000	54	0	47	000B6238	8	03ffffff00000000	1	0	LCT rate counter	4	02	ME4/02	rate_lct_me4_02	
+80000	54	0	48	000B6240	8	0000000003ffffff	1	0	LCT rate counter	4	03	ME4/03	rate_lct_me4_03	
+80000	54	0	48	000B6240	8	03ffffff00000000	1	0	LCT rate counter	4	04	ME4/04	rate_lct_me4_04	
+80000	54	0	49	000B6248	8	0000000003ffffff	1	0	LCT rate counter	4	05	ME4/05	rate_lct_me4_05	
+80000	54	0	49	000B6248	8	03ffffff00000000	1	0	LCT rate counter	4	06	ME4/06	rate_lct_me4_06	
+80000	54	0	4a	000B6250	8	0000000003ffffff	1	0	LCT rate counter	4	07	ME4/07	rate_lct_me4_07	
+80000	54	0	4a	000B6250	8	03ffffff00000000	1	0	LCT rate counter	4	08	ME4/08	rate_lct_me4_08	
+80000	54	0	4b	000B6258	8	0000000003ffffff	1	0	LCT rate counter	4	09	ME4/09	rate_lct_me4_09	
+80000	54	0	4b	000B6258	8	03ffffff00000000	1	0	Track rate counter				rate_track_1_2	
+80000	54	0	4c	000B6260	8	0000000003ffffff	1	0	LCT rate counter	1n	03	ME1n/03	rate_lct_me1n_03	
+80000	54	0	4c	000B6260	8	03ffffff00000000	1	0	LCT rate counter	1n	06	ME1n/06	rate_lct_me1n_06	
+80000	54	0	4d	000B6268	8	0000000003ffffff	1	0	LCT rate counter	1n	09	ME1n/09	rate_lct_me1n_09	
+80000	54	0	4d	000B6268	8	03ffffff00000000	1	0	LCT rate counter	2n	03	ME2n/03	rate_lct_me2n_03	
+80000	54	0	4e	000B6270	8	0000000003ffffff	1	0	LCT rate counter	2n	09	ME2n/09	rate_lct_me2n_09	
+80000	54	0	4e	000B6270	8	03ffffff00000000	1	0	LCT rate counter	3n	03	ME3n/03	rate_lct_me3n_03	
+80000	54	0	4f	000B6278	8	0000000003ffffff	1	0	LCT rate counter	3n	09	ME3n/09	rate_lct_me3n_09	
+80000	54	0	4f	000B6278	8	03ffffff00000000	1	0	LCT rate counter	4n	03	ME4n/03	rate_lct_me4n_03	
+80000	54	0	50	000B6280	8	0000000003ffffff	1	0	LCT rate counter	4n	09	ME4n/09	rate_lct_me4n_09	
+80000	54	0	50	000B6280	8	03ffffff00000000	1	0	Track rate counter				rate_track_2_2	
+														
+80000	54	0	2f	000B6178	8	00000000000000ff	1	1	DAQ L1A delay				daq_l1a_del	
+80000	54	0	2f	000B6178	8	0000000000000700	1	1	DAQ L1A window				daq_l1a_window	
+80000	54	0	2f	000B6178	8	000000000007f800	1	1	DAQ Valid OR delay				daq_valor_delay	
+80000	54	0	2f	000B6178	8	0000000000380000	1	1	DAQ Valid OR window				daq_valor_window	
+80000	54	0	2f	000B6178	8	00000003ffc00000	1	1	DAQ BXN offset				daq_bxn_offset	
+80000	54	0	2f	000B6178	8	0003fffc00000000	1	1	DAQ board ID				daq_brd_id	
+80000	54	0	2f	000B6178	8	0004000000000000	1	1	DAQ stress test enable				daq_stress_en	
+80000	54	0	2f	000B6178	8	0008000000000000	1	1	DAQ enable AMC13 easy mode				daq_amc13_easy_en	
+80000	54	0	2f	000B6178	8	0010000000000000	1	1	DAQ report data without valid tracks				daq_report_wo_track	
+80000	54	0	2f	000B6178	8	00e0000000000000	1	1	DAQ RPC hits late by				daq_rpc_late_by	
+80000	54	0	2f	000B6178	8	0100000000000000	1	0	DAQ use PT generated by Neural Net				daq_use_nn_pt	
+														
+80000	54	0	30	000B6180	8	000000000000ffff	1	0	AMC13 not-ready counter				amc13_not_ready_cnt	
+80000	54	0	30	000B6180	8	00000000ffff0000	1	0	AMC13 FIFO-almost-full counter				amc13_fifo_full_cnt	
+														
+80000	54	0	31	000B6188	8	00000000000007ff	1	0	DAQ OOS counter				daq_oos_cnt	
+80000	54	0	31	000B6188	8	00000000003ff800	1	0	DAQ BSY counter				daq_bsy_cnt	
+80000	54	0	31	000B6188	8	00000001ffc00000	1	0	DAQ WOF counter				daq_wof_cnt	
+80000	54	0	31	000B6188	8	00000ffe00000000	1	0	DAQ RDY counter				daq_rdy_cnt	
+80000	54	0	31	000B6188	8	007ff00000000000	1	0	DAQ Illegal state counter				daq_ill_cnt	
+80000	54	0	31	000B6188	8	0780000000000000	1	0	DAQ TTS state				daq_tts_state	
+80000	54	0	31	000B6188	8	0800000000000000	1	0	DAQ AMC13 ready state				amc13_ready_state	
+80000	54	0	31	000B6188	8	1000000000000000	1	0	DAQ AMC13 easy mode triggered				amc13_easy_triggered	
+														
+80000	54	0	52	000B6290	8	0000000000000001	1	1	use BC0 from CSCID=1	1a	01	ME1a/01	use_bc0_ch1_me1a_01	
+80000	54	0	52	000B6290	8	0000000000000002	1	1	use BC0 from CSCID=1	1a	02	ME1a/02	use_bc0_ch1_me1a_02	
+80000	54	0	52	000B6290	8	0000000000000004	1	1	use BC0 from CSCID=1	1a	03	ME1a/03	use_bc0_ch1_me1a_03	
+80000	54	0	52	000B6290	8	0000000000000008	1	1	use BC0 from CSCID=1	1a	04	ME1a/04	use_bc0_ch1_me1a_04	
+80000	54	0	52	000B6290	8	0000000000000010	1	1	use BC0 from CSCID=1	1a	05	ME1a/05	use_bc0_ch1_me1a_05	
+80000	54	0	52	000B6290	8	0000000000000020	1	1	use BC0 from CSCID=1	1a	06	ME1a/06	use_bc0_ch1_me1a_06	
+80000	54	0	52	000B6290	8	0000000000000040	1	1	use BC0 from CSCID=1	1a	07	ME1a/07	use_bc0_ch1_me1a_07	
+80000	54	0	52	000B6290	8	0000000000000080	1	1	use BC0 from CSCID=1	1a	08	ME1a/08	use_bc0_ch1_me1a_08	
+80000	54	0	52	000B6290	8	0000000000000100	1	1	use BC0 from CSCID=1	1a	09	ME1a/09	use_bc0_ch1_me1a_09	
+80000	54	0	52	000B6290	8	0000000000000200	1	1	use BC0 from CSCID=1	1b	01	ME1b/01	use_bc0_ch1_me1b_01	
+80000	54	0	52	000B6290	8	0000000000000400	1	1	use BC0 from CSCID=1	1b	02	ME1b/02	use_bc0_ch1_me1b_02	
+80000	54	0	52	000B6290	8	0000000000000800	1	1	use BC0 from CSCID=1	1b	03	ME1b/03	use_bc0_ch1_me1b_03	
+80000	54	0	52	000B6290	8	0000000000001000	1	1	use BC0 from CSCID=1	1b	04	ME1b/04	use_bc0_ch1_me1b_04	
+80000	54	0	52	000B6290	8	0000000000002000	1	1	use BC0 from CSCID=1	1b	05	ME1b/05	use_bc0_ch1_me1b_05	
+80000	54	0	52	000B6290	8	0000000000004000	1	1	use BC0 from CSCID=1	1b	06	ME1b/06	use_bc0_ch1_me1b_06	
+80000	54	0	52	000B6290	8	0000000000008000	1	1	use BC0 from CSCID=1	1b	07	ME1b/07	use_bc0_ch1_me1b_07	
+80000	54	0	52	000B6290	8	0000000000010000	1	1	use BC0 from CSCID=1	1b	08	ME1b/08	use_bc0_ch1_me1b_08	
+80000	54	0	52	000B6290	8	0000000000020000	1	1	use BC0 from CSCID=1	1b	09	ME1b/09	use_bc0_ch1_me1b_09	
+80000	54	0	52	000B6290	8	0000000000040000	1	1	use BC0 from CSCID=1	2	01	ME2/01	use_bc0_ch1_me2_01	
+80000	54	0	52	000B6290	8	0000000000080000	1	1	use BC0 from CSCID=1	2	02	ME2/02	use_bc0_ch1_me2_02	
+80000	54	0	52	000B6290	8	0000000000100000	1	1	use BC0 from CSCID=1	2	03	ME2/03	use_bc0_ch1_me2_03	
+80000	54	0	52	000B6290	8	0000000000200000	1	1	use BC0 from CSCID=1	2	04	ME2/04	use_bc0_ch1_me2_04	
+80000	54	0	52	000B6290	8	0000000000400000	1	1	use BC0 from CSCID=1	2	05	ME2/05	use_bc0_ch1_me2_05	
+80000	54	0	52	000B6290	8	0000000000800000	1	1	use BC0 from CSCID=1	2	06	ME2/06	use_bc0_ch1_me2_06	
+80000	54	0	52	000B6290	8	0000000001000000	1	1	use BC0 from CSCID=1	2	07	ME2/07	use_bc0_ch1_me2_07	
+80000	54	0	52	000B6290	8	0000000002000000	1	1	use BC0 from CSCID=1	2	08	ME2/08	use_bc0_ch1_me2_08	
+80000	54	0	52	000B6290	8	0000000004000000	1	1	use BC0 from CSCID=1	2	09	ME2/09	use_bc0_ch1_me2_09	
+80000	54	0	52	000B6290	8	0000000008000000	1	1	use BC0 from CSCID=1	3	01	ME3/01	use_bc0_ch1_me3_01	
+80000	54	0	52	000B6290	8	0000000010000000	1	1	use BC0 from CSCID=1	3	02	ME3/02	use_bc0_ch1_me3_02	
+80000	54	0	52	000B6290	8	0000000020000000	1	1	use BC0 from CSCID=1	3	03	ME3/03	use_bc0_ch1_me3_03	
+80000	54	0	52	000B6290	8	0000000040000000	1	1	use BC0 from CSCID=1	3	04	ME3/04	use_bc0_ch1_me3_04	
+80000	54	0	52	000B6290	8	0000000080000000	1	1	use BC0 from CSCID=1	3	05	ME3/05	use_bc0_ch1_me3_05	
+80000	54	0	52	000B6290	8	0000000100000000	1	1	use BC0 from CSCID=1	3	06	ME3/06	use_bc0_ch1_me3_06	
+80000	54	0	52	000B6290	8	0000000200000000	1	1	use BC0 from CSCID=1	3	07	ME3/07	use_bc0_ch1_me3_07	
+80000	54	0	52	000B6290	8	0000000400000000	1	1	use BC0 from CSCID=1	3	08	ME3/08	use_bc0_ch1_me3_08	
+80000	54	0	52	000B6290	8	0000000800000000	1	1	use BC0 from CSCID=1	3	09	ME3/09	use_bc0_ch1_me3_09	
+80000	54	0	52	000B6290	8	0000001000000000	1	1	use BC0 from CSCID=1	4	01	ME4/01	use_bc0_ch1_me4_01	
+80000	54	0	52	000B6290	8	0000002000000000	1	1	use BC0 from CSCID=1	4	02	ME4/02	use_bc0_ch1_me4_02	
+80000	54	0	52	000B6290	8	0000004000000000	1	1	use BC0 from CSCID=1	4	03	ME4/03	use_bc0_ch1_me4_03	
+80000	54	0	52	000B6290	8	0000008000000000	1	1	use BC0 from CSCID=1	4	04	ME4/04	use_bc0_ch1_me4_04	
+80000	54	0	52	000B6290	8	0000010000000000	1	1	use BC0 from CSCID=1	4	05	ME4/05	use_bc0_ch1_me4_05	
+80000	54	0	52	000B6290	8	0000020000000000	1	1	use BC0 from CSCID=1	4	06	ME4/06	use_bc0_ch1_me4_06	
+80000	54	0	52	000B6290	8	0000040000000000	1	1	use BC0 from CSCID=1	4	07	ME4/07	use_bc0_ch1_me4_07	
+80000	54	0	52	000B6290	8	0000080000000000	1	1	use BC0 from CSCID=1	4	08	ME4/08	use_bc0_ch1_me4_08	
+80000	54	0	52	000B6290	8	0000100000000000	1	1	use BC0 from CSCID=1	4	09	ME4/09	use_bc0_ch1_me4_09	
+80000	54	0	52	000B6290	8	0000200000000000	1	1	use BC0 from CSCID=1	1n	03	ME1n/03	use_bc0_ch1_me1n_03	
+80000	54	0	52	000B6290	8	0000400000000000	1	1	use BC0 from CSCID=1	1n	06	ME1n/06	use_bc0_ch1_me1n_06	
+80000	54	0	52	000B6290	8	0000800000000000	1	1	use BC0 from CSCID=1	1n	09	ME1n/09	use_bc0_ch1_me1n_09	
+80000	54	0	52	000B6290	8	0001000000000000	1	1	use BC0 from CSCID=1	2n	03	ME2n/03	use_bc0_ch1_me2n_03	
+80000	54	0	52	000B6290	8	0002000000000000	1	1	use BC0 from CSCID=1	2n	09	ME2n/09	use_bc0_ch1_me2n_09	
+80000	54	0	52	000B6290	8	0004000000000000	1	1	use BC0 from CSCID=1	3n	03	ME3n/03	use_bc0_ch1_me3n_03	
+80000	54	0	52	000B6290	8	0008000000000000	1	1	use BC0 from CSCID=1	3n	09	ME3n/09	use_bc0_ch1_me3n_09	
+80000	54	0	52	000B6290	8	0010000000000000	1	1	use BC0 from CSCID=1	4n	03	ME4n/03	use_bc0_ch1_me4n_03	
+80000	54	0	52	000B6290	8	0020000000000000	1	1	use BC0 from CSCID=1	4n	09	ME4n/09	use_bc0_ch1_me4n_09	
+														
+80000	54	0	53	000B6298	8	002fffffffffffff	1	1	enable automatic switching to BC0 from CSCID=1			all	en_auto_bc0_ch1_all	
+80000	54	0	53	000B6298	8	0000000000000001	1	1	enable automatic switching to BC0 from CSCID=1	1a	01	ME1a/01	en_auto_bc0_ch1_me1a_01	
+80000	54	0	53	000B6298	8	0000000000000002	1	1	enable automatic switching to BC0 from CSCID=1	1a	02	ME1a/02	en_auto_bc0_ch1_me1a_02	
+80000	54	0	53	000B6298	8	0000000000000004	1	1	enable automatic switching to BC0 from CSCID=1	1a	03	ME1a/03	en_auto_bc0_ch1_me1a_03	
+80000	54	0	53	000B6298	8	0000000000000008	1	1	enable automatic switching to BC0 from CSCID=1	1a	04	ME1a/04	en_auto_bc0_ch1_me1a_04	
+80000	54	0	53	000B6298	8	0000000000000010	1	1	enable automatic switching to BC0 from CSCID=1	1a	05	ME1a/05	en_auto_bc0_ch1_me1a_05	
+80000	54	0	53	000B6298	8	0000000000000020	1	1	enable automatic switching to BC0 from CSCID=1	1a	06	ME1a/06	en_auto_bc0_ch1_me1a_06	
+80000	54	0	53	000B6298	8	0000000000000040	1	1	enable automatic switching to BC0 from CSCID=1	1a	07	ME1a/07	en_auto_bc0_ch1_me1a_07	
+80000	54	0	53	000B6298	8	0000000000000080	1	1	enable automatic switching to BC0 from CSCID=1	1a	08	ME1a/08	en_auto_bc0_ch1_me1a_08	
+80000	54	0	53	000B6298	8	0000000000000100	1	1	enable automatic switching to BC0 from CSCID=1	1a	09	ME1a/09	en_auto_bc0_ch1_me1a_09	
+80000	54	0	53	000B6298	8	0000000000000200	1	1	enable automatic switching to BC0 from CSCID=1	1b	01	ME1b/01	en_auto_bc0_ch1_me1b_01	
+80000	54	0	53	000B6298	8	0000000000000400	1	1	enable automatic switching to BC0 from CSCID=1	1b	02	ME1b/02	en_auto_bc0_ch1_me1b_02	
+80000	54	0	53	000B6298	8	0000000000000800	1	1	enable automatic switching to BC0 from CSCID=1	1b	03	ME1b/03	en_auto_bc0_ch1_me1b_03	
+80000	54	0	53	000B6298	8	0000000000001000	1	1	enable automatic switching to BC0 from CSCID=1	1b	04	ME1b/04	en_auto_bc0_ch1_me1b_04	
+80000	54	0	53	000B6298	8	0000000000002000	1	1	enable automatic switching to BC0 from CSCID=1	1b	05	ME1b/05	en_auto_bc0_ch1_me1b_05	
+80000	54	0	53	000B6298	8	0000000000004000	1	1	enable automatic switching to BC0 from CSCID=1	1b	06	ME1b/06	en_auto_bc0_ch1_me1b_06	
+80000	54	0	53	000B6298	8	0000000000008000	1	1	enable automatic switching to BC0 from CSCID=1	1b	07	ME1b/07	en_auto_bc0_ch1_me1b_07	
+80000	54	0	53	000B6298	8	0000000000010000	1	1	enable automatic switching to BC0 from CSCID=1	1b	08	ME1b/08	en_auto_bc0_ch1_me1b_08	
+80000	54	0	53	000B6298	8	0000000000020000	1	1	enable automatic switching to BC0 from CSCID=1	1b	09	ME1b/09	en_auto_bc0_ch1_me1b_09	
+80000	54	0	53	000B6298	8	0000000000040000	1	1	enable automatic switching to BC0 from CSCID=1	2	01	ME2/01	en_auto_bc0_ch1_me2_01	
+80000	54	0	53	000B6298	8	0000000000080000	1	1	enable automatic switching to BC0 from CSCID=1	2	02	ME2/02	en_auto_bc0_ch1_me2_02	
+80000	54	0	53	000B6298	8	0000000000100000	1	1	enable automatic switching to BC0 from CSCID=1	2	03	ME2/03	en_auto_bc0_ch1_me2_03	
+80000	54	0	53	000B6298	8	0000000000200000	1	1	enable automatic switching to BC0 from CSCID=1	2	04	ME2/04	en_auto_bc0_ch1_me2_04	
+80000	54	0	53	000B6298	8	0000000000400000	1	1	enable automatic switching to BC0 from CSCID=1	2	05	ME2/05	en_auto_bc0_ch1_me2_05	
+80000	54	0	53	000B6298	8	0000000000800000	1	1	enable automatic switching to BC0 from CSCID=1	2	06	ME2/06	en_auto_bc0_ch1_me2_06	
+80000	54	0	53	000B6298	8	0000000001000000	1	1	enable automatic switching to BC0 from CSCID=1	2	07	ME2/07	en_auto_bc0_ch1_me2_07	
+80000	54	0	53	000B6298	8	0000000002000000	1	1	enable automatic switching to BC0 from CSCID=1	2	08	ME2/08	en_auto_bc0_ch1_me2_08	
+80000	54	0	53	000B6298	8	0000000004000000	1	1	enable automatic switching to BC0 from CSCID=1	2	09	ME2/09	en_auto_bc0_ch1_me2_09	
+80000	54	0	53	000B6298	8	0000000008000000	1	1	enable automatic switching to BC0 from CSCID=1	3	01	ME3/01	en_auto_bc0_ch1_me3_01	
+80000	54	0	53	000B6298	8	0000000010000000	1	1	enable automatic switching to BC0 from CSCID=1	3	02	ME3/02	en_auto_bc0_ch1_me3_02	
+80000	54	0	53	000B6298	8	0000000020000000	1	1	enable automatic switching to BC0 from CSCID=1	3	03	ME3/03	en_auto_bc0_ch1_me3_03	
+80000	54	0	53	000B6298	8	0000000040000000	1	1	enable automatic switching to BC0 from CSCID=1	3	04	ME3/04	en_auto_bc0_ch1_me3_04	
+80000	54	0	53	000B6298	8	0000000080000000	1	1	enable automatic switching to BC0 from CSCID=1	3	05	ME3/05	en_auto_bc0_ch1_me3_05	
+80000	54	0	53	000B6298	8	0000000100000000	1	1	enable automatic switching to BC0 from CSCID=1	3	06	ME3/06	en_auto_bc0_ch1_me3_06	
+80000	54	0	53	000B6298	8	0000000200000000	1	1	enable automatic switching to BC0 from CSCID=1	3	07	ME3/07	en_auto_bc0_ch1_me3_07	
+80000	54	0	53	000B6298	8	0000000400000000	1	1	enable automatic switching to BC0 from CSCID=1	3	08	ME3/08	en_auto_bc0_ch1_me3_08	
+80000	54	0	53	000B6298	8	0000000800000000	1	1	enable automatic switching to BC0 from CSCID=1	3	09	ME3/09	en_auto_bc0_ch1_me3_09	
+80000	54	0	53	000B6298	8	0000001000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	01	ME4/01	en_auto_bc0_ch1_me4_01	
+80000	54	0	53	000B6298	8	0000002000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	02	ME4/02	en_auto_bc0_ch1_me4_02	
+80000	54	0	53	000B6298	8	0000004000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	03	ME4/03	en_auto_bc0_ch1_me4_03	
+80000	54	0	53	000B6298	8	0000008000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	04	ME4/04	en_auto_bc0_ch1_me4_04	
+80000	54	0	53	000B6298	8	0000010000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	05	ME4/05	en_auto_bc0_ch1_me4_05	
+80000	54	0	53	000B6298	8	0000020000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	06	ME4/06	en_auto_bc0_ch1_me4_06	
+80000	54	0	53	000B6298	8	0000040000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	07	ME4/07	en_auto_bc0_ch1_me4_07	
+80000	54	0	53	000B6298	8	0000080000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	08	ME4/08	en_auto_bc0_ch1_me4_08	
+80000	54	0	53	000B6298	8	0000100000000000	1	1	enable automatic switching to BC0 from CSCID=1	4	09	ME4/09	en_auto_bc0_ch1_me4_09	
+80000	54	0	53	000B6298	8	0000200000000000	1	1	enable automatic switching to BC0 from CSCID=1	1n	03	ME1n/03	en_auto_bc0_ch1_me1n_03	
+80000	54	0	53	000B6298	8	0000400000000000	1	1	enable automatic switching to BC0 from CSCID=1	1n	06	ME1n/06	en_auto_bc0_ch1_me1n_06	
+80000	54	0	53	000B6298	8	0000800000000000	1	1	enable automatic switching to BC0 from CSCID=1	1n	09	ME1n/09	en_auto_bc0_ch1_me1n_09	
+80000	54	0	53	000B6298	8	0001000000000000	1	1	enable automatic switching to BC0 from CSCID=1	2n	03	ME2n/03	en_auto_bc0_ch1_me2n_03	
+80000	54	0	53	000B6298	8	0002000000000000	1	1	enable automatic switching to BC0 from CSCID=1	2n	09	ME2n/09	en_auto_bc0_ch1_me2n_09	
+80000	54	0	53	000B6298	8	0004000000000000	1	1	enable automatic switching to BC0 from CSCID=1	3n	03	ME3n/03	en_auto_bc0_ch1_me3n_03	
+80000	54	0	53	000B6298	8	0008000000000000	1	1	enable automatic switching to BC0 from CSCID=1	3n	09	ME3n/09	en_auto_bc0_ch1_me3n_09	
+80000	54	0	53	000B6298	8	0010000000000000	1	1	enable automatic switching to BC0 from CSCID=1	4n	03	ME4n/03	en_auto_bc0_ch1_me4n_03	
+80000	54	0	53	000B6298	8	0020000000000000	1	1	enable automatic switching to BC0 from CSCID=1	4n	09	ME4n/09	en_auto_bc0_ch1_me4n_09	
+														
+80000	54	0	54	000B62A0	8	0000000000000001	1	1	GTH receiver reset	1a	02	ME1a/02	gth_rx_reset_me1a_02	
+80000	54	0	54	000B62A0	8	0000000000000002	1	1	GTH receiver reset	1a	03	ME1a/03	gth_rx_reset_me1a_03	
+80000	54	0	54	000B62A0	8	0000000000000004	1	1	GTH receiver reset	1a	04	ME1a/04	gth_rx_reset_me1a_04	
+80000	54	0	54	000B62A0	8	0000000000000008	1	1	GTH receiver reset	1a	05	ME1a/05	gth_rx_reset_me1a_05	
+80000	54	0	54	000B62A0	8	0000000000000010	1	1	GTH receiver reset	1a	06	ME1a/06	gth_rx_reset_me1a_06	
+80000	54	0	54	000B62A0	8	0000000000000020	1	1	GTH receiver reset	1a	07	ME1a/07	gth_rx_reset_me1a_07	
+80000	54	0	54	000B62A0	8	0000000000000040	1	1	GTH receiver reset	1a	08	ME1a/08	gth_rx_reset_me1a_08	
+80000	54	0	54	000B62A0	8	0000000000000080	1	1	GTH receiver reset	1a	09	ME1a/09	gth_rx_reset_me1a_09	
+80000	54	0	54	000B62A0	8	0000000000000100	1	1	GTH receiver reset	1b	02	ME1b/02	gth_rx_reset_me1b_02	
+80000	54	0	54	000B62A0	8	0000000000000200	1	1	GTH receiver reset	1b	03	ME1b/03	gth_rx_reset_me1b_03	
+80000	54	0	54	000B62A0	8	0000000000000400	1	1	GTH receiver reset	1b	04	ME1b/04	gth_rx_reset_me1b_04	
+80000	54	0	54	000B62A0	8	0000000000000800	1	1	GTH receiver reset	1b	05	ME1b/05	gth_rx_reset_me1b_05	
+80000	54	0	54	000B62A0	8	0000000000001000	1	1	GTH receiver reset	1b	06	ME1b/06	gth_rx_reset_me1b_06	
+80000	54	0	54	000B62A0	8	0000000000002000	1	1	GTH receiver reset	1b	07	ME1b/07	gth_rx_reset_me1b_07	
+80000	54	0	54	000B62A0	8	0000000000004000	1	1	GTH receiver reset	1b	08	ME1b/08	gth_rx_reset_me1b_08	
+80000	54	0	54	000B62A0	8	0000000000008000	1	1	GTH receiver reset	1b	09	ME1b/09	gth_rx_reset_me1b_09	
+80000	54	0	54	000B62A0	8	0000000000010000	1	1	GTH receiver reset	2	02	ME2/02	gth_rx_reset_me2_02	
+80000	54	0	54	000B62A0	8	0000000000020000	1	1	GTH receiver reset	2	03	ME2/03	gth_rx_reset_me2_03	
+80000	54	0	54	000B62A0	8	0000000000040000	1	1	GTH receiver reset	2	04	ME2/04	gth_rx_reset_me2_04	
+80000	54	0	54	000B62A0	8	0000000000080000	1	1	GTH receiver reset	2	05	ME2/05	gth_rx_reset_me2_05	
+80000	54	0	54	000B62A0	8	0000000000100000	1	1	GTH receiver reset	2	06	ME2/06	gth_rx_reset_me2_06	
+80000	54	0	54	000B62A0	8	0000000000200000	1	1	GTH receiver reset	2	07	ME2/07	gth_rx_reset_me2_07	
+80000	54	0	54	000B62A0	8	0000000000400000	1	1	GTH receiver reset	2	08	ME2/08	gth_rx_reset_me2_08	
+80000	54	0	54	000B62A0	8	0000000000800000	1	1	GTH receiver reset	2	09	ME2/09	gth_rx_reset_me2_09	
+80000	54	0	54	000B62A0	8	0000000001000000	1	1	GTH receiver reset	3	02	ME3/02	gth_rx_reset_me3_02	
+80000	54	0	54	000B62A0	8	0000000002000000	1	1	GTH receiver reset	3	03	ME3/03	gth_rx_reset_me3_03	
+80000	54	0	54	000B62A0	8	0000000004000000	1	1	GTH receiver reset	3	04	ME3/04	gth_rx_reset_me3_04	
+80000	54	0	54	000B62A0	8	0000000008000000	1	1	GTH receiver reset	3	05	ME3/05	gth_rx_reset_me3_05	
+80000	54	0	54	000B62A0	8	0000000010000000	1	1	GTH receiver reset	3	06	ME3/06	gth_rx_reset_me3_06	
+80000	54	0	54	000B62A0	8	0000000020000000	1	1	GTH receiver reset	3	07	ME3/07	gth_rx_reset_me3_07	
+80000	54	0	54	000B62A0	8	0000000040000000	1	1	GTH receiver reset	3	08	ME3/08	gth_rx_reset_me3_08	
+80000	54	0	54	000B62A0	8	0000000080000000	1	1	GTH receiver reset	3	09	ME3/09	gth_rx_reset_me3_09	
+80000	54	0	54	000B62A0	8	0000000100000000	1	1	GTH receiver reset	4	02	ME4/02	gth_rx_reset_me4_02	
+80000	54	0	54	000B62A0	8	0000000200000000	1	1	GTH receiver reset	4	03	ME4/03	gth_rx_reset_me4_03	
+80000	54	0	54	000B62A0	8	0000000400000000	1	1	GTH receiver reset	4	04	ME4/04	gth_rx_reset_me4_04	
+80000	54	0	54	000B62A0	8	0000000800000000	1	1	GTH receiver reset	4	05	ME4/05	gth_rx_reset_me4_05	
+80000	54	0	54	000B62A0	8	0000001000000000	1	1	GTH receiver reset	4	06	ME4/06	gth_rx_reset_me4_06	
+80000	54	0	54	000B62A0	8	0000002000000000	1	1	GTH receiver reset	4	07	ME4/07	gth_rx_reset_me4_07	
+80000	54	0	54	000B62A0	8	0000004000000000	1	1	GTH receiver reset	4	08	ME4/08	gth_rx_reset_me4_08	
+80000	54	0	54	000B62A0	8	0000008000000000	1	1	GTH receiver reset	4	09	ME4/09	gth_rx_reset_me4_09	
+80000	54	0	54	000B62A0	8	0000010000000000	1	1	GTH receiver reset	1n	03	ME1n/03	gth_rx_reset_me1n_03	
+80000	54	0	54	000B62A0	8	0000020000000000	1	1	GTH receiver reset	1n	06	ME1n/06	gth_rx_reset_me1n_06	
+80000	54	0	54	000B62A0	8	0000040000000000	1	1	GTH receiver reset	1n	09	ME1n/09	gth_rx_reset_me1n_09	
+80000	54	0	54	000B62A0	8	0000080000000000	1	1	GTH receiver reset	2n	03	ME2n/03	gth_rx_reset_me2n_03	
+80000	54	0	54	000B62A0	8	0000100000000000	1	1	GTH receiver reset	2n	09	ME2n/09	gth_rx_reset_me2n_09	
+80000	54	0	54	000B62A0	8	0000200000000000	1	1	GTH receiver reset	3n	03	ME3n/03	gth_rx_reset_me3n_03	
+80000	54	0	54	000B62A0	8	0000400000000000	1	1	GTH receiver reset	3n	09	ME3n/09	gth_rx_reset_me3n_09	
+80000	54	0	54	000B62A0	8	0000800000000000	1	1	GTH receiver reset	4n	03	ME4n/03	gth_rx_reset_me4n_03	
+80000	54	0	54	000B62A0	8	0001000000000000	1	1	GTH receiver reset	4n	09	ME4n/09	gth_rx_reset_me4n_09	
+														
+80000	54	0	55	000B62A8	8	000000000000ffff	1	0	main MMCM unlock counter				usrclk_unlock_cnt	
+80000	54	0	56	000B62B0	8	0000000000ffffff	1	1	Hard Reset time out				hard_reset_to	
+80000	54	0	56	000B62B0	8	0000ffffff000000	1	1	MPC link Hard Reset time out				mpc_link_hr_to	
+														
+80000	54	0	57	000B62B8	8	0001ffffffffffff	1	0	MPC links RX reset done			all	rx_reset_done_all	
+80000	54	0	57	000B62B8	8	0000000000000001	1	0	MPC links RX reset done	1a	02	ME1a/02	rx_reset_done_me1a_02	
+80000	54	0	57	000B62B8	8	0000000000000002	1	0	MPC links RX reset done	1a	03	ME1a/03	rx_reset_done_me1a_03	
+80000	54	0	57	000B62B8	8	0000000000000004	1	0	MPC links RX reset done	1a	04	ME1a/04	rx_reset_done_me1a_04	
+80000	54	0	57	000B62B8	8	0000000000000008	1	0	MPC links RX reset done	1a	05	ME1a/05	rx_reset_done_me1a_05	
+80000	54	0	57	000B62B8	8	0000000000000010	1	0	MPC links RX reset done	1a	06	ME1a/06	rx_reset_done_me1a_06	
+80000	54	0	57	000B62B8	8	0000000000000020	1	0	MPC links RX reset done	1a	07	ME1a/07	rx_reset_done_me1a_07	
+80000	54	0	57	000B62B8	8	0000000000000040	1	0	MPC links RX reset done	1a	08	ME1a/08	rx_reset_done_me1a_08	
+80000	54	0	57	000B62B8	8	0000000000000080	1	0	MPC links RX reset done	1a	09	ME1a/09	rx_reset_done_me1a_09	
+80000	54	0	57	000B62B8	8	0000000000000100	1	0	MPC links RX reset done	1b	02	ME1b/02	rx_reset_done_me1b_02	
+80000	54	0	57	000B62B8	8	0000000000000200	1	0	MPC links RX reset done	1b	03	ME1b/03	rx_reset_done_me1b_03	
+80000	54	0	57	000B62B8	8	0000000000000400	1	0	MPC links RX reset done	1b	04	ME1b/04	rx_reset_done_me1b_04	
+80000	54	0	57	000B62B8	8	0000000000000800	1	0	MPC links RX reset done	1b	05	ME1b/05	rx_reset_done_me1b_05	
+80000	54	0	57	000B62B8	8	0000000000001000	1	0	MPC links RX reset done	1b	06	ME1b/06	rx_reset_done_me1b_06	
+80000	54	0	57	000B62B8	8	0000000000002000	1	0	MPC links RX reset done	1b	07	ME1b/07	rx_reset_done_me1b_07	
+80000	54	0	57	000B62B8	8	0000000000004000	1	0	MPC links RX reset done	1b	08	ME1b/08	rx_reset_done_me1b_08	
+80000	54	0	57	000B62B8	8	0000000000008000	1	0	MPC links RX reset done	1b	09	ME1b/09	rx_reset_done_me1b_09	
+80000	54	0	57	000B62B8	8	0000000000010000	1	0	MPC links RX reset done	2	02	ME2/02	rx_reset_done_me2_02	
+80000	54	0	57	000B62B8	8	0000000000020000	1	0	MPC links RX reset done	2	03	ME2/03	rx_reset_done_me2_03	
+80000	54	0	57	000B62B8	8	0000000000040000	1	0	MPC links RX reset done	2	04	ME2/04	rx_reset_done_me2_04	
+80000	54	0	57	000B62B8	8	0000000000080000	1	0	MPC links RX reset done	2	05	ME2/05	rx_reset_done_me2_05	
+80000	54	0	57	000B62B8	8	0000000000100000	1	0	MPC links RX reset done	2	06	ME2/06	rx_reset_done_me2_06	
+80000	54	0	57	000B62B8	8	0000000000200000	1	0	MPC links RX reset done	2	07	ME2/07	rx_reset_done_me2_07	
+80000	54	0	57	000B62B8	8	0000000000400000	1	0	MPC links RX reset done	2	08	ME2/08	rx_reset_done_me2_08	
+80000	54	0	57	000B62B8	8	0000000000800000	1	0	MPC links RX reset done	2	09	ME2/09	rx_reset_done_me2_09	
+80000	54	0	57	000B62B8	8	0000000001000000	1	0	MPC links RX reset done	3	02	ME3/02	rx_reset_done_me3_02	
+80000	54	0	57	000B62B8	8	0000000002000000	1	0	MPC links RX reset done	3	03	ME3/03	rx_reset_done_me3_03	
+80000	54	0	57	000B62B8	8	0000000004000000	1	0	MPC links RX reset done	3	04	ME3/04	rx_reset_done_me3_04	
+80000	54	0	57	000B62B8	8	0000000008000000	1	0	MPC links RX reset done	3	05	ME3/05	rx_reset_done_me3_05	
+80000	54	0	57	000B62B8	8	0000000010000000	1	0	MPC links RX reset done	3	06	ME3/06	rx_reset_done_me3_06	
+80000	54	0	57	000B62B8	8	0000000020000000	1	0	MPC links RX reset done	3	07	ME3/07	rx_reset_done_me3_07	
+80000	54	0	57	000B62B8	8	0000000040000000	1	0	MPC links RX reset done	3	08	ME3/08	rx_reset_done_me3_08	
+80000	54	0	57	000B62B8	8	0000000080000000	1	0	MPC links RX reset done	3	09	ME3/09	rx_reset_done_me3_09	
+80000	54	0	57	000B62B8	8	0000000100000000	1	0	MPC links RX reset done	4	02	ME4/02	rx_reset_done_me4_02	
+80000	54	0	57	000B62B8	8	0000000200000000	1	0	MPC links RX reset done	4	03	ME4/03	rx_reset_done_me4_03	
+80000	54	0	57	000B62B8	8	0000000400000000	1	0	MPC links RX reset done	4	04	ME4/04	rx_reset_done_me4_04	
+80000	54	0	57	000B62B8	8	0000000800000000	1	0	MPC links RX reset done	4	05	ME4/05	rx_reset_done_me4_05	
+80000	54	0	57	000B62B8	8	0000001000000000	1	0	MPC links RX reset done	4	06	ME4/06	rx_reset_done_me4_06	
+80000	54	0	57	000B62B8	8	0000002000000000	1	0	MPC links RX reset done	4	07	ME4/07	rx_reset_done_me4_07	
+80000	54	0	57	000B62B8	8	0000004000000000	1	0	MPC links RX reset done	4	08	ME4/08	rx_reset_done_me4_08	
+80000	54	0	57	000B62B8	8	0000008000000000	1	0	MPC links RX reset done	4	09	ME4/09	rx_reset_done_me4_09	
+80000	54	0	57	000B62B8	8	0000010000000000	1	0	MPC links RX reset done	1n	03	ME1n/03	rx_reset_done_me1n_03	
+80000	54	0	57	000B62B8	8	0000020000000000	1	0	MPC links RX reset done	1n	06	ME1n/06	rx_reset_done_me1n_06	
+80000	54	0	57	000B62B8	8	0000040000000000	1	0	MPC links RX reset done	1n	09	ME1n/09	rx_reset_done_me1n_09	
+80000	54	0	57	000B62B8	8	0000080000000000	1	0	MPC links RX reset done	2n	03	ME2n/03	rx_reset_done_me2n_03	
+80000	54	0	57	000B62B8	8	0000100000000000	1	0	MPC links RX reset done	2n	09	ME2n/09	rx_reset_done_me2n_09	
+80000	54	0	57	000B62B8	8	0000200000000000	1	0	MPC links RX reset done	3n	03	ME3n/03	rx_reset_done_me3n_03	
+80000	54	0	57	000B62B8	8	0000400000000000	1	0	MPC links RX reset done	3n	09	ME3n/09	rx_reset_done_me3n_09	
+80000	54	0	57	000B62B8	8	0000800000000000	1	0	MPC links RX reset done	4n	03	ME4n/03	rx_reset_done_me4n_03	
+80000	54	0	57	000B62B8	8	0001000000000000	1	0	MPC links RX reset done	4n	09	ME4n/09	rx_reset_done_me4n_09	
+														
+80000	54	0	58	000B62C0	8	0001ffffffffffff	1	0	MPC links TX reset done			all	tx_reset_done_all	
+80000	54	0	58	000B62C0	8	0000000000000001	1	0	MPC links TX reset done	1a	02	ME1a/02	tx_reset_done_me1a_02	
+80000	54	0	58	000B62C0	8	0000000000000002	1	0	MPC links TX reset done	1a	03	ME1a/03	tx_reset_done_me1a_03	
+80000	54	0	58	000B62C0	8	0000000000000004	1	0	MPC links TX reset done	1a	04	ME1a/04	tx_reset_done_me1a_04	
+80000	54	0	58	000B62C0	8	0000000000000008	1	0	MPC links TX reset done	1a	05	ME1a/05	tx_reset_done_me1a_05	
+80000	54	0	58	000B62C0	8	0000000000000010	1	0	MPC links TX reset done	1a	06	ME1a/06	tx_reset_done_me1a_06	
+80000	54	0	58	000B62C0	8	0000000000000020	1	0	MPC links TX reset done	1a	07	ME1a/07	tx_reset_done_me1a_07	
+80000	54	0	58	000B62C0	8	0000000000000040	1	0	MPC links TX reset done	1a	08	ME1a/08	tx_reset_done_me1a_08	
+80000	54	0	58	000B62C0	8	0000000000000080	1	0	MPC links TX reset done	1a	09	ME1a/09	tx_reset_done_me1a_09	
+80000	54	0	58	000B62C0	8	0000000000000100	1	0	MPC links TX reset done	1b	02	ME1b/02	tx_reset_done_me1b_02	
+80000	54	0	58	000B62C0	8	0000000000000200	1	0	MPC links TX reset done	1b	03	ME1b/03	tx_reset_done_me1b_03	
+80000	54	0	58	000B62C0	8	0000000000000400	1	0	MPC links TX reset done	1b	04	ME1b/04	tx_reset_done_me1b_04	
+80000	54	0	58	000B62C0	8	0000000000000800	1	0	MPC links TX reset done	1b	05	ME1b/05	tx_reset_done_me1b_05	
+80000	54	0	58	000B62C0	8	0000000000001000	1	0	MPC links TX reset done	1b	06	ME1b/06	tx_reset_done_me1b_06	
+80000	54	0	58	000B62C0	8	0000000000002000	1	0	MPC links TX reset done	1b	07	ME1b/07	tx_reset_done_me1b_07	
+80000	54	0	58	000B62C0	8	0000000000004000	1	0	MPC links TX reset done	1b	08	ME1b/08	tx_reset_done_me1b_08	
+80000	54	0	58	000B62C0	8	0000000000008000	1	0	MPC links TX reset done	1b	09	ME1b/09	tx_reset_done_me1b_09	
+80000	54	0	58	000B62C0	8	0000000000010000	1	0	MPC links TX reset done	2	02	ME2/02	tx_reset_done_me2_02	
+80000	54	0	58	000B62C0	8	0000000000020000	1	0	MPC links TX reset done	2	03	ME2/03	tx_reset_done_me2_03	
+80000	54	0	58	000B62C0	8	0000000000040000	1	0	MPC links TX reset done	2	04	ME2/04	tx_reset_done_me2_04	
+80000	54	0	58	000B62C0	8	0000000000080000	1	0	MPC links TX reset done	2	05	ME2/05	tx_reset_done_me2_05	
+80000	54	0	58	000B62C0	8	0000000000100000	1	0	MPC links TX reset done	2	06	ME2/06	tx_reset_done_me2_06	
+80000	54	0	58	000B62C0	8	0000000000200000	1	0	MPC links TX reset done	2	07	ME2/07	tx_reset_done_me2_07	
+80000	54	0	58	000B62C0	8	0000000000400000	1	0	MPC links TX reset done	2	08	ME2/08	tx_reset_done_me2_08	
+80000	54	0	58	000B62C0	8	0000000000800000	1	0	MPC links TX reset done	2	09	ME2/09	tx_reset_done_me2_09	
+80000	54	0	58	000B62C0	8	0000000001000000	1	0	MPC links TX reset done	3	02	ME3/02	tx_reset_done_me3_02	
+80000	54	0	58	000B62C0	8	0000000002000000	1	0	MPC links TX reset done	3	03	ME3/03	tx_reset_done_me3_03	
+80000	54	0	58	000B62C0	8	0000000004000000	1	0	MPC links TX reset done	3	04	ME3/04	tx_reset_done_me3_04	
+80000	54	0	58	000B62C0	8	0000000008000000	1	0	MPC links TX reset done	3	05	ME3/05	tx_reset_done_me3_05	
+80000	54	0	58	000B62C0	8	0000000010000000	1	0	MPC links TX reset done	3	06	ME3/06	tx_reset_done_me3_06	
+80000	54	0	58	000B62C0	8	0000000020000000	1	0	MPC links TX reset done	3	07	ME3/07	tx_reset_done_me3_07	
+80000	54	0	58	000B62C0	8	0000000040000000	1	0	MPC links TX reset done	3	08	ME3/08	tx_reset_done_me3_08	
+80000	54	0	58	000B62C0	8	0000000080000000	1	0	MPC links TX reset done	3	09	ME3/09	tx_reset_done_me3_09	
+80000	54	0	58	000B62C0	8	0000000100000000	1	0	MPC links TX reset done	4	02	ME4/02	tx_reset_done_me4_02	
+80000	54	0	58	000B62C0	8	0000000200000000	1	0	MPC links TX reset done	4	03	ME4/03	tx_reset_done_me4_03	
+80000	54	0	58	000B62C0	8	0000000400000000	1	0	MPC links TX reset done	4	04	ME4/04	tx_reset_done_me4_04	
+80000	54	0	58	000B62C0	8	0000000800000000	1	0	MPC links TX reset done	4	05	ME4/05	tx_reset_done_me4_05	
+80000	54	0	58	000B62C0	8	0000001000000000	1	0	MPC links TX reset done	4	06	ME4/06	tx_reset_done_me4_06	
+80000	54	0	58	000B62C0	8	0000002000000000	1	0	MPC links TX reset done	4	07	ME4/07	tx_reset_done_me4_07	
+80000	54	0	58	000B62C0	8	0000004000000000	1	0	MPC links TX reset done	4	08	ME4/08	tx_reset_done_me4_08	
+80000	54	0	58	000B62C0	8	0000008000000000	1	0	MPC links TX reset done	4	09	ME4/09	tx_reset_done_me4_09	
+80000	54	0	58	000B62C0	8	0000010000000000	1	0	MPC links TX reset done	1n	03	ME1n/03	tx_reset_done_me1n_03	
+80000	54	0	58	000B62C0	8	0000020000000000	1	0	MPC links TX reset done	1n	06	ME1n/06	tx_reset_done_me1n_06	
+80000	54	0	58	000B62C0	8	0000040000000000	1	0	MPC links TX reset done	1n	09	ME1n/09	tx_reset_done_me1n_09	
+80000	54	0	58	000B62C0	8	0000080000000000	1	0	MPC links TX reset done	2n	03	ME2n/03	tx_reset_done_me2n_03	
+80000	54	0	58	000B62C0	8	0000100000000000	1	0	MPC links TX reset done	2n	09	ME2n/09	tx_reset_done_me2n_09	
+80000	54	0	58	000B62C0	8	0000200000000000	1	0	MPC links TX reset done	3n	03	ME3n/03	tx_reset_done_me3n_03	
+80000	54	0	58	000B62C0	8	0000400000000000	1	0	MPC links TX reset done	3n	09	ME3n/09	tx_reset_done_me3n_09	
+80000	54	0	58	000B62C0	8	0000800000000000	1	0	MPC links TX reset done	4n	03	ME4n/03	tx_reset_done_me4n_03	
+80000	54	0	58	000B62C0	8	0001000000000000	1	0	MPC links TX reset done	4n	09	ME4n/09	tx_reset_done_me4n_09	
+														
+80000	54	0	59	000B62C8	8	0001ffffffffffff	1	0	MPC links CPLL lock status			all	cpll_lock_all	
+80000	54	0	59	000B62C8	8	0000000000000001	1	0	MPC links CPLL lock status	1a	02	ME1a/02	cpll_lock_me1a_02	
+80000	54	0	59	000B62C8	8	0000000000000002	1	0	MPC links CPLL lock status	1a	03	ME1a/03	cpll_lock_me1a_03	
+80000	54	0	59	000B62C8	8	0000000000000004	1	0	MPC links CPLL lock status	1a	04	ME1a/04	cpll_lock_me1a_04	
+80000	54	0	59	000B62C8	8	0000000000000008	1	0	MPC links CPLL lock status	1a	05	ME1a/05	cpll_lock_me1a_05	
+80000	54	0	59	000B62C8	8	0000000000000010	1	0	MPC links CPLL lock status	1a	06	ME1a/06	cpll_lock_me1a_06	
+80000	54	0	59	000B62C8	8	0000000000000020	1	0	MPC links CPLL lock status	1a	07	ME1a/07	cpll_lock_me1a_07	
+80000	54	0	59	000B62C8	8	0000000000000040	1	0	MPC links CPLL lock status	1a	08	ME1a/08	cpll_lock_me1a_08	
+80000	54	0	59	000B62C8	8	0000000000000080	1	0	MPC links CPLL lock status	1a	09	ME1a/09	cpll_lock_me1a_09	
+80000	54	0	59	000B62C8	8	0000000000000100	1	0	MPC links CPLL lock status	1b	02	ME1b/02	cpll_lock_me1b_02	
+80000	54	0	59	000B62C8	8	0000000000000200	1	0	MPC links CPLL lock status	1b	03	ME1b/03	cpll_lock_me1b_03	
+80000	54	0	59	000B62C8	8	0000000000000400	1	0	MPC links CPLL lock status	1b	04	ME1b/04	cpll_lock_me1b_04	
+80000	54	0	59	000B62C8	8	0000000000000800	1	0	MPC links CPLL lock status	1b	05	ME1b/05	cpll_lock_me1b_05	
+80000	54	0	59	000B62C8	8	0000000000001000	1	0	MPC links CPLL lock status	1b	06	ME1b/06	cpll_lock_me1b_06	
+80000	54	0	59	000B62C8	8	0000000000002000	1	0	MPC links CPLL lock status	1b	07	ME1b/07	cpll_lock_me1b_07	
+80000	54	0	59	000B62C8	8	0000000000004000	1	0	MPC links CPLL lock status	1b	08	ME1b/08	cpll_lock_me1b_08	
+80000	54	0	59	000B62C8	8	0000000000008000	1	0	MPC links CPLL lock status	1b	09	ME1b/09	cpll_lock_me1b_09	
+80000	54	0	59	000B62C8	8	0000000000010000	1	0	MPC links CPLL lock status	2	02	ME2/02	cpll_lock_me2_02	
+80000	54	0	59	000B62C8	8	0000000000020000	1	0	MPC links CPLL lock status	2	03	ME2/03	cpll_lock_me2_03	
+80000	54	0	59	000B62C8	8	0000000000040000	1	0	MPC links CPLL lock status	2	04	ME2/04	cpll_lock_me2_04	
+80000	54	0	59	000B62C8	8	0000000000080000	1	0	MPC links CPLL lock status	2	05	ME2/05	cpll_lock_me2_05	
+80000	54	0	59	000B62C8	8	0000000000100000	1	0	MPC links CPLL lock status	2	06	ME2/06	cpll_lock_me2_06	
+80000	54	0	59	000B62C8	8	0000000000200000	1	0	MPC links CPLL lock status	2	07	ME2/07	cpll_lock_me2_07	
+80000	54	0	59	000B62C8	8	0000000000400000	1	0	MPC links CPLL lock status	2	08	ME2/08	cpll_lock_me2_08	
+80000	54	0	59	000B62C8	8	0000000000800000	1	0	MPC links CPLL lock status	2	09	ME2/09	cpll_lock_me2_09	
+80000	54	0	59	000B62C8	8	0000000001000000	1	0	MPC links CPLL lock status	3	02	ME3/02	cpll_lock_me3_02	
+80000	54	0	59	000B62C8	8	0000000002000000	1	0	MPC links CPLL lock status	3	03	ME3/03	cpll_lock_me3_03	
+80000	54	0	59	000B62C8	8	0000000004000000	1	0	MPC links CPLL lock status	3	04	ME3/04	cpll_lock_me3_04	
+80000	54	0	59	000B62C8	8	0000000008000000	1	0	MPC links CPLL lock status	3	05	ME3/05	cpll_lock_me3_05	
+80000	54	0	59	000B62C8	8	0000000010000000	1	0	MPC links CPLL lock status	3	06	ME3/06	cpll_lock_me3_06	
+80000	54	0	59	000B62C8	8	0000000020000000	1	0	MPC links CPLL lock status	3	07	ME3/07	cpll_lock_me3_07	
+80000	54	0	59	000B62C8	8	0000000040000000	1	0	MPC links CPLL lock status	3	08	ME3/08	cpll_lock_me3_08	
+80000	54	0	59	000B62C8	8	0000000080000000	1	0	MPC links CPLL lock status	3	09	ME3/09	cpll_lock_me3_09	
+80000	54	0	59	000B62C8	8	0000000100000000	1	0	MPC links CPLL lock status	4	02	ME4/02	cpll_lock_me4_02	
+80000	54	0	59	000B62C8	8	0000000200000000	1	0	MPC links CPLL lock status	4	03	ME4/03	cpll_lock_me4_03	
+80000	54	0	59	000B62C8	8	0000000400000000	1	0	MPC links CPLL lock status	4	04	ME4/04	cpll_lock_me4_04	
+80000	54	0	59	000B62C8	8	0000000800000000	1	0	MPC links CPLL lock status	4	05	ME4/05	cpll_lock_me4_05	
+80000	54	0	59	000B62C8	8	0000001000000000	1	0	MPC links CPLL lock status	4	06	ME4/06	cpll_lock_me4_06	
+80000	54	0	59	000B62C8	8	0000002000000000	1	0	MPC links CPLL lock status	4	07	ME4/07	cpll_lock_me4_07	
+80000	54	0	59	000B62C8	8	0000004000000000	1	0	MPC links CPLL lock status	4	08	ME4/08	cpll_lock_me4_08	
+80000	54	0	59	000B62C8	8	0000008000000000	1	0	MPC links CPLL lock status	4	09	ME4/09	cpll_lock_me4_09	
+80000	54	0	59	000B62C8	8	0000010000000000	1	0	MPC links CPLL lock status	1n	03	ME1n/03	cpll_lock_me1n_03	
+80000	54	0	59	000B62C8	8	0000020000000000	1	0	MPC links CPLL lock status	1n	06	ME1n/06	cpll_lock_me1n_06	
+80000	54	0	59	000B62C8	8	0000040000000000	1	0	MPC links CPLL lock status	1n	09	ME1n/09	cpll_lock_me1n_09	
+80000	54	0	59	000B62C8	8	0000080000000000	1	0	MPC links CPLL lock status	2n	03	ME2n/03	cpll_lock_me2n_03	
+80000	54	0	59	000B62C8	8	0000100000000000	1	0	MPC links CPLL lock status	2n	09	ME2n/09	cpll_lock_me2n_09	
+80000	54	0	59	000B62C8	8	0000200000000000	1	0	MPC links CPLL lock status	3n	03	ME3n/03	cpll_lock_me3n_03	
+80000	54	0	59	000B62C8	8	0000400000000000	1	0	MPC links CPLL lock status	3n	09	ME3n/09	cpll_lock_me3n_09	
+80000	54	0	59	000B62C8	8	0000800000000000	1	0	MPC links CPLL lock status	4n	03	ME4n/03	cpll_lock_me4n_03	
+80000	54	0	59	000B62C8	8	0001000000000000	1	0	MPC links CPLL lock status	4n	09	ME4n/09	cpll_lock_me4n_09	
+														
+80000	54	0	5A	000B62D0	8	0001ffffffffffff	1	0	MPC links GTH TX status			all	gth_tx_done_all	
+80000	54	0	5A	000B62D0	8	0000000000000001	1	0	MPC links GTH TX status	1a	02	ME1a/02	gth_tx_done_me1a_02	
+80000	54	0	5A	000B62D0	8	0000000000000002	1	0	MPC links GTH TX status	1a	03	ME1a/03	gth_tx_done_me1a_03	
+80000	54	0	5A	000B62D0	8	0000000000000004	1	0	MPC links GTH TX status	1a	04	ME1a/04	gth_tx_done_me1a_04	
+80000	54	0	5A	000B62D0	8	0000000000000008	1	0	MPC links GTH TX status	1a	05	ME1a/05	gth_tx_done_me1a_05	
+80000	54	0	5A	000B62D0	8	0000000000000010	1	0	MPC links GTH TX status	1a	06	ME1a/06	gth_tx_done_me1a_06	
+80000	54	0	5A	000B62D0	8	0000000000000020	1	0	MPC links GTH TX status	1a	07	ME1a/07	gth_tx_done_me1a_07	
+80000	54	0	5A	000B62D0	8	0000000000000040	1	0	MPC links GTH TX status	1a	08	ME1a/08	gth_tx_done_me1a_08	
+80000	54	0	5A	000B62D0	8	0000000000000080	1	0	MPC links GTH TX status	1a	09	ME1a/09	gth_tx_done_me1a_09	
+80000	54	0	5A	000B62D0	8	0000000000000100	1	0	MPC links GTH TX status	1b	02	ME1b/02	gth_tx_done_me1b_02	
+80000	54	0	5A	000B62D0	8	0000000000000200	1	0	MPC links GTH TX status	1b	03	ME1b/03	gth_tx_done_me1b_03	
+80000	54	0	5A	000B62D0	8	0000000000000400	1	0	MPC links GTH TX status	1b	04	ME1b/04	gth_tx_done_me1b_04	
+80000	54	0	5A	000B62D0	8	0000000000000800	1	0	MPC links GTH TX status	1b	05	ME1b/05	gth_tx_done_me1b_05	
+80000	54	0	5A	000B62D0	8	0000000000001000	1	0	MPC links GTH TX status	1b	06	ME1b/06	gth_tx_done_me1b_06	
+80000	54	0	5A	000B62D0	8	0000000000002000	1	0	MPC links GTH TX status	1b	07	ME1b/07	gth_tx_done_me1b_07	
+80000	54	0	5A	000B62D0	8	0000000000004000	1	0	MPC links GTH TX status	1b	08	ME1b/08	gth_tx_done_me1b_08	
+80000	54	0	5A	000B62D0	8	0000000000008000	1	0	MPC links GTH TX status	1b	09	ME1b/09	gth_tx_done_me1b_09	
+80000	54	0	5A	000B62D0	8	0000000000010000	1	0	MPC links GTH TX status	2	02	ME2/02	gth_tx_done_me2_02	
+80000	54	0	5A	000B62D0	8	0000000000020000	1	0	MPC links GTH TX status	2	03	ME2/03	gth_tx_done_me2_03	
+80000	54	0	5A	000B62D0	8	0000000000040000	1	0	MPC links GTH TX status	2	04	ME2/04	gth_tx_done_me2_04	
+80000	54	0	5A	000B62D0	8	0000000000080000	1	0	MPC links GTH TX status	2	05	ME2/05	gth_tx_done_me2_05	
+80000	54	0	5A	000B62D0	8	0000000000100000	1	0	MPC links GTH TX status	2	06	ME2/06	gth_tx_done_me2_06	
+80000	54	0	5A	000B62D0	8	0000000000200000	1	0	MPC links GTH TX status	2	07	ME2/07	gth_tx_done_me2_07	
+80000	54	0	5A	000B62D0	8	0000000000400000	1	0	MPC links GTH TX status	2	08	ME2/08	gth_tx_done_me2_08	
+80000	54	0	5A	000B62D0	8	0000000000800000	1	0	MPC links GTH TX status	2	09	ME2/09	gth_tx_done_me2_09	
+80000	54	0	5A	000B62D0	8	0000000001000000	1	0	MPC links GTH TX status	3	02	ME3/02	gth_tx_done_me3_02	
+80000	54	0	5A	000B62D0	8	0000000002000000	1	0	MPC links GTH TX status	3	03	ME3/03	gth_tx_done_me3_03	
+80000	54	0	5A	000B62D0	8	0000000004000000	1	0	MPC links GTH TX status	3	04	ME3/04	gth_tx_done_me3_04	
+80000	54	0	5A	000B62D0	8	0000000008000000	1	0	MPC links GTH TX status	3	05	ME3/05	gth_tx_done_me3_05	
+80000	54	0	5A	000B62D0	8	0000000010000000	1	0	MPC links GTH TX status	3	06	ME3/06	gth_tx_done_me3_06	
+80000	54	0	5A	000B62D0	8	0000000020000000	1	0	MPC links GTH TX status	3	07	ME3/07	gth_tx_done_me3_07	
+80000	54	0	5A	000B62D0	8	0000000040000000	1	0	MPC links GTH TX status	3	08	ME3/08	gth_tx_done_me3_08	
+80000	54	0	5A	000B62D0	8	0000000080000000	1	0	MPC links GTH TX status	3	09	ME3/09	gth_tx_done_me3_09	
+80000	54	0	5A	000B62D0	8	0000000100000000	1	0	MPC links GTH TX status	4	02	ME4/02	gth_tx_done_me4_02	
+80000	54	0	5A	000B62D0	8	0000000200000000	1	0	MPC links GTH TX status	4	03	ME4/03	gth_tx_done_me4_03	
+80000	54	0	5A	000B62D0	8	0000000400000000	1	0	MPC links GTH TX status	4	04	ME4/04	gth_tx_done_me4_04	
+80000	54	0	5A	000B62D0	8	0000000800000000	1	0	MPC links GTH TX status	4	05	ME4/05	gth_tx_done_me4_05	
+80000	54	0	5A	000B62D0	8	0000001000000000	1	0	MPC links GTH TX status	4	06	ME4/06	gth_tx_done_me4_06	
+80000	54	0	5A	000B62D0	8	0000002000000000	1	0	MPC links GTH TX status	4	07	ME4/07	gth_tx_done_me4_07	
+80000	54	0	5A	000B62D0	8	0000004000000000	1	0	MPC links GTH TX status	4	08	ME4/08	gth_tx_done_me4_08	
+80000	54	0	5A	000B62D0	8	0000008000000000	1	0	MPC links GTH TX status	4	09	ME4/09	gth_tx_done_me4_09	
+80000	54	0	5A	000B62D0	8	0000010000000000	1	0	MPC links GTH TX status	1n	03	ME1n/03	gth_tx_done_me1n_03	
+80000	54	0	5A	000B62D0	8	0000020000000000	1	0	MPC links GTH TX status	1n	06	ME1n/06	gth_tx_done_me1n_06	
+80000	54	0	5A	000B62D0	8	0000040000000000	1	0	MPC links GTH TX status	1n	09	ME1n/09	gth_tx_done_me1n_09	
+80000	54	0	5A	000B62D0	8	0000080000000000	1	0	MPC links GTH TX status	2n	03	ME2n/03	gth_tx_done_me2n_03	
+80000	54	0	5A	000B62D0	8	0000100000000000	1	0	MPC links GTH TX status	2n	09	ME2n/09	gth_tx_done_me2n_09	
+80000	54	0	5A	000B62D0	8	0000200000000000	1	0	MPC links GTH TX status	3n	03	ME3n/03	gth_tx_done_me3n_03	
+80000	54	0	5A	000B62D0	8	0000400000000000	1	0	MPC links GTH TX status	3n	09	ME3n/09	gth_tx_done_me3n_09	
+80000	54	0	5A	000B62D0	8	0000800000000000	1	0	MPC links GTH TX status	4n	03	ME4n/03	gth_tx_done_me4n_03	
+80000	54	0	5A	000B62D0	8	0001000000000000	1	0	MPC links GTH TX status	4n	09	ME4n/09	gth_tx_done_me4n_09	
+														
+80000	54	0	5B	000B62D8	8	0001ffffffffffff	1	1	MPC link power down			all	link_power_down_all	
+80000	54	0	5B	000B62D8	8	0000000000000001	1	1	MPC link power down	1a	02	ME1a/02	link_power_down_me1a_02	
+80000	54	0	5B	000B62D8	8	0000000000000002	1	1	MPC link power down	1a	03	ME1a/03	link_power_down_me1a_03	
+80000	54	0	5B	000B62D8	8	0000000000000004	1	1	MPC link power down	1a	04	ME1a/04	link_power_down_me1a_04	
+80000	54	0	5B	000B62D8	8	0000000000000008	1	1	MPC link power down	1a	05	ME1a/05	link_power_down_me1a_05	
+80000	54	0	5B	000B62D8	8	0000000000000010	1	1	MPC link power down	1a	06	ME1a/06	link_power_down_me1a_06	
+80000	54	0	5B	000B62D8	8	0000000000000020	1	1	MPC link power down	1a	07	ME1a/07	link_power_down_me1a_07	
+80000	54	0	5B	000B62D8	8	0000000000000040	1	1	MPC link power down	1a	08	ME1a/08	link_power_down_me1a_08	
+80000	54	0	5B	000B62D8	8	0000000000000080	1	1	MPC link power down	1a	09	ME1a/09	link_power_down_me1a_09	
+80000	54	0	5B	000B62D8	8	0000000000000100	1	1	MPC link power down	1b	02	ME1b/02	link_power_down_me1b_02	
+80000	54	0	5B	000B62D8	8	0000000000000200	1	1	MPC link power down	1b	03	ME1b/03	link_power_down_me1b_03	
+80000	54	0	5B	000B62D8	8	0000000000000400	1	1	MPC link power down	1b	04	ME1b/04	link_power_down_me1b_04	
+80000	54	0	5B	000B62D8	8	0000000000000800	1	1	MPC link power down	1b	05	ME1b/05	link_power_down_me1b_05	
+80000	54	0	5B	000B62D8	8	0000000000001000	1	1	MPC link power down	1b	06	ME1b/06	link_power_down_me1b_06	
+80000	54	0	5B	000B62D8	8	0000000000002000	1	1	MPC link power down	1b	07	ME1b/07	link_power_down_me1b_07	
+80000	54	0	5B	000B62D8	8	0000000000004000	1	1	MPC link power down	1b	08	ME1b/08	link_power_down_me1b_08	
+80000	54	0	5B	000B62D8	8	0000000000008000	1	1	MPC link power down	1b	09	ME1b/09	link_power_down_me1b_09	
+80000	54	0	5B	000B62D8	8	0000000000010000	1	1	MPC link power down	2	02	ME2/02	link_power_down_me2_02	
+80000	54	0	5B	000B62D8	8	0000000000020000	1	1	MPC link power down	2	03	ME2/03	link_power_down_me2_03	
+80000	54	0	5B	000B62D8	8	0000000000040000	1	1	MPC link power down	2	04	ME2/04	link_power_down_me2_04	
+80000	54	0	5B	000B62D8	8	0000000000080000	1	1	MPC link power down	2	05	ME2/05	link_power_down_me2_05	
+80000	54	0	5B	000B62D8	8	0000000000100000	1	1	MPC link power down	2	06	ME2/06	link_power_down_me2_06	
+80000	54	0	5B	000B62D8	8	0000000000200000	1	1	MPC link power down	2	07	ME2/07	link_power_down_me2_07	
+80000	54	0	5B	000B62D8	8	0000000000400000	1	1	MPC link power down	2	08	ME2/08	link_power_down_me2_08	
+80000	54	0	5B	000B62D8	8	0000000000800000	1	1	MPC link power down	2	09	ME2/09	link_power_down_me2_09	
+80000	54	0	5B	000B62D8	8	0000000001000000	1	1	MPC link power down	3	02	ME3/02	link_power_down_me3_02	
+80000	54	0	5B	000B62D8	8	0000000002000000	1	1	MPC link power down	3	03	ME3/03	link_power_down_me3_03	
+80000	54	0	5B	000B62D8	8	0000000004000000	1	1	MPC link power down	3	04	ME3/04	link_power_down_me3_04	
+80000	54	0	5B	000B62D8	8	0000000008000000	1	1	MPC link power down	3	05	ME3/05	link_power_down_me3_05	
+80000	54	0	5B	000B62D8	8	0000000010000000	1	1	MPC link power down	3	06	ME3/06	link_power_down_me3_06	
+80000	54	0	5B	000B62D8	8	0000000020000000	1	1	MPC link power down	3	07	ME3/07	link_power_down_me3_07	
+80000	54	0	5B	000B62D8	8	0000000040000000	1	1	MPC link power down	3	08	ME3/08	link_power_down_me3_08	
+80000	54	0	5B	000B62D8	8	0000000080000000	1	1	MPC link power down	3	09	ME3/09	link_power_down_me3_09	
+80000	54	0	5B	000B62D8	8	0000000100000000	1	1	MPC link power down	4	02	ME4/02	link_power_down_me4_02	
+80000	54	0	5B	000B62D8	8	0000000200000000	1	1	MPC link power down	4	03	ME4/03	link_power_down_me4_03	
+80000	54	0	5B	000B62D8	8	0000000400000000	1	1	MPC link power down	4	04	ME4/04	link_power_down_me4_04	
+80000	54	0	5B	000B62D8	8	0000000800000000	1	1	MPC link power down	4	05	ME4/05	link_power_down_me4_05	
+80000	54	0	5B	000B62D8	8	0000001000000000	1	1	MPC link power down	4	06	ME4/06	link_power_down_me4_06	
+80000	54	0	5B	000B62D8	8	0000002000000000	1	1	MPC link power down	4	07	ME4/07	link_power_down_me4_07	
+80000	54	0	5B	000B62D8	8	0000004000000000	1	1	MPC link power down	4	08	ME4/08	link_power_down_me4_08	
+80000	54	0	5B	000B62D8	8	0000008000000000	1	1	MPC link power down	4	09	ME4/09	link_power_down_me4_09	
+80000	54	0	5B	000B62D8	8	0000010000000000	1	1	MPC link power down	1n	03	ME1n/03	link_power_down_me1n_03	
+80000	54	0	5B	000B62D8	8	0000020000000000	1	1	MPC link power down	1n	06	ME1n/06	link_power_down_me1n_06	
+80000	54	0	5B	000B62D8	8	0000040000000000	1	1	MPC link power down	1n	09	ME1n/09	link_power_down_me1n_09	
+80000	54	0	5B	000B62D8	8	0000080000000000	1	1	MPC link power down	2n	03	ME2n/03	link_power_down_me2n_03	
+80000	54	0	5B	000B62D8	8	0000100000000000	1	1	MPC link power down	2n	09	ME2n/09	link_power_down_me2n_09	
+80000	54	0	5B	000B62D8	8	0000200000000000	1	1	MPC link power down	3n	03	ME3n/03	link_power_down_me3n_03	
+80000	54	0	5B	000B62D8	8	0000400000000000	1	1	MPC link power down	3n	09	ME3n/09	link_power_down_me3n_09	
+80000	54	0	5B	000B62D8	8	0000800000000000	1	1	MPC link power down	4n	03	ME4n/03	link_power_down_me4n_03	
+80000	54	0	5B	000B62D8	8	0001000000000000	1	1	MPC link power down	4n	09	ME4n/09	link_power_down_me4n_09	
+														
+80000	54	0	5C	000B62E0	8	00000000ffffffff	1	1	Debug hub JTAG length				dbg_jtag_length	
+80000	54	0	5D	000B62E8	8	00000000ffffffff	1	1	Debug hub JTAG TMS vector				dbg_jtag_tms	
+80000	54	0	5E	000B62F0	8	00000000ffffffff	1	1	Debug hub JTAG TDI vector				dbg_jtag_tdi	
+80000	54	0	5F	000B62F8	8	00000000ffffffff	1	1	Debug hub JTAG TDO vector				dbg_jtag_tdo	
+80000	54	0	60	000B6300	8	0000000000000001	1	1	Debug hub JTAG enable/busy				dbg_jtag_enable	
+														
+80000	54	0	61	000B6308	8	0001ffffffffffff	1	0	CRC error in link				crc_err_flag_all	
+80000	54	0	61	000B6308	8	0000000000000001	1	0	CRC error in link	1a	02	ME1a/02	crc_err_flag_me1a_02	
+80000	54	0	61	000B6308	8	0000000000000002	1	0	CRC error in link	1a	03	ME1a/03	crc_err_flag_me1a_03	
+80000	54	0	61	000B6308	8	0000000000000004	1	0	CRC error in link	1a	04	ME1a/04	crc_err_flag_me1a_04	
+80000	54	0	61	000B6308	8	0000000000000008	1	0	CRC error in link	1a	05	ME1a/05	crc_err_flag_me1a_05	
+80000	54	0	61	000B6308	8	0000000000000010	1	0	CRC error in link	1a	06	ME1a/06	crc_err_flag_me1a_06	
+80000	54	0	61	000B6308	8	0000000000000020	1	0	CRC error in link	1a	07	ME1a/07	crc_err_flag_me1a_07	
+80000	54	0	61	000B6308	8	0000000000000040	1	0	CRC error in link	1a	08	ME1a/08	crc_err_flag_me1a_08	
+80000	54	0	61	000B6308	8	0000000000000080	1	0	CRC error in link	1a	09	ME1a/09	crc_err_flag_me1a_09	
+80000	54	0	61	000B6308	8	0000000000000100	1	0	CRC error in link	1b	02	ME1b/02	crc_err_flag_me1b_02	
+80000	54	0	61	000B6308	8	0000000000000200	1	0	CRC error in link	1b	03	ME1b/03	crc_err_flag_me1b_03	
+80000	54	0	61	000B6308	8	0000000000000400	1	0	CRC error in link	1b	04	ME1b/04	crc_err_flag_me1b_04	
+80000	54	0	61	000B6308	8	0000000000000800	1	0	CRC error in link	1b	05	ME1b/05	crc_err_flag_me1b_05	
+80000	54	0	61	000B6308	8	0000000000001000	1	0	CRC error in link	1b	06	ME1b/06	crc_err_flag_me1b_06	
+80000	54	0	61	000B6308	8	0000000000002000	1	0	CRC error in link	1b	07	ME1b/07	crc_err_flag_me1b_07	
+80000	54	0	61	000B6308	8	0000000000004000	1	0	CRC error in link	1b	08	ME1b/08	crc_err_flag_me1b_08	
+80000	54	0	61	000B6308	8	0000000000008000	1	0	CRC error in link	1b	09	ME1b/09	crc_err_flag_me1b_09	
+80000	54	0	61	000B6308	8	0000000000010000	1	0	CRC error in link	2	02	ME2/02	crc_err_flag_me2_02	
+80000	54	0	61	000B6308	8	0000000000020000	1	0	CRC error in link	2	03	ME2/03	crc_err_flag_me2_03	
+80000	54	0	61	000B6308	8	0000000000040000	1	0	CRC error in link	2	04	ME2/04	crc_err_flag_me2_04	
+80000	54	0	61	000B6308	8	0000000000080000	1	0	CRC error in link	2	05	ME2/05	crc_err_flag_me2_05	
+80000	54	0	61	000B6308	8	0000000000100000	1	0	CRC error in link	2	06	ME2/06	crc_err_flag_me2_06	
+80000	54	0	61	000B6308	8	0000000000200000	1	0	CRC error in link	2	07	ME2/07	crc_err_flag_me2_07	
+80000	54	0	61	000B6308	8	0000000000400000	1	0	CRC error in link	2	08	ME2/08	crc_err_flag_me2_08	
+80000	54	0	61	000B6308	8	0000000000800000	1	0	CRC error in link	2	09	ME2/09	crc_err_flag_me2_09	
+80000	54	0	61	000B6308	8	0000000001000000	1	0	CRC error in link	3	02	ME3/02	crc_err_flag_me3_02	
+80000	54	0	61	000B6308	8	0000000002000000	1	0	CRC error in link	3	03	ME3/03	crc_err_flag_me3_03	
+80000	54	0	61	000B6308	8	0000000004000000	1	0	CRC error in link	3	04	ME3/04	crc_err_flag_me3_04	
+80000	54	0	61	000B6308	8	0000000008000000	1	0	CRC error in link	3	05	ME3/05	crc_err_flag_me3_05	
+80000	54	0	61	000B6308	8	0000000010000000	1	0	CRC error in link	3	06	ME3/06	crc_err_flag_me3_06	
+80000	54	0	61	000B6308	8	0000000020000000	1	0	CRC error in link	3	07	ME3/07	crc_err_flag_me3_07	
+80000	54	0	61	000B6308	8	0000000040000000	1	0	CRC error in link	3	08	ME3/08	crc_err_flag_me3_08	
+80000	54	0	61	000B6308	8	0000000080000000	1	0	CRC error in link	3	09	ME3/09	crc_err_flag_me3_09	
+80000	54	0	61	000B6308	8	0000000100000000	1	0	CRC error in link	4	02	ME4/02	crc_err_flag_me4_02	
+80000	54	0	61	000B6308	8	0000000200000000	1	0	CRC error in link	4	03	ME4/03	crc_err_flag_me4_03	
+80000	54	0	61	000B6308	8	0000000400000000	1	0	CRC error in link	4	04	ME4/04	crc_err_flag_me4_04	
+80000	54	0	61	000B6308	8	0000000800000000	1	0	CRC error in link	4	05	ME4/05	crc_err_flag_me4_05	
+80000	54	0	61	000B6308	8	0000001000000000	1	0	CRC error in link	4	06	ME4/06	crc_err_flag_me4_06	
+80000	54	0	61	000B6308	8	0000002000000000	1	0	CRC error in link	4	07	ME4/07	crc_err_flag_me4_07	
+80000	54	0	61	000B6308	8	0000004000000000	1	0	CRC error in link	4	08	ME4/08	crc_err_flag_me4_08	
+80000	54	0	61	000B6308	8	0000008000000000	1	0	CRC error in link	4	09	ME4/09	crc_err_flag_me4_09	
+80000	54	0	61	000B6308	8	0000010000000000	1	0	CRC error in link	1n	03	ME1n/03	crc_err_flag_me1n_03	
+80000	54	0	61	000B6308	8	0000020000000000	1	0	CRC error in link	1n	06	ME1n/06	crc_err_flag_me1n_06	
+80000	54	0	61	000B6308	8	0000040000000000	1	0	CRC error in link	1n	09	ME1n/09	crc_err_flag_me1n_09	
+80000	54	0	61	000B6308	8	0000080000000000	1	0	CRC error in link	2n	03	ME2n/03	crc_err_flag_me2n_03	
+80000	54	0	61	000B6308	8	0000100000000000	1	0	CRC error in link	2n	09	ME2n/09	crc_err_flag_me2n_09	
+80000	54	0	61	000B6308	8	0000200000000000	1	0	CRC error in link	3n	03	ME3n/03	crc_err_flag_me3n_03	
+80000	54	0	61	000B6308	8	0000400000000000	1	0	CRC error in link	3n	09	ME3n/09	crc_err_flag_me3n_09	
+80000	54	0	61	000B6308	8	0000800000000000	1	0	CRC error in link	4n	03	ME4n/03	crc_err_flag_me4n_03	
+80000	54	0	61	000B6308	8	0001000000000000	1	0	CRC error in link	4n	09	ME4n/09	crc_err_flag_me4n_09	
+														
+80000	54	0	62	000B6310	8	0001ffffffffffff	1	0	test pattern error in link				err_tst_pat_flag_all	
+80000	54	0	62	000B6310	8	0000000000000001	1	0	test pattern error in link	1a	02	ME1a/02	err_tst_pat_flag_me1a_02	
+80000	54	0	62	000B6310	8	0000000000000002	1	0	test pattern error in link	1a	03	ME1a/03	err_tst_pat_flag_me1a_03	
+80000	54	0	62	000B6310	8	0000000000000004	1	0	test pattern error in link	1a	04	ME1a/04	err_tst_pat_flag_me1a_04	
+80000	54	0	62	000B6310	8	0000000000000008	1	0	test pattern error in link	1a	05	ME1a/05	err_tst_pat_flag_me1a_05	
+80000	54	0	62	000B6310	8	0000000000000010	1	0	test pattern error in link	1a	06	ME1a/06	err_tst_pat_flag_me1a_06	
+80000	54	0	62	000B6310	8	0000000000000020	1	0	test pattern error in link	1a	07	ME1a/07	err_tst_pat_flag_me1a_07	
+80000	54	0	62	000B6310	8	0000000000000040	1	0	test pattern error in link	1a	08	ME1a/08	err_tst_pat_flag_me1a_08	
+80000	54	0	62	000B6310	8	0000000000000080	1	0	test pattern error in link	1a	09	ME1a/09	err_tst_pat_flag_me1a_09	
+80000	54	0	62	000B6310	8	0000000000000100	1	0	test pattern error in link	1b	02	ME1b/02	err_tst_pat_flag_me1b_02	
+80000	54	0	62	000B6310	8	0000000000000200	1	0	test pattern error in link	1b	03	ME1b/03	err_tst_pat_flag_me1b_03	
+80000	54	0	62	000B6310	8	0000000000000400	1	0	test pattern error in link	1b	04	ME1b/04	err_tst_pat_flag_me1b_04	
+80000	54	0	62	000B6310	8	0000000000000800	1	0	test pattern error in link	1b	05	ME1b/05	err_tst_pat_flag_me1b_05	
+80000	54	0	62	000B6310	8	0000000000001000	1	0	test pattern error in link	1b	06	ME1b/06	err_tst_pat_flag_me1b_06	
+80000	54	0	62	000B6310	8	0000000000002000	1	0	test pattern error in link	1b	07	ME1b/07	err_tst_pat_flag_me1b_07	
+80000	54	0	62	000B6310	8	0000000000004000	1	0	test pattern error in link	1b	08	ME1b/08	err_tst_pat_flag_me1b_08	
+80000	54	0	62	000B6310	8	0000000000008000	1	0	test pattern error in link	1b	09	ME1b/09	err_tst_pat_flag_me1b_09	
+80000	54	0	62	000B6310	8	0000000000010000	1	0	test pattern error in link	2	02	ME2/02	err_tst_pat_flag_me2_02	
+80000	54	0	62	000B6310	8	0000000000020000	1	0	test pattern error in link	2	03	ME2/03	err_tst_pat_flag_me2_03	
+80000	54	0	62	000B6310	8	0000000000040000	1	0	test pattern error in link	2	04	ME2/04	err_tst_pat_flag_me2_04	
+80000	54	0	62	000B6310	8	0000000000080000	1	0	test pattern error in link	2	05	ME2/05	err_tst_pat_flag_me2_05	
+80000	54	0	62	000B6310	8	0000000000100000	1	0	test pattern error in link	2	06	ME2/06	err_tst_pat_flag_me2_06	
+80000	54	0	62	000B6310	8	0000000000200000	1	0	test pattern error in link	2	07	ME2/07	err_tst_pat_flag_me2_07	
+80000	54	0	62	000B6310	8	0000000000400000	1	0	test pattern error in link	2	08	ME2/08	err_tst_pat_flag_me2_08	
+80000	54	0	62	000B6310	8	0000000000800000	1	0	test pattern error in link	2	09	ME2/09	err_tst_pat_flag_me2_09	
+80000	54	0	62	000B6310	8	0000000001000000	1	0	test pattern error in link	3	02	ME3/02	err_tst_pat_flag_me3_02	
+80000	54	0	62	000B6310	8	0000000002000000	1	0	test pattern error in link	3	03	ME3/03	err_tst_pat_flag_me3_03	
+80000	54	0	62	000B6310	8	0000000004000000	1	0	test pattern error in link	3	04	ME3/04	err_tst_pat_flag_me3_04	
+80000	54	0	62	000B6310	8	0000000008000000	1	0	test pattern error in link	3	05	ME3/05	err_tst_pat_flag_me3_05	
+80000	54	0	62	000B6310	8	0000000010000000	1	0	test pattern error in link	3	06	ME3/06	err_tst_pat_flag_me3_06	
+80000	54	0	62	000B6310	8	0000000020000000	1	0	test pattern error in link	3	07	ME3/07	err_tst_pat_flag_me3_07	
+80000	54	0	62	000B6310	8	0000000040000000	1	0	test pattern error in link	3	08	ME3/08	err_tst_pat_flag_me3_08	
+80000	54	0	62	000B6310	8	0000000080000000	1	0	test pattern error in link	3	09	ME3/09	err_tst_pat_flag_me3_09	
+80000	54	0	62	000B6310	8	0000000100000000	1	0	test pattern error in link	4	02	ME4/02	err_tst_pat_flag_me4_02	
+80000	54	0	62	000B6310	8	0000000200000000	1	0	test pattern error in link	4	03	ME4/03	err_tst_pat_flag_me4_03	
+80000	54	0	62	000B6310	8	0000000400000000	1	0	test pattern error in link	4	04	ME4/04	err_tst_pat_flag_me4_04	
+80000	54	0	62	000B6310	8	0000000800000000	1	0	test pattern error in link	4	05	ME4/05	err_tst_pat_flag_me4_05	
+80000	54	0	62	000B6310	8	0000001000000000	1	0	test pattern error in link	4	06	ME4/06	err_tst_pat_flag_me4_06	
+80000	54	0	62	000B6310	8	0000002000000000	1	0	test pattern error in link	4	07	ME4/07	err_tst_pat_flag_me4_07	
+80000	54	0	62	000B6310	8	0000004000000000	1	0	test pattern error in link	4	08	ME4/08	err_tst_pat_flag_me4_08	
+80000	54	0	62	000B6310	8	0000008000000000	1	0	test pattern error in link	4	09	ME4/09	err_tst_pat_flag_me4_09	
+80000	54	0	62	000B6310	8	0000010000000000	1	0	test pattern error in link	1n	03	ME1n/03	err_tst_pat_flag_me1n_03	
+80000	54	0	62	000B6310	8	0000020000000000	1	0	test pattern error in link	1n	06	ME1n/06	err_tst_pat_flag_me1n_06	
+80000	54	0	62	000B6310	8	0000040000000000	1	0	test pattern error in link	1n	09	ME1n/09	err_tst_pat_flag_me1n_09	
+80000	54	0	62	000B6310	8	0000080000000000	1	0	test pattern error in link	2n	03	ME2n/03	err_tst_pat_flag_me2n_03	
+80000	54	0	62	000B6310	8	0000100000000000	1	0	test pattern error in link	2n	09	ME2n/09	err_tst_pat_flag_me2n_09	
+80000	54	0	62	000B6310	8	0000200000000000	1	0	test pattern error in link	3n	03	ME3n/03	err_tst_pat_flag_me3n_03	
+80000	54	0	62	000B6310	8	0000400000000000	1	0	test pattern error in link	3n	09	ME3n/09	err_tst_pat_flag_me3n_09	
+80000	54	0	62	000B6310	8	0000800000000000	1	0	test pattern error in link	4n	03	ME4n/03	err_tst_pat_flag_me4n_03	
+80000	54	0	62	000B6310	8	0001000000000000	1	0	test pattern error in link	4n	09	ME4n/09	err_tst_pat_flag_me4n_09	
+														
+80000	54	0	64	000B6320	8	000000000000001f	1	0	automatic alignment delay	1a	02	ME1a/01	auto_align_del_me1a_01_fr_02	
+80000	54	0	64	000B6320	8	00000000000003e0	1	0	automatic alignment delay	1a	03	ME1a/01	auto_align_del_me1a_01_fr_03	
+80000	54	0	64	000B6320	8	0000000000007c00	1	0	automatic alignment delay	1a	04	ME1a/01	auto_align_del_me1a_01_fr_04	
+80000	54	0	64	000B6320	8	00000000000f8000	1	0	automatic alignment delay	1a	05	ME1a/01	auto_align_del_me1a_01_fr_05	
+80000	54	0	64	000B6320	8	0000000001f00000	1	0	automatic alignment delay	1a	06	ME1a/01	auto_align_del_me1a_01_fr_06	
+80000	54	0	64	000B6320	8	000000003e000000	1	0	automatic alignment delay	1a	07	ME1a/01	auto_align_del_me1a_01_fr_07	
+80000	54	0	64	000B6320	8	00000007c0000000	1	0	automatic alignment delay	1a	08	ME1a/01	auto_align_del_me1a_01_fr_08	
+80000	54	0	64	000B6320	8	000000f800000000	1	0	automatic alignment delay	1a	09	ME1a/01	auto_align_del_me1a_01_fr_09	
+80000	54	0	65	000B6328	8	000000000000001f	1	0	automatic alignment delay	1b	02	ME1b/01	auto_align_del_me1b_01_fr_02	
+80000	54	0	65	000B6328	8	00000000000003e0	1	0	automatic alignment delay	1b	03	ME1b/01	auto_align_del_me1b_01_fr_03	
+80000	54	0	65	000B6328	8	0000000000007c00	1	0	automatic alignment delay	1b	04	ME1b/01	auto_align_del_me1b_01_fr_04	
+80000	54	0	65	000B6328	8	00000000000f8000	1	0	automatic alignment delay	1b	05	ME1b/01	auto_align_del_me1b_01_fr_05	
+80000	54	0	65	000B6328	8	0000000001f00000	1	0	automatic alignment delay	1b	06	ME1b/01	auto_align_del_me1b_01_fr_06	
+80000	54	0	65	000B6328	8	000000003e000000	1	0	automatic alignment delay	1b	07	ME1b/01	auto_align_del_me1b_01_fr_07	
+80000	54	0	65	000B6328	8	00000007c0000000	1	0	automatic alignment delay	1b	08	ME1b/01	auto_align_del_me1b_01_fr_08	
+80000	54	0	65	000B6328	8	000000f800000000	1	0	automatic alignment delay	1b	09	ME1b/01	auto_align_del_me1b_01_fr_09	
+80000	54	0	66	000B6330	8	000000000000001f	1	0	automatic alignment delay	2	02	ME2/01	auto_align_del_me2_01_fr_02	
+80000	54	0	66	000B6330	8	00000000000003e0	1	0	automatic alignment delay	2	03	ME2/01	auto_align_del_me2_01_fr_03	
+80000	54	0	66	000B6330	8	0000000000007c00	1	0	automatic alignment delay	2	04	ME2/01	auto_align_del_me2_01_fr_04	
+80000	54	0	66	000B6330	8	00000000000f8000	1	0	automatic alignment delay	2	05	ME2/01	auto_align_del_me2_01_fr_05	
+80000	54	0	66	000B6330	8	0000000001f00000	1	0	automatic alignment delay	2	06	ME2/01	auto_align_del_me2_01_fr_06	
+80000	54	0	66	000B6330	8	000000003e000000	1	0	automatic alignment delay	2	07	ME2/01	auto_align_del_me2_01_fr_07	
+80000	54	0	66	000B6330	8	00000007c0000000	1	0	automatic alignment delay	2	08	ME2/01	auto_align_del_me2_01_fr_08	
+80000	54	0	66	000B6330	8	000000f800000000	1	0	automatic alignment delay	2	09	ME2/01	auto_align_del_me2_01_fr_09	
+80000	54	0	67	000B6338	8	000000000000001f	1	0	automatic alignment delay	3	02	ME3/01	auto_align_del_me3_01_fr_02	
+80000	54	0	67	000B6338	8	00000000000003e0	1	0	automatic alignment delay	3	03	ME3/01	auto_align_del_me3_01_fr_03	
+80000	54	0	67	000B6338	8	0000000000007c00	1	0	automatic alignment delay	3	04	ME3/01	auto_align_del_me3_01_fr_04	
+80000	54	0	67	000B6338	8	00000000000f8000	1	0	automatic alignment delay	3	05	ME3/01	auto_align_del_me3_01_fr_05	
+80000	54	0	67	000B6338	8	0000000001f00000	1	0	automatic alignment delay	3	06	ME3/01	auto_align_del_me3_01_fr_06	
+80000	54	0	67	000B6338	8	000000003e000000	1	0	automatic alignment delay	3	07	ME3/01	auto_align_del_me3_01_fr_07	
+80000	54	0	67	000B6338	8	00000007c0000000	1	0	automatic alignment delay	3	08	ME3/01	auto_align_del_me3_01_fr_08	
+80000	54	0	67	000B6338	8	000000f800000000	1	0	automatic alignment delay	3	09	ME3/01	auto_align_del_me3_01_fr_09	
+80000	54	0	68	000B6340	8	000000000000001f	1	0	automatic alignment delay	4	02	ME4/01	auto_align_del_me4_01_fr_02	
+80000	54	0	68	000B6340	8	00000000000003e0	1	0	automatic alignment delay	4	03	ME4/01	auto_align_del_me4_01_fr_03	
+80000	54	0	68	000B6340	8	0000000000007c00	1	0	automatic alignment delay	4	04	ME4/01	auto_align_del_me4_01_fr_04	
+80000	54	0	68	000B6340	8	00000000000f8000	1	0	automatic alignment delay	4	05	ME4/01	auto_align_del_me4_01_fr_05	
+80000	54	0	68	000B6340	8	0000000001f00000	1	0	automatic alignment delay	4	06	ME4/01	auto_align_del_me4_01_fr_06	
+80000	54	0	68	000B6340	8	000000003e000000	1	0	automatic alignment delay	4	07	ME4/01	auto_align_del_me4_01_fr_07	
+80000	54	0	68	000B6340	8	00000007c0000000	1	0	automatic alignment delay	4	08	ME4/01	auto_align_del_me4_01_fr_08	
+80000	54	0	68	000B6340	8	000000f800000000	1	0	automatic alignment delay	4	09	ME4/01	auto_align_del_me4_01_fr_09	
+														
+80000	54	0	69	000B6348	8	000000000000001f	1	1	manual alignment delay	1a	02	ME1a/01	manual_align_del_me1a_01_fr_02	
+80000	54	0	69	000B6348	8	00000000000003e0	1	1	manual alignment delay	1a	03	ME1a/01	manual_align_del_me1a_01_fr_03	
+80000	54	0	69	000B6348	8	0000000000007c00	1	1	manual alignment delay	1a	04	ME1a/01	manual_align_del_me1a_01_fr_04	
+80000	54	0	69	000B6348	8	00000000000f8000	1	1	manual alignment delay	1a	05	ME1a/01	manual_align_del_me1a_01_fr_05	
+80000	54	0	69	000B6348	8	0000000001f00000	1	1	manual alignment delay	1a	06	ME1a/01	manual_align_del_me1a_01_fr_06	
+80000	54	0	69	000B6348	8	000000003e000000	1	1	manual alignment delay	1a	07	ME1a/01	manual_align_del_me1a_01_fr_07	
+80000	54	0	69	000B6348	8	00000007c0000000	1	1	manual alignment delay	1a	08	ME1a/01	manual_align_del_me1a_01_fr_08	
+80000	54	0	69	000B6348	8	000000f800000000	1	1	manual alignment delay	1a	09	ME1a/01	manual_align_del_me1a_01_fr_09	
+80000	54	0	6a	000B6350	8	000000000000001f	1	1	manual alignment delay	1b	02	ME1b/01	manual_align_del_me1b_01_fr_02	
+80000	54	0	6a	000B6350	8	00000000000003e0	1	1	manual alignment delay	1b	03	ME1b/01	manual_align_del_me1b_01_fr_03	
+80000	54	0	6a	000B6350	8	0000000000007c00	1	1	manual alignment delay	1b	04	ME1b/01	manual_align_del_me1b_01_fr_04	
+80000	54	0	6a	000B6350	8	00000000000f8000	1	1	manual alignment delay	1b	05	ME1b/01	manual_align_del_me1b_01_fr_05	
+80000	54	0	6a	000B6350	8	0000000001f00000	1	1	manual alignment delay	1b	06	ME1b/01	manual_align_del_me1b_01_fr_06	
+80000	54	0	6a	000B6350	8	000000003e000000	1	1	manual alignment delay	1b	07	ME1b/01	manual_align_del_me1b_01_fr_07	
+80000	54	0	6a	000B6350	8	00000007c0000000	1	1	manual alignment delay	1b	08	ME1b/01	manual_align_del_me1b_01_fr_08	
+80000	54	0	6a	000B6350	8	000000f800000000	1	1	manual alignment delay	1b	09	ME1b/01	manual_align_del_me1b_01_fr_09	
+80000	54	0	6b	000B6358	8	000000000000001f	1	1	manual alignment delay	2	02	ME2/01	manual_align_del_me2_01_fr_02	
+80000	54	0	6b	000B6358	8	00000000000003e0	1	1	manual alignment delay	2	03	ME2/01	manual_align_del_me2_01_fr_03	
+80000	54	0	6b	000B6358	8	0000000000007c00	1	1	manual alignment delay	2	04	ME2/01	manual_align_del_me2_01_fr_04	
+80000	54	0	6b	000B6358	8	00000000000f8000	1	1	manual alignment delay	2	05	ME2/01	manual_align_del_me2_01_fr_05	
+80000	54	0	6b	000B6358	8	0000000001f00000	1	1	manual alignment delay	2	06	ME2/01	manual_align_del_me2_01_fr_06	
+80000	54	0	6b	000B6358	8	000000003e000000	1	1	manual alignment delay	2	07	ME2/01	manual_align_del_me2_01_fr_07	
+80000	54	0	6b	000B6358	8	00000007c0000000	1	1	manual alignment delay	2	08	ME2/01	manual_align_del_me2_01_fr_08	
+80000	54	0	6b	000B6358	8	000000f800000000	1	1	manual alignment delay	2	09	ME2/01	manual_align_del_me2_01_fr_09	
+80000	54	0	6c	000B6360	8	000000000000001f	1	1	manual alignment delay	3	02	ME3/01	manual_align_del_me3_01_fr_02	
+80000	54	0	6c	000B6360	8	00000000000003e0	1	1	manual alignment delay	3	03	ME3/01	manual_align_del_me3_01_fr_03	
+80000	54	0	6c	000B6360	8	0000000000007c00	1	1	manual alignment delay	3	04	ME3/01	manual_align_del_me3_01_fr_04	
+80000	54	0	6c	000B6360	8	00000000000f8000	1	1	manual alignment delay	3	05	ME3/01	manual_align_del_me3_01_fr_05	
+80000	54	0	6c	000B6360	8	0000000001f00000	1	1	manual alignment delay	3	06	ME3/01	manual_align_del_me3_01_fr_06	
+80000	54	0	6c	000B6360	8	000000003e000000	1	1	manual alignment delay	3	07	ME3/01	manual_align_del_me3_01_fr_07	
+80000	54	0	6c	000B6360	8	00000007c0000000	1	1	manual alignment delay	3	08	ME3/01	manual_align_del_me3_01_fr_08	
+80000	54	0	6c	000B6360	8	000000f800000000	1	1	manual alignment delay	3	09	ME3/01	manual_align_del_me3_01_fr_09	
+80000	54	0	6d	000B6368	8	000000000000001f	1	1	manual alignment delay	4	02	ME4/01	manual_align_del_me4_01_fr_02	
+80000	54	0	6d	000B6368	8	00000000000003e0	1	1	manual alignment delay	4	03	ME4/01	manual_align_del_me4_01_fr_03	
+80000	54	0	6d	000B6368	8	0000000000007c00	1	1	manual alignment delay	4	04	ME4/01	manual_align_del_me4_01_fr_04	
+80000	54	0	6d	000B6368	8	00000000000f8000	1	1	manual alignment delay	4	05	ME4/01	manual_align_del_me4_01_fr_05	
+80000	54	0	6d	000B6368	8	0000000001f00000	1	1	manual alignment delay	4	06	ME4/01	manual_align_del_me4_01_fr_06	
+80000	54	0	6d	000B6368	8	000000003e000000	1	1	manual alignment delay	4	07	ME4/01	manual_align_del_me4_01_fr_07	
+80000	54	0	6d	000B6368	8	00000007c0000000	1	1	manual alignment delay	4	08	ME4/01	manual_align_del_me4_01_fr_08	
+80000	54	0	6d	000B6368	8	000000f800000000	1	1	manual alignment delay	4	09	ME4/01	manual_align_del_me4_01_fr_09	
+														
+80000	54	0	6e	000B6370	8	00000000000000ff	1	0	GE1/1 link ID	0			ge11_link_id_0	
+80000	54	0	6e	000B6370	8	000000000000ff00	1	0	GE1/1 link ID	1			ge11_link_id_1	
+80000	54	0	6e	000B6370	8	0000000000ff0000	1	0	GE1/1 link ID	2			ge11_link_id_2	
+80000	54	0	6e	000B6370	8	00000000ff000000	1	0	GE1/1 link ID	3			ge11_link_id_3	
+80000	54	0	6e	000B6370	8	000000ff00000000	1	0	GE1/1 link ID	4			ge11_link_id_4	
+80000	54	0	6e	000B6370	8	0000ff0000000000	1	0	GE1/1 link ID	5			ge11_link_id_5	
+80000	54	0	6e	000B6370	8	00ff000000000000	1	0	GE1/1 link ID	6			ge11_link_id_6	
+														
+80000	54	0	6f	000B6378	8	0000000000000001	1	0	GE1/1 lb_gbt_rx_header_locked	0			ge11_lb_gbt_rx_header_locked_0	
+80000	54	0	6f	000B6378	8	0000000000000002	1	0	GE1/1 lb_gbt_rx_header_locked	1			ge11_lb_gbt_rx_header_locked_1	
+80000	54	0	6f	000B6378	8	0000000000000004	1	0	GE1/1 lb_gbt_rx_header_locked	2			ge11_lb_gbt_rx_header_locked_2	
+80000	54	0	6f	000B6378	8	0000000000000008	1	0	GE1/1 lb_gbt_rx_header_locked	3			ge11_lb_gbt_rx_header_locked_3	
+80000	54	0	6f	000B6378	8	0000000000000010	1	0	GE1/1 lb_gbt_rx_header_locked	4			ge11_lb_gbt_rx_header_locked_4	
+80000	54	0	6f	000B6378	8	0000000000000020	1	0	GE1/1 lb_gbt_rx_header_locked	5			ge11_lb_gbt_rx_header_locked_5	
+80000	54	0	6f	000B6378	8	0000000000000040	1	0	GE1/1 lb_gbt_rx_header_locked	6			ge11_lb_gbt_rx_header_locked_6	
+80000	54	0	6f	000B6378	8	0000000000000080	1	0	GE1/1 lb_gbt_correction_flag	0			ge11_lb_gbt_correction_flag_0	
+80000	54	0	6f	000B6378	8	0000000000000100	1	0	GE1/1 lb_gbt_correction_flag	1			ge11_lb_gbt_correction_flag_1	
+80000	54	0	6f	000B6378	8	0000000000000200	1	0	GE1/1 lb_gbt_correction_flag	2			ge11_lb_gbt_correction_flag_2	
+80000	54	0	6f	000B6378	8	0000000000000400	1	0	GE1/1 lb_gbt_correction_flag	3			ge11_lb_gbt_correction_flag_3	
+80000	54	0	6f	000B6378	8	0000000000000800	1	0	GE1/1 lb_gbt_correction_flag	4			ge11_lb_gbt_correction_flag_4	
+80000	54	0	6f	000B6378	8	0000000000001000	1	0	GE1/1 lb_gbt_correction_flag	5			ge11_lb_gbt_correction_flag_5	
+80000	54	0	6f	000B6378	8	0000000000002000	1	0	GE1/1 lb_gbt_correction_flag	6			ge11_lb_gbt_correction_flag_6	
+80000	54	0	6f	000B6378	8	0000000000004000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	0			ge11_lb_gbt_rx_gearbox_ready_0	
+80000	54	0	6f	000B6378	8	0000000000008000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	1			ge11_lb_gbt_rx_gearbox_ready_1	
+80000	54	0	6f	000B6378	8	0000000000010000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	2			ge11_lb_gbt_rx_gearbox_ready_2	
+80000	54	0	6f	000B6378	8	0000000000020000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	3			ge11_lb_gbt_rx_gearbox_ready_3	
+80000	54	0	6f	000B6378	8	0000000000040000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	4			ge11_lb_gbt_rx_gearbox_ready_4	
+80000	54	0	6f	000B6378	8	0000000000080000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	5			ge11_lb_gbt_rx_gearbox_ready_5	
+80000	54	0	6f	000B6378	8	0000000000100000	1	0	GE1/1 lb_gbt_rx_gearbox_ready	6			ge11_lb_gbt_rx_gearbox_ready_6	
+80000	54	0	6f	000B6378	8	0000000000200000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	0			ge11_lb_gbt_rx_header_had_unlock_0	
+80000	54	0	6f	000B6378	8	0000000000400000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	1			ge11_lb_gbt_rx_header_had_unlock_1	
+80000	54	0	6f	000B6378	8	0000000000800000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	2			ge11_lb_gbt_rx_header_had_unlock_2	
+80000	54	0	6f	000B6378	8	0000000001000000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	3			ge11_lb_gbt_rx_header_had_unlock_3	
+80000	54	0	6f	000B6378	8	0000000002000000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	4			ge11_lb_gbt_rx_header_had_unlock_4	
+80000	54	0	6f	000B6378	8	0000000004000000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	5			ge11_lb_gbt_rx_header_had_unlock_5	
+80000	54	0	6f	000B6378	8	0000000008000000	1	0	GE1/1 lb_gbt_rx_header_had_unlock	6			ge11_lb_gbt_rx_header_had_unlock_6	
+80000	54	0	6f	000B6378	8	0000000010000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	0			ge11_lb_gbt_rx_had_not_ready_0	
+80000	54	0	6f	000B6378	8	0000000020000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	1			ge11_lb_gbt_rx_had_not_ready_1	
+80000	54	0	6f	000B6378	8	0000000040000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	2			ge11_lb_gbt_rx_had_not_ready_2	
+80000	54	0	6f	000B6378	8	0000000080000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	3			ge11_lb_gbt_rx_had_not_ready_3	
+80000	54	0	6f	000B6378	8	0000000100000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	4			ge11_lb_gbt_rx_had_not_ready_4	
+80000	54	0	6f	000B6378	8	0000000200000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	5			ge11_lb_gbt_rx_had_not_ready_5	
+80000	54	0	6f	000B6378	8	0000000400000000	1	0	GE1/1 lb_gbt_rx_had_not_ready	6			ge11_lb_gbt_rx_had_not_ready_6	
+80000	54	0	6f	000B6378	8	0000000800000000	1	0	GE1/1 lb_gbt_rx_ready	0			ge11_lb_gbt_rx_ready_0	
+80000	54	0	6f	000B6378	8	0000001000000000	1	0	GE1/1 lb_gbt_rx_ready	1			ge11_lb_gbt_rx_ready_1	
+80000	54	0	6f	000B6378	8	0000002000000000	1	0	GE1/1 lb_gbt_rx_ready	2			ge11_lb_gbt_rx_ready_2	
+80000	54	0	6f	000B6378	8	0000004000000000	1	0	GE1/1 lb_gbt_rx_ready	3			ge11_lb_gbt_rx_ready_3	
+80000	54	0	6f	000B6378	8	0000008000000000	1	0	GE1/1 lb_gbt_rx_ready	4			ge11_lb_gbt_rx_ready_4	
+80000	54	0	6f	000B6378	8	0000010000000000	1	0	GE1/1 lb_gbt_rx_ready	5			ge11_lb_gbt_rx_ready_5	
+80000	54	0	6f	000B6378	8	0000020000000000	1	0	GE1/1 lb_gbt_rx_ready	6			ge11_lb_gbt_rx_ready_6	
+80000	54	0	6f	000B6378	8	0000040000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	0			ge11_lb_gbt_tx_had_not_ready_0	
+80000	54	0	6f	000B6378	8	0000080000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	1			ge11_lb_gbt_tx_had_not_ready_1	
+80000	54	0	6f	000B6378	8	0000100000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	2			ge11_lb_gbt_tx_had_not_ready_2	
+80000	54	0	6f	000B6378	8	0000200000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	3			ge11_lb_gbt_tx_had_not_ready_3	
+80000	54	0	6f	000B6378	8	0000400000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	4			ge11_lb_gbt_tx_had_not_ready_4	
+80000	54	0	6f	000B6378	8	0000800000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	5			ge11_lb_gbt_tx_had_not_ready_5	
+80000	54	0	6f	000B6378	8	0001000000000000	1	0	GE1/1 lb_gbt_tx_had_not_ready	6			ge11_lb_gbt_tx_had_not_ready_6	
+80000	54	0	6f	000B6378	8	0002000000000000	1	0	GE1/1 lb_gbt_tx_ready	0			ge11_lb_gbt_tx_ready_0	
+80000	54	0	6f	000B6378	8	0004000000000000	1	0	GE1/1 lb_gbt_tx_ready	1			ge11_lb_gbt_tx_ready_1	
+80000	54	0	6f	000B6378	8	0008000000000000	1	0	GE1/1 lb_gbt_tx_ready	2			ge11_lb_gbt_tx_ready_2	
+80000	54	0	6f	000B6378	8	0010000000000000	1	0	GE1/1 lb_gbt_tx_ready	3			ge11_lb_gbt_tx_ready_3	
+80000	54	0	6f	000B6378	8	0020000000000000	1	0	GE1/1 lb_gbt_tx_ready	4			ge11_lb_gbt_tx_ready_4	
+80000	54	0	6f	000B6378	8	0040000000000000	1	0	GE1/1 lb_gbt_tx_ready	5			ge11_lb_gbt_tx_ready_5	
+80000	54	0	6f	000B6378	8	0080000000000000	1	0	GE1/1 lb_gbt_tx_ready	6			ge11_lb_gbt_tx_ready_6	
+														
+80000	54	0	70	000B6380	8	000000000000ffff	1	0	GE1/1 lb_gbt correction count	0			ge11_lb_gbt_correction_count_0	
+80000	54	0	70	000B6380	8	00000000ffff0000	1	0	GE1/1 lb_gbt correction count	1			ge11_lb_gbt_correction_count_1	
+80000	54	0	70	000B6380	8	0000ffff00000000	1	0	GE1/1 lb_gbt correction count	2			ge11_lb_gbt_correction_count_2	
+80000	54	0	70	000B6380	8	ffff000000000000	1	0	GE1/1 lb_gbt correction count	3			ge11_lb_gbt_correction_count_3	
+80000	54	0	71	000B6388	8	000000000000ffff	1	0	GE1/1 lb_gbt correction count	4			ge11_lb_gbt_correction_count_4	
+80000	54	0	71	000B6388	8	00000000ffff0000	1	0	GE1/1 lb_gbt correction count	5			ge11_lb_gbt_correction_count_5	
+80000	54	0	71	000B6388	8	0000ffff00000000	1	0	GE1/1 lb_gbt correction count	6			ge11_lb_gbt_correction_count_6	
+														
+														
+C0000				000C0000	20000	00ffffff00ffffff	1	1	Inject memory area 1				inj_mem_1	
+C0000				000E0000	20000	00ffffff00ffffff	1	1	Inject memory area 2				inj_mem_2	
+														
+100000				00100000	10000	ffffffffffffffff	1	1	Spy memory area				spy_mem	
+														
+				00140000	2000	0003ffff0003ffff	1	1	PT LUT access memory area				ptlut_mem	
+				00142000	1000	000000001fffffff	1	1	PT LUT access address area				ptlut_addr	

@@ -30,8 +30,27 @@
 
 using namespace std;
 
-#define mwrite(a,b,c,d) if (pwrite (a,b,c,d) != c) printf ("pwrite error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
-#define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
+#ifdef MTF7 // MTF7 hardware access via PCIE
+    #define mwrite(a,b,c,d) if (pwrite (a,b,c,d) != c) printf ("pwrite error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
+    #define mread(a,b,c,d) if (pread (a,b,c,d) != c) printf ("pread error: w: %d file: %s line: %d\n", c, __FILE__, __LINE__);
+    #define mopen(d) ::open(d, O_RDWR)
+#endif
+
+#ifdef AXI // AXI hardware, memory mapping access
+    #include <sys/mman.h>
+    // two parameters below should come from config file
+    #define DRP_SIZE 0x10000 // 13 bits of DRP address x 32 bit words = 15 bits of address
+    #define DRP_BASE 0x54000000 // DRP area base address
+    // AXI versions of mwrite and mread support only 8-byte transfers
+    #define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
+    #define mread(a,b,c,d)  {*b = *((uint64_t*)(sys_vptr + d));}
+// debug versions of the macros
+//	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
+//	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}
+    #define mopen(d) open_dev_mem()
+
+#endif
+
 
 #define PORT_MARK   0x40000000 // port marker for register offsets
 #define PORT_UNMARK 0x3FFFFFFF // mask for removing PORT_MARK from offsets

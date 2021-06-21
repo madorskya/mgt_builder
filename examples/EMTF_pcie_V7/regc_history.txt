@@ -1,0 +1,3 @@
+device select 1
+register read core_fpga_fw_sec
+exit
