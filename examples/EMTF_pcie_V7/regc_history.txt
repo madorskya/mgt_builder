@@ -1,3 +1,8 @@
 device select 1
 register read core_fpga_fw_sec
 exit
+help
+device select 1
+register read spy_data_delay
+register read core_fpga_fw_year
+exit
