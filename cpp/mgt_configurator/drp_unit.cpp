@@ -1630,7 +1630,16 @@ This function creates a .csv file containing the sweep results.
   f << "Vertical Increment," << dec << vert_step << endl;
   f << "Vertical Range,100%" << endl;
   f << "Scan Start" << endl;
-  f << "2d statistical,";
+  
+  if (mode == 1)
+  {
+    vert_max = 0;
+    f << "1d bathtub,";
+  }
+  else
+  {
+    f << "2d statistical,";
+  }
 
   for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal to pre-fill .csv file
     if (i_horz == horz_max)
@@ -1641,11 +1650,6 @@ This function creates a .csv file containing the sweep results.
     {
       f << i_horz << ",";
     }
-  }
-
-  if (mode == 1)
-  {
-    vert_max = 0;
   }
 
   for (int i_vert = vert_max; i_vert >= -vert_max; i_vert = i_vert - vert_step) {	// iterate vertical
