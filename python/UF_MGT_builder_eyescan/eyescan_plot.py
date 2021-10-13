@@ -59,6 +59,10 @@ def get_eye(scan_list):
             xticks = row[1:]
             eyedata = True
 
+        if row[0].startswith('1d bathtub'):
+            xticks = row[1:]
+            eyedata = True
+
     img = [[float(y) for y in x] for x in img]
 
     xticks = [int(x) for x in xticks]

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Original work Copyright (C) 2017 msilvaol (MIT License)
 https://github.com/mvsoliveira/IBERTpy
@@ -25,8 +26,8 @@ import numpy as np
 import argparse
 import csv
 
-parser = argparse.ArgumentParser(description='Take the scale.')
-parser.add_argument('scale', metavar='N', type=int, nargs='?', help='BER scale (from -6 to -15)', default=-7)
+parser = argparse.ArgumentParser(description='UF MGT builder eyescan tool.')
+parser.add_argument('scale', metavar='BER scale', type=int, nargs='?', help='BER scale (from -6 to -15). Set to -7 by default', default=-7)
 args = parser.parse_args()
 minlog10ber = args.scale
 
