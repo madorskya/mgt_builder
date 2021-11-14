@@ -23,21 +23,21 @@ ifeq ($(HARDWARE),-DMTF7)
 endif
 
 mgt_configurator: main.o fpga.o drp_unit.o linenoise.o
-        $(CL) $(CCOPT) $(LIB) -o mgt_configurator main.o fpga.o drp_unit.o linenoise.o
+	$(CL) $(CCOPT) $(LIB) -o mgt_configurator main.o fpga.o drp_unit.o linenoise.o
 
 linenoise.o: $(LN_LOC)/linenoise.cpp $(LN_LOC)/linenoise.h
-        $(CC) $(CCOPT) -c -o linenoise.o $(LN_LOC)/linenoise.cpp
+	$(CC) $(CCOPT) -c -o linenoise.o $(LN_LOC)/linenoise.cpp
 
 drp_unit.o : drp_unit.cpp drp_unit.h
-        $(CC) $(CCOPT) -c -o drp_unit.o drp_unit.cpp
+	$(CC) $(CCOPT) -c -o drp_unit.o drp_unit.cpp
 
 fpga.o : fpga.cpp fpga.h drp_unit.h
-        $(CC) $(CCOPT) -c -o fpga.o fpga.cpp
+	$(CC) $(CCOPT) -c -o fpga.o fpga.cpp
 
 main.o : main.cpp fpga.h drp_unit.h $(LN_LOC)/linenoise.h
-        $(CC) $(CCOPT) -c -o main.o main.cpp
+	$(CC) $(CCOPT) -c -o main.o main.cpp
 
 clean :
-        rm -f *~
-        rm -f *.o
-        rm -f mgt_configurator
+	rm -f *~
+	rm -f *.o
+	rm -f mgt_configurator
