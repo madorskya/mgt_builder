@@ -8,7 +8,7 @@ import csv
 
 overwrite = True
 
-filename_i_list = glob('../scans/csv/*')
+filename_i_list = glob('../csv/*')
 filename_o_list = [p.replace('csv','png') for p in filename_i_list]
 
 yticks = range(0, 64, 3)
