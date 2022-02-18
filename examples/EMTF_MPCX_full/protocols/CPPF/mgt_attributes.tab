@@ -478,7 +478,7 @@ RXBYTEREALIGN	,
 RXCOMMADET	,	
 RXCOMMADETEN	tied_to_vcc_i	
 RXMCOMMAALIGNEN	rxmcommaalignen_in	
-RXPCOMMAALIGNEN	rxpcommaalignen_in	
+RXPCOMMAALIGNEN	tied_to_vcc_i	
 //----------------	Receive	
 RXCHANBONDSEQ	,	
 RXCHBONDEN	tied_to_ground_i	
