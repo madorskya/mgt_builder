@@ -34,7 +34,6 @@ GTPOWERGOOD	out	s		1			y
 GTREFCLK0	in	0		1					
 GTREFCLK1	in	0		1					
 GTREFCLKMONITOR	out	0		1					
-GTRESETSEL	in	s		1			y		
 GTRXRESET	in	s		1			y		
 GTRXRESETSEL	in	s		1			y		
 GTSOUTHREFCLK0	in	0		1					
@@ -45,8 +44,8 @@ GTYRXN	in	d		1		mgt_gty_rx
 GTYRXP	in	d		1		mgt_gty_rx			
 INCPCTRL	in	0		1	1'b0				
 LOOPBACK	in	s		3			y		
-MGTYTXN	out	d		1		mgt_gty_tx			
-MGTYTXP	out	d		1		mgt_gty_tx			
+GTYTXN	out	d		1		mgt_gty_tx			
+GTYTXP	out	d		1		mgt_gty_tx			
 PCSRSVDOUT	out	0		1					
 PHYSTATUS	out	0		1					
 QPLL0CLK	in	c		1			y		
@@ -55,7 +54,6 @@ QPLL1CLK	in	c		1			y
 QPLL1REFCLK	in	c		1			y		
 RESETEXCEPTION	out	0		1					
 RESETOVRD	in	0		1					
-RSOSINTDONE	out	0		1					
 RX8B10BEN	in	s	RXUSRCLK2	1					
 RXAFECFOKEN	in	0		1	1'b1				
 RXBUFRESET	in	s		1					
