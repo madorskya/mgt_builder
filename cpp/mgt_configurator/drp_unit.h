@@ -66,7 +66,7 @@ using namespace std;
 	#define DRP_BASE 0x54000000 // DRP area base address
 	// AXI versions of mwrite and mread support only 8-byte transfers
 	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
-	#define mread(a,b,c,d)  {*b = *((uint64_t*)(sys_vptr + d));}
+	#define mread(a,b,c,d)  {volatile uint64_t dum = *((uint64_t*)(sys_vptr + d)); usleep(1); *b = *((uint64_t*)(sys_vptr + d));}
 // debug versions of the macros
 //	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
 //	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}

@@ -200,7 +200,7 @@ void device_reset (string cmd)
 
 	bool v7_gth = false, usplus_gth = false;
 	if (argv[1].compare("v7_gth") == 0) v7_gth = true;
-	if (argv[1].compare("usplus_gth") == 0) usplus_gth = true;
+	if (argv[1].compare("usplus") == 0) usplus_gth = true;
 
 	if (!v7_gth && !usplus_gth)
 	{
@@ -276,7 +276,7 @@ void prbs_pattern (string cmd)
 	}
 }
 
-void prbs_read (string cmd)
+void prbs_read_v7 (string cmd)
 {
 	for (int i = 0; i < device_count; i++)
 	{
@@ -291,8 +291,6 @@ void prbs_read (string cmd)
 				if (du.rx_group_index >= 0)
 				{
 					printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
-					du.att_read_prn(fd[i], "RXPRBSLOCKED");
-					printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
 					du.att_read_prn(fd[i], "RX_PRBS_ERR_CNT");
 				}
 			}
@@ -301,7 +299,50 @@ void prbs_read (string cmd)
 	}
 }
 
-string help_general = "commands: device register reset prbs exit";
+void prbs_read_us (string cmd)
+{
+	for (int i = 0; i < device_count; i++)
+	{
+		int locked_count = 0;
+		if (fd[i] >= 0 && device_selected[i])
+		{
+			if (chip.lock_board (i) < 0) exit(-1);
+			cout << "device: " << i << endl;
+			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
+			{
+				//string uname = it->first;
+				drp_unit du = it->second;
+				if (du.rx_group_index >= 0)
+				{
+					// check if link locked first
+    					string svalue;
+			    		boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RXPRBSLOCKED", svalue);
+					if (v == 1) // if locked
+					{
+			    			boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RX_PRBS_ERR_CNT", svalue);
+						if (v > 0) // print only if errors
+						{
+							printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
+							// du.att_read_prn(fd[i], "RXPRBSLOCKED");
+	    						cout << svalue << endl;
+						}
+						locked_count ++;
+					}
+					else // RPBS unlocked
+					{
+						printf ("%7s %02d -- link NOT LOCKED\n",du.rx_group_name.c_str(), du.rx_group_index);
+					}
+				}
+			}
+			if (chip.unlock_board (i) < 0) exit(-1);
+		}
+		printf ("PRBS locked link count: %d\n", locked_count);
+	}
+
+}
+
+
+string help_general = "Top level commands: device register reset prbs scan exit\nType one of them, then follow hints.";
 
 using namespace std;
 node_record nr[] =
@@ -329,13 +370,15 @@ node_record nr[] =
 	{2,     "([0-9]+)",      "scale(6-15)",     NULL,           NULL},
   	{3,     "([0-9]+)",      "mode:normal-2d(0)|bathtub(1)",    NULL,       NULL},
   	{4,     "([0-9]+)",      "<Enter>",         eyescan,        NULL},
-	{0, "reset",             "device family",   NULL,           NULL},
+	{0, "reset",             "v7_gth | usplus", NULL,           NULL},
 	{1,     "v7_gth",        "<Enter>",         device_reset,   NULL},
-	{1,     "usplus_gth",    "<Enter>",         device_reset,   NULL},
+	{1,     "usplus",        "<Enter>",         device_reset,   NULL},
 	{0, "prbs",              "pattern|read|reset",  NULL,       NULL},
 	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},
 	{1,     "reset",         "<Enter>",         prbs_pattern,   NULL},
-	{1,     "read",          "<Enter>",         prbs_read,      NULL},
+	{1,     "read",          "v7_gth | usplus", NULL,           NULL},
+	{2,       "v7_gth",      "<Enter>",         prbs_read_v7,   NULL},
+	{2,       "usplus",      "<Enter>",         prbs_read_us,   NULL},
 	{0, "exit",              "<Enter>",         eject,          NULL},
 	{-1,"help",              "<Enter>",         NULL,           &help_general} // end marker
 };
