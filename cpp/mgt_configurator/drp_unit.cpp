@@ -1261,11 +1261,10 @@ The following attributes are configured for the given transceiver lane:
 
 void drp_unit::eyescan_config_gty (int fd, int x, int y)
 {
-  boost::multiprecision::uint128_t es_qualifier = 0x0, es_qual_mask_0 = 0x0, es_qual_mask_1 = 0x0,
-                                   es_qual_mask = 0x0, es_qual_mask = 0x0, es_prescale = 0x0,
-                                   es_eye_scan_en_rb = 0x0;
+  boost::multiprecision::uint128_t es_qualifier = 0x0, es_qual_mask = 0x0,
+                                   es_prescale = 0x0, es_eye_scan_en_rb = 0x0;
 
-  vector<boost::multiprecision::uint128_t> es_sdata_mask_list, es_smd_0, es_smd_1, es_smd_2,
+  vector<boost::multiprecision::uint128_t> es_sdata_mask, es_smd_0, es_smd_1, es_smd_2,
                                            es_smd_3, es_smd_4, es_smd_5, es_smd_6, es_smd_7,
                                            es_smd_8, es_smd_9;
 
@@ -1276,7 +1275,7 @@ void drp_unit::eyescan_config_gty (int fd, int x, int y)
   es_smd_4 = {0xFFFF, 0x0, 0x0, 0x0, 0x0, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
   es_smd_5 = {0x0, 0x0, 0x0, 0x0, 0x0, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
 
-  map<boost::multiprecision::uint128_t,boost::multiprecision::uint128_t> es_sdata_mask_dict;
+  map<boost::multiprecision::uint128_t,vector<boost::multiprecision::uint128_t>> es_sdata_mask_dict;
   es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,vector<boost::multiprecision::uint128_t>>(2, es_smd_0));
   es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,vector<boost::multiprecision::uint128_t>>(3, es_smd_1));
   es_sdata_mask_dict.insert(pair<boost::multiprecision::uint128_t,vector<boost::multiprecision::uint128_t>>(4, es_smd_2));
