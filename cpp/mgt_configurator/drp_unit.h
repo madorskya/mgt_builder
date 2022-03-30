@@ -333,12 +333,17 @@ public:
     void     reg_write (int fd, int addr, uint64_t data);
 
     void eyescan_config(int fd, int x, int y);
+		void eyescan_config_gty(int fd, int x, int y);
     bool eyescan_control(int fd, int x, int y, bool err_det_en, bool run, bool arm);
     bool eyescan_offset (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign);
+		bool eyescan_offset_gty (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign);
     bool eyescan_wait (int fd, int x, int y, string wait_for);
     map <string,boost::multiprecision::uint128_t> eyescan_acquisition(int fd, int x, int y, int hor_offset, int ver_offset);
+		map <string,boost::multiprecision::uint128_t> eyescan_acquisition_gty(int fd, int x, int y, int hor_offset, int ver_offset);
     void eyescan_sweep (int fd, int x, int y, int scale, int i, int mode);
+		void eyescan_sweep_gty (int fd, int x, int y, int scale, int i, int mode);
     void eyescan_complete (int fd, int x, int y, int scale, int i, int mode);
+		void eyescan_complete_gty (int fd, int x, int y, int scale, int i, int mode);
 
     string print();
 };
