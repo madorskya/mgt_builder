@@ -66,7 +66,7 @@ using namespace std;
 	#define DRP_BASE 0x54000000 // DRP area base address
 	// AXI versions of mwrite and mread support only 8-byte transfers
 	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
-	#define mread(a,b,c,d)  {*b = *((uint64_t*)(sys_vptr + d));}
+	#define mread(a,b,c,d)  {volatile uint64_t dum = *((uint64_t*)(sys_vptr + d)); usleep(1); *b = *((uint64_t*)(sys_vptr + d));}
 // debug versions of the macros
 //	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
 //	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}
@@ -333,12 +333,17 @@ public:
     void     reg_write (int fd, int addr, uint64_t data);
 
     void eyescan_config(int fd, int x, int y);
+		void eyescan_config_gty(int fd, int x, int y);
     bool eyescan_control(int fd, int x, int y, bool err_det_en, bool run, bool arm);
     bool eyescan_offset (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign);
+		bool eyescan_offset_gty (int fd, int x, int y, int hor_offset, int ver_offset, int ut_sign);
     bool eyescan_wait (int fd, int x, int y, string wait_for);
     map <string,boost::multiprecision::uint128_t> eyescan_acquisition(int fd, int x, int y, int hor_offset, int ver_offset);
+		map <string,boost::multiprecision::uint128_t> eyescan_acquisition_gty(int fd, int x, int y, int hor_offset, int ver_offset);
     void eyescan_sweep (int fd, int x, int y, int scale, int i, int mode);
+		void eyescan_sweep_gty (int fd, int x, int y, int scale, int i, int mode);
     void eyescan_complete (int fd, int x, int y, int scale, int i, int mode);
+		void eyescan_complete_gty (int fd, int x, int y, int scale, int i, int mode);
 
     string print();
 };
