@@ -59,7 +59,7 @@ def get_eye(scan_list):
 
 
 #Generate eyescan plots
-def eyescan_plot(filename_i, filename_o, xaxis=True, yaxis=True, xticks_f=[],yticks_f=[]):
+def eom_plot(filename_i, filename_o, xaxis=True, yaxis=True, xticks_f=[],yticks_f=[]):
 
     # opens the file
     with open(filename_i, 'rb') as f:
