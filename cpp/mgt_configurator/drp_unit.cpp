@@ -1966,7 +1966,7 @@ This function creates a .csv file containing the sweep results.
        if (iterations % print_status_every == 0 && old_progress != progress)
        {
          old_progress = progress;
-         cout << "Eye Scan progress ... " << dec << progress << "%" << endl;
+         cout << dec << i << " " << dec << x << " " << dec << y << " " << "Eye Scan progress ... " << dec << progress << "%" << endl;
        }
     }
   }
@@ -2169,7 +2169,7 @@ This function creates a .csv file containing the sweep results.
        if (iterations % print_status_every == 0 && old_progress != progress)
        {
          old_progress = progress;
-         cout << "Eye Scan progress ... " << dec << progress << "%" << endl;
+         cout << dec << i << " " << dec << x << " " << dec << y << " " << "Eye Scan progress ... " << dec << progress << "%" << endl;
        }
     }
   }
