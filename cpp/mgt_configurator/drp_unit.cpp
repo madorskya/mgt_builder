@@ -2093,7 +2093,7 @@ This function creates a .csv file containing the sweep results.
   for (int i_vert = vert_max; i_vert >= -vert_max; i_vert = i_vert - vert_step) {	// iterate vertical
     f << i_vert << ",";
     for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal
-       counters = eyescan_acquisition(fd, x, y, i_horz, i_vert);
+       counters = eyescan_acquisition_gty(fd, x, y, i_horz, i_vert);
        if (eq_mode == "DFE")
        {
 	 ber128_0 = counters.at("sample_count_pUT") *
