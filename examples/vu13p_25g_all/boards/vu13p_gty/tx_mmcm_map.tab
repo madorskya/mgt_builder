@@ -64,12 +64,14 @@
 0	22	slave
 0	23	slave
 //MMCM name: pr25g_6
-0	25	master
+0	24	master
+0	25	slave
 0	26	slave
 0	27	slave
 //MMCM name: pr25g_7
 0	28	master
 0	29	slave
+0	30	slave
 0	31	slave
 //MMCM name: pr25g_8
 0	32	master
@@ -77,8 +79,7 @@
 0	34	slave
 0	35	slave
 //MMCM name: pr25g_1
-0	4	master
-0	5	slave
+0	5	master
 0	6	slave
 0	7	slave
 //MMCM name: pr25g_24
@@ -122,8 +123,7 @@
 1	18	slave
 1	19	slave
 //MMCM name: pr25g_0
-0	0	master
-0	1	slave
+0	1	master
 0	2	slave
 0	3	slave
 //MMCM name: pr25g_19
