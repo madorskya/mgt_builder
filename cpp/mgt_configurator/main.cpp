@@ -198,6 +198,61 @@ void eyescan (string cmd)
 	}
 }
 
+void eyescan_all (string cmd)
+{
+	int x, y, xy;
+  vector <string> argv;
+	boost::split(argv, cmd, boost::is_any_of("\t ")); // split on tabs,spaces
+
+	bool gth = false, gty = false;
+	if (argv[1].compare("gth") == 0) gth = true;
+	if (argv[1].compare("gty") == 0) gty = true;
+
+	if (!gth && !gty)
+	{
+		cout << "please specify supported device family" << endl;
+		return;
+	}
+
+	int scale  = strtol (argv[2].c_str(), NULL, 10);
+	int mode   = strtol (argv[3].c_str(), NULL, 10);
+
+	for (int i = 0; i < device_count; i++)
+	{
+		if (fd[i] >= 0 && device_selected[i])
+		{
+			if (chip.lock_board (i) < 0) exit(-1);
+
+			for (map<int, drp_unit>::iterator it = chip.mgt_map.begin(); it != chip.mgt_map.end(); ++it)
+			{
+						// find MGT
+						xy = it->first;
+
+						if (xy < 1000)
+						{
+							x = 0;
+							y = xy;
+						}
+
+						if (xy >= 1000)
+						{
+							x = xy / 1000;
+							y = xy % 1000;
+
+						}
+						
+						drp_unit uit = it->second;;
+						//if (common) uit = *(uit.common_unit);
+
+						if (gth) uit.eyescan_complete(fd[i], x, y, scale, i, mode);
+						if (gty) uit.eyescan_complete_gty(fd[i], x, y, scale, i, mode);
+			}
+
+			if (chip.unlock_board (i) < 0) exit(-1);
+		}
+	}
+}
+
 void device_reset (string cmd)
 {
     vector <string> argv;
@@ -381,8 +436,13 @@ node_record nr[] =
 	{1,     "gty",     		   "link X",          NULL,           NULL},
 	{2,     "([0-1])",       "link Y",          NULL,           NULL},
 	{3,     "([0-9]+)",      "scale(6-15)",     NULL,           NULL},
-  	{4,     "([0-9]+)",      "mode:normal-2d(0) | bathtub(1)",  NULL,       NULL},
-  	{5,     "([0-1])",      "<Enter>",         eyescan,        NULL},
+	{4,     "([0-9]+)",      "mode:normal-2d(0) | bathtub(1)",  NULL,       NULL},
+	{5,     "([0-1])",       "<Enter>",         eyescan,        NULL},
+	{0, "scanall",           "gth | gty",          NULL,           NULL},
+	{1,     "gth",   		     "scale(6-15)",          NULL,           NULL},
+	{1,     "gty",     		   "scale(6-15)",          NULL,           NULL},
+	{2,     "([0-9]+)",      "mode:normal-2d(0) | bathtub(1)",  NULL,       NULL},
+	{3,     "([0-1])",       "<Enter>",         eyescan_all,        NULL},
 	{0, "reset",             "v7_gth | usplus", NULL,           NULL},
 	{1,     "v7_gth",        "<Enter>",         device_reset,   NULL},
 	{1,     "usplus",        "<Enter>",         device_reset,   NULL},

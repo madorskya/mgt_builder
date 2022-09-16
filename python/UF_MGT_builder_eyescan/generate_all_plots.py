@@ -25,11 +25,17 @@ import os.path
 import numpy as np
 import argparse
 import csv
+import sys
 
 parser = argparse.ArgumentParser(description='UF MGT builder eyescan tool.')
 parser.add_argument('scale', metavar='BER scale', type=int, nargs='?', help='BER scale (from -6 to -15). Set to -7 by default', default=-7)
+parser.add_argument('--gth', action='store_true', help='Run for 7 series GTH transeivers.')
+parser.add_argument('--gty', action='store_true', help='Run for Ultrascale GTY transeivers.')
 args = parser.parse_args()
 minlog10ber = args.scale
+
+if not args.gth and not args.gty:
+	sys.exit("Please specify type of transeivers (GTH or GTY)!")
 
 overwrite = True
 
@@ -52,14 +58,14 @@ for i,o in zip(filename_i_list, filename_o_list):
             scan_list = list(reader)
 
     # getting bathtub status
-    bathtub = get_eye(scan_list)[6]
+    bathtub = get_eye(scan_list, gt=args.gty)[6]
     f.close()
 
     if (not os.path.exists(o)) or overwrite:
         if bathtub:
-            eyescan_plot(i, o, minlog10ber, colorbar=False, xaxis=False, yaxis=False, xticks_f=xticks, yticks_f=[])
+            eyescan_plot(i, o, minlog10ber, gt=args.gty, colorbar=False, xaxis=False, yaxis=False, xticks_f=xticks, yticks_f=[])
         else:
-            eyescan_plot(i, o, minlog10ber, colorbar=True, xaxis=True, yaxis=True, xticks_f=xticks, yticks_f=yticks)
+            eyescan_plot(i, o, minlog10ber, gt=args.gty, colorbar=True, xaxis=True, yaxis=True, xticks_f=xticks, yticks_f=yticks)
 
     k += 1
     #break

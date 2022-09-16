@@ -1338,6 +1338,10 @@ void drp_unit::eyescan_config_gty (int fd, int x, int y)
   es_prescale = prescale;
   att_write(fd, "ES_PRESCALE", es_prescale);
 
+  // Configure the RX_EYESCAN_VS_RANGE attribute (1.6 mV/count).
+  cout << "Configuring the ES_PRESCALE attribute for GT_" << x << "_" << y << " ..." << endl;
+  att_write(fd, "RX_EYESCAN_VS_RANGE", 0x0);
+
   //if (MGT_TYPE == GTY)
   //{
     cout << "Asserting that ES_EYE_SCAN_EN bit is TRUE for GTY_" << x << "_" << y << " ..." << endl;
@@ -1484,8 +1488,9 @@ bool drp_unit::eyescan_offset_gty (int fd, int x, int y, int hor_offset, int ver
   if (ver_offset < 0)
   {
     es_offset_sign  = 0x1;
-    es_phase_uni  = 0x1;
+    //es_phase_uni  = 0x1;
   }
+  es_phase_uni  = 0x1;
   es_offset_magn = abs(ver_offset) & 0x007F;
   es_ut_sign = (boost::multiprecision::uint128_t) ut_sign;
   es_phase_offset = hor_offset & 0x0FFF;
@@ -1758,6 +1763,12 @@ Parameters:
     //<< hor_offset << ", V = " << ver_offset<< ", " << eq_mode << ")" << endl;
   }
 
+  //Realignment sequence (moves Eye Scan clock in 2UI increments)
+  att_write(fd, "ES_HORZ_OFFSET", 0x880);
+  att_write(fd, "EYESCANRESET", 0x1);
+  att_write(fd, "ES_HORZ_OFFSET", 0x800);
+  att_write(fd, "EYESCANRESET", 0x0);
+
   // Return the error and sample counters for the current lane, both +UT and -UT.
   return acq_counters;
 }
@@ -1775,6 +1786,7 @@ This function creates a .csv file containing the sweep results.
   double BER_calculated = 0, ber_0 = 0, ber_1 = 0, error_count_0 = 0, error_count_1 = 0;
          boost::multiprecision::uint128_t ber128_0 = 0x0, ber128_1 = 0x0,
 				 error_count128_0 = 0x0, error_count128_1 = 0x0;
+  map<string,boost::multiprecision::uint128_t> counters;
 
   cout << "Starting sweep for GT_" << x << "_" << y << " ..." << endl;
 
@@ -1838,7 +1850,7 @@ This function creates a .csv file containing the sweep results.
 
   // Pre-fill .csv result file.
   ostringstream osfilename;
-  osfilename << getenv("HOME") << "/github/mgt_builder/scans/csv/eyescan_"
+  osfilename << getenv("HOME") << "/github/mgt_builder/scans/csv/eyescanGTH_"
   << dec << i << "_" << dec << x << "_" << dec << y << "_" << buftime_0 << ".csv";
   string filename = osfilename.str();
   ofstream f(filename.c_str(), ios::app);
@@ -1878,9 +1890,10 @@ This function creates a .csv file containing the sweep results.
   for (int i_vert = vert_max; i_vert >= -vert_max; i_vert = i_vert - vert_step) {	// iterate vertical
     f << i_vert << ",";
     for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal
+       counters = eyescan_acquisition(fd, x, y, i_horz, i_vert);
        if (eq_mode == "DFE")
        {
-	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
+	 ber128_0 = counters.at("sample_count_pUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_0 == 0)
@@ -1888,7 +1901,7 @@ This function creates a .csv file containing the sweep results.
            ber128_0 = 1 * (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
          }
 
-	 ber128_1 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_nUT") *
+	 ber128_1 = counters.at("sample_count_nUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_1 == 0)
@@ -1899,9 +1912,9 @@ This function creates a .csv file containing the sweep results.
 	 ber_0 = ber128_0.convert_to<double>();
 	 ber_1 = ber128_1.convert_to<double>();
 
-         error_count128_0 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+         error_count128_0 = counters.at("error_count_pUT");
 	 error_count_0 = error_count128_0.convert_to<double>();
-         error_count128_1 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_nUT"));
+         error_count128_1 = counters.at("error_count_nUT");
 	 error_count_1 = error_count128_1.convert_to<double>();
 
 	 if (error_count128_0 == 0)
@@ -1918,7 +1931,7 @@ This function creates a .csv file containing the sweep results.
        }
        else
        {
-	 ber128_0 = eyescan_acquisition(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
+	 ber128_0 = counters.at("sample_count_pUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_0 == 0)
@@ -1927,7 +1940,7 @@ This function creates a .csv file containing the sweep results.
          }
 
 	 ber_0 = ber128_0.convert_to<double>();
-         error_count128_0 = (eyescan_acquisition(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+         error_count128_0 = counters.at("error_count_pUT");
 	 error_count_0 = error_count128_0.convert_to<double>();
 
          if (error_count_0 == 0)
@@ -1953,7 +1966,7 @@ This function creates a .csv file containing the sweep results.
        if (iterations % print_status_every == 0 && old_progress != progress)
        {
          old_progress = progress;
-         cout << "Eye Scan progress ... " << dec << progress << "%" << endl;
+         cout << dec << i << " " << dec << x << " " << dec << y << " " << "Eye Scan progress ... " << dec << progress << "%" << endl;
        }
     }
   }
@@ -1976,6 +1989,7 @@ This function creates a .csv file containing the sweep results.
   double BER_calculated = 0, ber_0 = 0, ber_1 = 0, error_count_0 = 0, error_count_1 = 0;
          boost::multiprecision::uint128_t ber128_0 = 0x0, ber128_1 = 0x0,
 				 error_count128_0 = 0x0, error_count128_1 = 0x0;
+  map<string,boost::multiprecision::uint128_t> counters;
 
   cout << "Starting sweep for GT_" << x << "_" << y << " ..." << endl;
 
@@ -2039,7 +2053,7 @@ This function creates a .csv file containing the sweep results.
 
   // Pre-fill .csv result file.
   ostringstream osfilename;
-  osfilename << getenv("HOME") << "/github/mgt_builder/scans/csv/eyescan_"
+  osfilename << getenv("HOME") << "/github/mgt_builder/scans/csv/eyescanGTY_"
   << dec << i << "_" << dec << x << "_" << dec << y << "_" << buftime_0 << ".csv";
   string filename = osfilename.str();
   ofstream f(filename.c_str(), ios::app);
@@ -2079,9 +2093,10 @@ This function creates a .csv file containing the sweep results.
   for (int i_vert = vert_max; i_vert >= -vert_max; i_vert = i_vert - vert_step) {	// iterate vertical
     f << i_vert << ",";
     for (int i_horz = -horz_max; i_horz <= horz_max; i_horz = i_horz + horz_step) {		// iterate horizontal
+       counters = eyescan_acquisition_gty(fd, x, y, i_horz, i_vert);
        if (eq_mode == "DFE")
        {
-	 ber128_0 = eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
+	 ber128_0 = counters.at("sample_count_pUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_0 == 0)
@@ -2089,7 +2104,7 @@ This function creates a .csv file containing the sweep results.
            ber128_0 = 1 * (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
          }
 
-	 ber128_1 = eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("sample_count_nUT") *
+	 ber128_1 = counters.at("sample_count_nUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_1 == 0)
@@ -2100,9 +2115,9 @@ This function creates a .csv file containing the sweep results.
 	 ber_0 = ber128_0.convert_to<double>();
 	 ber_1 = ber128_1.convert_to<double>();
 
-         error_count128_0 = (eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+         error_count128_0 = counters.at("error_count_pUT");
 	 error_count_0 = error_count128_0.convert_to<double>();
-         error_count128_1 = (eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("error_count_nUT"));
+         error_count128_1 = counters.at("error_count_nUT");
 	 error_count_1 = error_count128_1.convert_to<double>();
 
 	 if (error_count128_0 == 0)
@@ -2119,7 +2134,7 @@ This function creates a .csv file containing the sweep results.
        }
        else
        {
-	 ber128_0 = eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("sample_count_pUT") *
+	 ber128_0 = counters.at("sample_count_pUT") *
          (att_read_eye(fd, "RX_DATA_WIDTH") * (1 << (1 + pscale)));
 
          if (ber128_0 == 0)
@@ -2128,7 +2143,7 @@ This function creates a .csv file containing the sweep results.
          }
 
 	 ber_0 = ber128_0.convert_to<double>();
-         error_count128_0 = (eyescan_acquisition_gty(fd, x, y, i_horz, i_vert).at("error_count_pUT"));
+         error_count128_0 = counters.at("error_count_pUT");
 	 error_count_0 = error_count128_0.convert_to<double>();
 
          if (error_count_0 == 0)
@@ -2154,7 +2169,7 @@ This function creates a .csv file containing the sweep results.
        if (iterations % print_status_every == 0 && old_progress != progress)
        {
          old_progress = progress;
-         cout << "Eye Scan progress ... " << dec << progress << "%" << endl;
+         cout << dec << i << " " << dec << x << " " << dec << y << " " << "Eye Scan progress ... " << dec << progress << "%" << endl;
        }
     }
   }

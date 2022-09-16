@@ -30,7 +30,7 @@ import matplotlib.patches as patches
 import os
 
 # function for getting eye data
-def get_eye(scan_list):
+def get_eye(scan_list, gt):
     eyedata = False
     bathtub = False
     yticks = []
@@ -63,6 +63,21 @@ def get_eye(scan_list):
             xticks = row[1:]
             eyedata = True
 
+    if gt:	
+    	for elm in img:
+		if elm[0] < elm[1]:
+			for val in elm:
+				if elm.index(val) == 1:
+					elm[1]=elm[0]
+				elif elm.index(val)%2 == 1:
+					elm[elm.index(val)] = elm[elm.index(val)-1]
+		if elm[0] > elm[1]:
+			for val in elm: 
+				if elm.index(val) != 1 and elm.index(val) !=len(elm)-1 and elm.index(val)%2 == 0:
+					elm[elm.index(val)] = elm[elm.index(val)+1]
+				elif elm.index(val) == len(elm)-1:
+					elm[elm.index(val)]=elm[elm.index(val)-1]
+
     img = [[float(y) for y in x] for x in img]
 
     xticks = [int(x) for x in xticks]
@@ -76,7 +91,7 @@ def get_eye(scan_list):
 
 
 #Generate eyescan plots
-def eyescan_plot(filename_i, filename_o, minlog10ber, colorbar=True, xaxis=True, yaxis=True, xticks_f=[],yticks_f=[]):
+def eyescan_plot(filename_i, filename_o, minlog10ber, gt, colorbar=True, xaxis=True, yaxis=True, xticks_f=[],yticks_f=[]):
 
     # opens the file
     with open(filename_i, 'rb') as f:
@@ -85,7 +100,7 @@ def eyescan_plot(filename_i, filename_o, minlog10ber, colorbar=True, xaxis=True,
 
 
     # getting eye data
-    [img, xticks, yticks, date, time, header, bathtub] = get_eye(scan_list)
+    [img, xticks, yticks, date, time, header, bathtub] = get_eye(scan_list, gt)
 
     # function for calculating x-y axis ranges in a such way that ticks is in the center of each entry
     def get_extent(xticks_n,yticks_r):
@@ -110,6 +125,15 @@ def eyescan_plot(filename_i, filename_o, minlog10ber, colorbar=True, xaxis=True,
         (0., -30.5),
         (-0.118, 0.),
     ]
+
+    if gt:
+    	verts = [
+        	(-0.118, 0.),
+        	(0., 45.5),
+        	(0.118, 0.),
+        	(0., -45.5),
+        	(-0.118, 0.),
+    	]
 
     codes = [
         Path.MOVETO,
