@@ -63,7 +63,8 @@ using namespace std;
 	#include <sys/mman.h>
 	// two parameters below should come from config file
 	#define DRP_SIZE 0x10000 // 13 bits of DRP address x 32 bit words = 15 bits of address
-	#define DRP_BASE 0x54000000 // DRP area base address
+//	#define DRP_BASE 0x054000000 // DRP area base address in rev 1,2
+	#define DRP_BASE 0x464000000 // rev 3	
 	// AXI versions of mwrite and mread support only 8-byte transfers
 	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
 	#define mread(a,b,c,d)  {volatile uint64_t dum = *((uint64_t*)(sys_vptr + d)); usleep(1); *b = *((uint64_t*)(sys_vptr + d));}

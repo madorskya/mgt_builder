@@ -120,6 +120,22 @@ void register_wr1 (string cmd)
 	int common   = strtol (argv[4].c_str(), NULL, 10);
 	string rname = argv[5];
 	int wr_data  = strtol (argv[6].c_str(), NULL, 16);
+	int xa, xb, ya, yb;
+
+	if (x == -1 || y == -1) // scan all MGTs
+	{
+		xa = 0;
+		xb = chip.max_mgt_x;
+		ya = 0;
+		yb = chip.max_mgt_y;
+	}
+	else // just one MGT
+	{
+		xa = x;
+		xb = x+1;
+		ya = y;
+		yb = y+1;
+	}
 
 
 	for (int i = 0; i < device_count; i++)
@@ -127,11 +143,17 @@ void register_wr1 (string cmd)
 		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
-			// find MGT
-			drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
-			if (common) uit = *(uit.common_unit);
+			for (int xi = xa; xi < xb; xi++)
+			{
+				for (int yi = ya; yi < yb; yi++)
+				{
+					// find MGT
+					drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
+					if (common) uit = *(uit.common_unit);
 
-			uit.att_write(fd[i], rname, wr_data);
+					uit.att_write(fd[i], rname, wr_data);
+				}
+			}
 			if (chip.unlock_board (i) < 0) exit(-1);
 		}
 	}
@@ -146,18 +168,42 @@ void register_read (string cmd)
 	int y      = strtol (argv[3].c_str(), NULL, 10);
 	int common = strtol (argv[4].c_str(), NULL, 10);
 	string rname = argv[5];
+	int xa, xb, ya, yb;
+
+	if (x == -1 || y == -1) // scan all MGTs
+	{
+		xa = 0;
+		xb = chip.max_mgt_x;
+		ya = 0;
+		yb = chip.max_mgt_y;
+	}
+	else // just one MGT
+	{
+		xa = x;
+		xb = x+1;
+		ya = y;
+		yb = y+1;
+	}
 
 	for (int i = 0; i < device_count; i++)
 	{
 		if (fd[i] >= 0 && device_selected[i])
 		{
 			if (chip.lock_board (i) < 0) exit(-1);
-			// find MGT
-			drp_unit uit = chip.mgt_map.at(chip.mkxy(x,y));
-			if (common) uit = *(uit.common_unit);
 
-			uit.att_read_prn(fd[i], rname);
+			for (int xi = xa; xi < xb; xi++)
+			{
+				for (int yi = ya; yi < yb; yi++)
+				{
+					// find MGT
+					drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
+					if (common) uit = *(uit.common_unit);
+
+					uit.att_read_prn(fd[i], rname);
+				}
+			}
 			if (chip.unlock_board (i) < 0) exit(-1);
+			
 		}
 	}
 }
@@ -296,6 +342,16 @@ void prbs_pattern (string cmd)
 	if (fld[1].compare("reset") == 0)
 	{
 		prbs_type = -1;
+	}
+	else
+	if (fld[1].compare("slowclk") == 0)
+	{
+		prbs_type = 10; // slow clock 
+	}
+	else
+	if (fld[1].compare("fastclk") == 0)
+	{
+		prbs_type = 9; // fast clock 
 	}
 	else
 	{
@@ -447,7 +503,7 @@ node_record nr[] =
 	{1,     "v7_gth",        "<Enter>",         device_reset,   NULL},
 	{1,     "usplus",        "<Enter>",         device_reset,   NULL},
 	{0, "prbs",              "pattern|read|reset",  NULL,       NULL},
-	{1,     "(7|15|23|31)",  "<Enter>",         prbs_pattern,   NULL},
+	{1,     "(7|15|23|31|slowclk|fastclk)",  "<Enter>",         prbs_pattern,   NULL},
 	{1,     "reset",         "<Enter>",         prbs_pattern,   NULL},
 	{1,     "read",          "v7_gth | usplus", NULL,           NULL},
 	{2,       "v7_gth",      "<Enter>",         prbs_read_v7,   NULL},
