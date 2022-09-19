@@ -119,7 +119,7 @@ void register_wr1 (string cmd)
 	int y        = strtol (argv[3].c_str(), NULL, 10);
 	int common   = strtol (argv[4].c_str(), NULL, 10);
 	string rname = argv[5];
-	int wr_data  = strtol (argv[6].c_str(), NULL, 16);
+	int wr_data  = strtol (argv[6].c_str(), NULL, 0);
 	int xa, xb, ya, yb;
 
 	if (x == -1 || y == -1) // scan all MGTs
@@ -148,10 +148,14 @@ void register_wr1 (string cmd)
 				for (int yi = ya; yi < yb; yi++)
 				{
 					// find MGT
-					drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
-					if (common) uit = *(uit.common_unit);
+					if (chip.mgt_map.find(chip.mkxy(xi,yi)) != chip.mgt_map.end())
+					{
+						drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
+						if (common) uit = *(uit.common_unit);
 
-					uit.att_write(fd[i], rname, wr_data);
+						cout << "X = " << xi << " Y = " << yi << " " << rname << " " << wr_data << endl;
+						uit.att_write(fd[i], rname, wr_data);
+					}
 				}
 			}
 			if (chip.unlock_board (i) < 0) exit(-1);
@@ -196,10 +200,14 @@ void register_read (string cmd)
 				for (int yi = ya; yi < yb; yi++)
 				{
 					// find MGT
-					drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
-					if (common) uit = *(uit.common_unit);
+					if (chip.mgt_map.find(chip.mkxy(xi,yi)) != chip.mgt_map.end())
+					{
+						drp_unit uit = chip.mgt_map.at(chip.mkxy(xi,yi));
+						if (common) uit = *(uit.common_unit);
 
-					uit.att_read_prn(fd[i], rname);
+						cout << "X = " << xi << " Y = " << yi << " ";
+						uit.att_read_prn(fd[i], rname);
+					}
 				}
 			}
 			if (chip.unlock_board (i) < 0) exit(-1);
@@ -437,16 +445,16 @@ void prbs_read_us (string cmd)
 				if (du.rx_group_index >= 0)
 				{
 					// check if link locked first
-    					string svalue;
-			    		boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RXPRBSLOCKED", svalue);
+					string svalue;
+					boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RXPRBSLOCKED", svalue);
 					if (v == 1) // if locked
 					{
-			    			boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RX_PRBS_ERR_CNT", svalue);
+						boost::multiprecision::uint128_t v  = du.att_read(fd[i], "RX_PRBS_ERR_CNT", svalue);
 						if (v > 0) // print only if errors
 						{
 							printf ("%7s %02d ",du.rx_group_name.c_str(), du.rx_group_index);
 							// du.att_read_prn(fd[i], "RXPRBSLOCKED");
-	    						cout << svalue << endl;
+							cout << svalue << endl;
 						}
 						locked_count ++;
 					}
