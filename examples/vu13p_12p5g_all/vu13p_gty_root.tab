@@ -1,0 +1,19 @@
+// parameter	value	
+int_reg_offset	0	
+reg_width_bits	32	
+mgt_rx_iface	mgt_gty_rx	
+mgt_tx_iface	mgt_gty_tx	
+phalg_tx_iface	phalg_gty_tx	
+drp_iface	drp_gty	
+interfaces_fname	mgt_gty_interfaces.sv	
+mgt_module_fn	mgt_gty_module.sv	
+common_module_fn	common_gty_module.sv	
+quad_module_fn	quad_gty_module.sv	
+xymap_fn	xymap_gty.sv	
+top_module_name	vu13p_gty_serial_io	
+root_config	.	
+MGT	xcvu13p-fsga2577/GTY	
+board	vu13p_gty	
+device_prefix	/dev/apex_axi	
+device_count	1	
+mem_base	0x0	
