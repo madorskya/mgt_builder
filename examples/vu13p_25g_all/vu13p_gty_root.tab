@@ -17,3 +17,4 @@ board	vu13p_gty
 device_prefix	/dev/apex_axi	
 device_count	1	
 mem_base	0x0	
+drp_base	0x464000000	
