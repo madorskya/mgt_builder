@@ -106,6 +106,7 @@ private:
       ar& quad_port_addr0;
       ar& fpga_in_out_addr;
       ar& mem_base;
+      ar& drp_base;
 
       ar& xy_reg_addr;
       ar& fd_semid;
@@ -186,7 +187,8 @@ public:
     int quad_port_addr1;
     int quad_port_addr0;
     int fpga_in_out_addr;
-    int mem_base;
+    int64_t mem_base;
+    int64_t drp_base;
 
     int xy_reg_addr;
     int fd_semid[MAX_DEVICES];

@@ -3,9 +3,9 @@ LN_LOC     = ../../../linenoise_cpp/
 LD_LOC     = /opt/cactus/include/
 LOCINC     = -I. -I$(LN_LOC)
 LDINC      = -I$(LD_LOC)
-OPTIM      = -O0
+OPTIM      = -O2
 LDLIBS     = -L/opt/cactus/lib/
-OPT        = -Wall $(OPTIM) $(LOCINC) $(HARDWARE) -ggdb
+OPT        = -Wall $(OPTIM) $(LOCINC) $(HARDWARE)
 LDOPT      = -Wall $(OPTIM) $(LOCINC) $(LDINC) $(HARDWARE) $(LDLIBS)
 LIB        = -lreadline -lncurses -lboost_regex -lboost_filesystem -lboost_system -lboost_serialization -std=c++11
 CC         = g++

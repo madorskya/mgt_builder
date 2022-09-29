@@ -33,11 +33,11 @@
 	// sys_vptr is byte pointer
 	uint8_t *sys_vptr;
 	int sys_fd;
-	int open_dev_mem ()
+	int open_dev_mem (uint64_t drp_base_addr)
 	{
 		sys_fd = ::open("/dev/mem", O_RDWR | O_SYNC);
 		if (sys_fd != -1)
-		sys_vptr = (uint8_t *)mmap(NULL, DRP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, sys_fd, DRP_BASE);
+		sys_vptr = (uint8_t *)mmap(NULL, DRP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, sys_fd, drp_base_addr);
 		else sys_vptr = NULL;
 		return sys_fd;
 	}
@@ -564,13 +564,13 @@ int main(int argc, char *argv[])
  			dev_name.clear();
  			dev_name << device_prefix << i;
 			device_name[i] = dev_name.str().c_str();
-            		// open device
-            		//fd[i] = ::open(device_name[i].c_str(), O_RDWR);
-            		fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
-            		if (fd[i] < 0)
-            		{
-                		printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());
-            		}
+			// open device
+			//fd[i] = ::open(device_name[i].c_str(), O_RDWR);
+			fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
+			if (fd[i] < 0)
+			{
+				printf("ERROR: Can not open device file: %s\n", device_name[i].c_str());
+			}
 			else
 			{
 				// create semaphore for this board

@@ -515,6 +515,8 @@ void fpga::read_top_config(string fname)
     ifstream file(fname.c_str(), std::ifstream::in);
     string str;
 	bool mem_base_set = false;
+	bool drp_base_set = false;
+	drp_base = 0; // make invalid
     while (getline(file, str)) // read line by line
     {
 
@@ -549,7 +551,8 @@ void fpga::read_top_config(string fname)
             if (sf[0].compare("board"                 ) == 0)  board_path            = sf[1]; else
             if (sf[0].compare("device_prefix"         ) == 0)  device_prefix         = sf[1]; else
             if (sf[0].compare("device_count"          ) == 0)  device_count          = strtol (sf[1].c_str(), NULL, 10); else
-            if (sf[0].compare("mem_base"              ) == 0)  {mem_base    = strtol (sf[1].c_str(), NULL, 16); mem_base_set = true;} else
+            if (sf[0].compare("mem_base"              ) == 0)  {mem_base = strtol (sf[1].c_str(), NULL, 16); mem_base_set = true;} else
+            if (sf[0].compare("drp_base"              ) == 0)  {drp_base = strtol (sf[1].c_str(), NULL, 16); drp_base_set = true;} else
             if (sf[0].compare("root_config"           ) == 0)  {} else // unused
             if (sf[0].compare("phalg_tx_iface"        ) == 0)  {} else // unused
             if (sf[0].compare("top_module_name"       ) == 0)  {} else // unused
@@ -562,6 +565,8 @@ void fpga::read_top_config(string fname)
 
 	if (!mem_base_set) 
 		printf ("WARNING: mem_base parameter is not set\n");
+	if (!drp_base_set) 
+		printf ("WARNING: drp_base parameter is not set\n");
 
 	mem_base /= 8; // convert from bytes
     root_path = "."; // always running from inside main config directory

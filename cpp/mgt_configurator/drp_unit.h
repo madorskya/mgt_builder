@@ -61,17 +61,18 @@ using namespace std;
 #ifdef AXI // AXI hardware, memory mapping access
 
 	#include <sys/mman.h>
-	// two parameters below should come from config file
+
 	#define DRP_SIZE 0x10000 // 13 bits of DRP address x 32 bit words = 15 bits of address
+//  drp base comes from config file
 //	#define DRP_BASE 0x054000000 // DRP area base address in rev 1,2
-	#define DRP_BASE 0x464000000 // rev 3	
+//	#define DRP_BASE 0x464000000 // rev 3	
 	// AXI versions of mwrite and mread support only 8-byte transfers
 	#define mwrite(a,b,c,d) {*((uint64_t*)(sys_vptr + d)) = *b;}
 	#define mread(a,b,c,d)  {volatile uint64_t dum = *((uint64_t*)(sys_vptr + d)); usleep(1); *b = *((uint64_t*)(sys_vptr + d));}
 // debug versions of the macros
 //	#define mwrite(a,b,c,d) {printf ("mwrite: a: %08x d: %016llx\n", d, *b); fflush(stdout); *((uint64_t*)(sys_vptr + d)) = *b;}
 //	#define mread(a,b,c,d)  {printf ("mread : a: %08x\n", d); fflush(stdout); *b = *((uint64_t*)(sys_vptr + d));}
-	#define mopen(d) open_dev_mem()
+	#define mopen(d) open_dev_mem(chip.drp_base)
 
 #endif
 
