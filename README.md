@@ -25,6 +25,6 @@ FPGA MGT builder is a set of software tools with the following functionality:
     -	System Verilog HDL
     -	Linux
     -	Xilinx 7-series FPGAs, GTH transceivers
-    -	Ultrascale, GTH transceivers
+    -	Ultrascale+, GTY and GTH transceivers
 
 See documents in doc directory
