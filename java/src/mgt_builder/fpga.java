@@ -769,20 +769,34 @@ public class fpga
                         // pick up clock constraint from protocol config
                         protocol_config pcfg = qc.protocol_map.get(m.rx_protocol);
                         
-                        genclk_constr.add (String.format("create_clock -period %.3f -name rxclk%d_%d [get_pins -filter {REF_PIN_NAME=~*%s} -of_objects [get_cells -hierarchical -filter {NAME =~ *quad_loop[%d]*mgt_loop[%d]*%s_inst*}]]; # %s%d",
+                        if (pcfg != null)
+                        {
+                            genclk_constr.add (String.format("create_clock -period %.3f -name rxclk%d_%d [get_pins -filter {REF_PIN_NAME=~*%s} -of_objects [get_cells -hierarchical -filter {NAME =~ *quad_loop[%d]*mgt_loop[%d]*%s_inst*}]]; # %s%d",
                                 pcfg.rxoutclk_constr, x, y, qc.mgt_rxoutclk_name, qi, mi, qc.mgt_channel_name, m.rx_group_name, m.rx_group_index));
-                        genclk_group.add (String.format("set_clock_groups -group [get_clocks -include_generated_clocks rxclk%d_%d] -asynchronous",
+                            genclk_group.add (String.format("set_clock_groups -group [get_clocks -include_generated_clocks rxclk%d_%d] -asynchronous",
                                 x, y));
+                        }
+                        else
+                        {
+                            System.out.println(String.format("ERROR: invalid protocol: %s", m.rx_protocol));
+                        }
                     }
                     if (m.tx_active)
                     {
                         // pick up clock constraint from protocol config
                         protocol_config pcfg = qc.protocol_map.get(m.tx_protocol);
 
-                        genclk_constr.add (String.format("create_clock -period %.3f -name txclk%d_%d [get_pins -filter {REF_PIN_NAME=~*%s} -of_objects [get_cells -hierarchical -filter {NAME =~ *quad_loop[%d]*mgt_loop[%d]*%s_inst*}]]; # %s%d",
+                        if (pcfg != null)
+                        {
+                            genclk_constr.add (String.format("create_clock -period %.3f -name txclk%d_%d [get_pins -filter {REF_PIN_NAME=~*%s} -of_objects [get_cells -hierarchical -filter {NAME =~ *quad_loop[%d]*mgt_loop[%d]*%s_inst*}]]; # %s%d",
                                 pcfg.txoutclk_constr, x, y, qc.mgt_txoutclk_name, qi, mi, qc.mgt_channel_name, m.tx_group_name, m.tx_group_index));
-                        genclk_group.add (String.format("set_clock_groups -group [get_clocks -include_generated_clocks txclk%d_%d] -asynchronous",
+                            genclk_group.add (String.format("set_clock_groups -group [get_clocks -include_generated_clocks txclk%d_%d] -asynchronous",
                                 x, y));
+                        }
+                        else
+                        {
+                            System.out.println(String.format("ERROR: invalid protocol: %s", m.rx_protocol));
+                        }
                     }
                 }
             }
