@@ -7,7 +7,7 @@ CPLLFBCLKLOST	out	s		1			y
 CPLLLOCK	out	s		1			y		
 CPLLLOCKDETCLK	in	c		1					
 CPLLLOCKEN	in	0		1	1'b1				
-CPLLPD	in	s		1			y		
+CPLLPD	in	s		1	1'b1		y		
 CPLLREFCLKLOST	out	s		1			y		
 CPLLREFCLKSEL	in	0		3	3'b1				
 CPLLRESET	in	0		1					

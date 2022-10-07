@@ -222,6 +222,9 @@ public class module
         List<String> case_wr = new ArrayList<>(); // write case items
         List<String> case_rd = new ArrayList<>(); // read case items
         List<String> inst_buffers = new ArrayList<>(); // buffers
+        List<String> initial_block = new ArrayList<>(); // initial block
+        
+        initial_block.add ("\tinitial\n\tbegin");
         
         String dirc, bitfld, ifp_name; // signal
         
@@ -288,11 +291,22 @@ public class module
             if (p.type.contentEquals("s")) // static connection to register
             {
                 if (p.dir.contentEquals("in"))
+                {
                     inst_ios.add (String.format("\t\t.%-26s ( reg_[%d][%2d:%2d]),", 
                         p.name, p.address.offset, p.address.high_bit, p.address.low_bit));
+                    
+                    // program default value (if indicated) for this input via initial setting
+                    if (!p.dflt.trim().contentEquals(""))
+                    {
+                        initial_block.add (String.format("\t\treg_[%d][%2d:%2d] = %s; // %s",
+                                p.address.offset, p.address.high_bit, p.address.low_bit, p.dflt, p.name));
+                    }
+                }
                 else
+                {
                     inst_ios.add (String.format("\t\t.%-26s (wire_[%d][%2d:%2d]),", 
                         p.name, p.address.offset, p.address.high_bit, p.address.low_bit));
+                }
                     
             }
             else
@@ -363,6 +377,8 @@ public class module
             case_rd.add (String.format("                    9'd%d: drpdo_reg = wire_[%d];", i, i));
         }
         
+        initial_block.add("\tend");
+        
         lines.add    (qc.generated_header);
         lines.add    ("`include \"drp_interface.sv\"");
         lines.add    ("`include \"" + qc.interfaces_fname + "\"");
@@ -375,6 +391,7 @@ public class module
         lines.add    ("\twire [15:0] XY = mgtxy[qind][mind];");
         lines.addAll (regs);
         lines.addAll (wires);
+        lines.addAll (initial_block);
         lines.add    (logic_1.replaceAll("###", qc.drp_iface + "_if"));
         lines.addAll (case_wr);
         lines.add    (logic_2.replaceAll("###", qc.drp_iface + "_if"));

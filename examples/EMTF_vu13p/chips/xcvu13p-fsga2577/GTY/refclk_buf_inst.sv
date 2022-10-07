@@ -10,5 +10,5 @@
 				.IB    (refclk_n [gi]),	
 				.CEB   (1'b0),	
 				.O     (refclk   [gi]),	
-				.ODIV2 ()	
+				.ODIV2 (refclk_odiv [gi])	
 			);		

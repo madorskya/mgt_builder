@@ -498,7 +498,7 @@ public class fpga
         int refclk_cnt = 0;
         for (refclk_prop p : refclks) if (p.used) refclk_cnt++;
         
-        wires.add(String.format("\twire [%d:0] refclk;", refclk_cnt-1));
+//        wires.add(String.format("\twire [%d:0] refclk;", refclk_cnt-1));
         
         // create refclk connections
         List<String> refclk_conns = new ArrayList<>();
@@ -672,6 +672,9 @@ public class fpga
            }
        }
         
+// output all refclocks and odiv outputs for use by other logic in firmware
+        ios.add(String.format("\toutput [%d:0] refclk,", refclk_cnt-1));
+        ios.add(String.format("\toutput [%d:0] refclk_odiv,", refclk_cnt-1));
         
         ios = kill_last_comma (ios);
 
