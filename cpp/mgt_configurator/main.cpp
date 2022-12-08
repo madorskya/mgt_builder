@@ -527,7 +527,8 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
     {
-		if (!boost::filesystem::exists("/tmp/mgt_serialize.dat"))
+        //if (!boost::filesystem::exists("/tmp/mgt_serialize.dat"))
+        if (true) // disabling serialization, does not work reliably
 		{
 			// argv[1] is top config file name
 			chip.read_top_config (argv[1]); // top configuration file
@@ -539,19 +540,19 @@ int main(int argc, char *argv[])
 			chip.fill_registers  (); // using this to only detect which registers are there, and fill map with offsets
 			chip.read_tx_mmcm_map(); // read map of TX clock-sharing MMCMs
 
-			std::ofstream ofs("/tmp/mgt_serialize.dat", std::ios::binary);
-			boost::archive::binary_oarchive oa(ofs);
-			oa << chip;
-			ofs.close();
-			chmod("/tmp/mgt_serialize.dat", 0666);
+//			std::ofstream ofs("/tmp/mgt_serialize.dat", std::ios::binary);
+//			boost::archive::binary_oarchive oa(ofs);
+//			oa << chip;
+//			ofs.close();
+//			chmod("/tmp/mgt_serialize.dat", 0666);
 		}
-		else
-		{
-			std::ifstream ifs("/tmp/mgt_serialize.dat", std::ios::binary);
-			boost::archive::binary_iarchive ia(ifs);
-			ia >> chip;
-			ifs.close();
-		}
+//		else
+//		{
+//			std::ifstream ifs("/tmp/mgt_serialize.dat", std::ios::binary);
+//			boost::archive::binary_iarchive ia(ifs);
+//			ia >> chip;
+//			ifs.close();
+//		}
 
 		// open devices
 		string device_prefix = chip.device_prefix;
@@ -565,7 +566,6 @@ int main(int argc, char *argv[])
  			dev_name << device_prefix << i;
 			device_name[i] = dev_name.str().c_str();
 			// open device
-			//fd[i] = ::open(device_name[i].c_str(), O_RDWR);
 			fd[i] = mopen(device_name[i].c_str()); // mopen macro depends on the system
 			if (fd[i] < 0)
 			{
