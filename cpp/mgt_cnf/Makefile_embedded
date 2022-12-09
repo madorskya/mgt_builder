@@ -17,13 +17,13 @@ else
   CCOPT=$(OPT)
 endif
 
-all: mgt_configurator
+all: mgt_cnf
 ifeq ($(HARDWARE),-DMTF7)
         export LD_LIBRARY_PATH=/opt/cactus/lib
 endif
 
-mgt_configurator: main.o fpga.o drp_unit.o linenoise.o
-	$(CL) $(CCOPT) $(LIB) -o mgt_configurator main.o fpga.o drp_unit.o linenoise.o
+mgt_cnf: main.o fpga.o drp_unit.o linenoise.o
+	$(CL) $(CCOPT) $(LIB) -o mgt_cnf main.o fpga.o drp_unit.o linenoise.o
 
 linenoise.o: $(LN_LOC)/linenoise.cpp $(LN_LOC)/linenoise.h
 	$(CC) $(CCOPT) -c -o linenoise.o $(LN_LOC)/linenoise.cpp
@@ -40,4 +40,4 @@ main.o : main.cpp fpga.h drp_unit.h $(LN_LOC)/linenoise.h
 clean :
 	rm -f *~
 	rm -f *.o
-	rm -f mgt_configurator
+	rm -f mgt_cnf

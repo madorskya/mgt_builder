@@ -192,10 +192,7 @@ public:
 
     int xy_reg_addr;
     int fd_semid[MAX_DEVICES];
-    int first_unit_xy;
-    drp_unit* first_common;
 
-    fpga () {first_unit_xy = -1; first_common = NULL;}
     void read_mgt_list ();
     void read_links ();
     void read_params ();
@@ -223,6 +220,7 @@ public:
     map<string,int> com_name_map; // COM name to XY
     vector<drp_unit> tx_mmcm_masters; // map of txuserclk-sharing masters. Each master remembers its slaves
     map<int,drp_unit*>common_map; // common base address to common unit
+    map<string,int>proto_map; // protocol map, used to keep XYs of MGTs with particular combinations of TX:RX protocols
 
 };
 

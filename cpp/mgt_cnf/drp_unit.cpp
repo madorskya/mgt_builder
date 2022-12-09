@@ -220,6 +220,21 @@ int drp_unit::read_units (string fname)
 }
 
 
+void drp_unit::copy_params (drp_unit src)
+{
+    // copy attributes
+    atts = src.atts;
+
+    // copy common unit attributes
+    if (!(common_unit->common_is_used)) // qpll is not used yet
+    {
+        common_unit->atts = src.common_unit->atts;
+
+        if (tx_pll.compare("Q") == 0 || rx_pll.compare("Q") == 0)
+            common_unit->common_is_used = true; // mark as used
+    }
+}
+
 // read both params files TX and RX
 void drp_unit::read_params ()
 {
@@ -230,14 +245,14 @@ void drp_unit::read_params ()
     {
         string tx_param_fname = tx_protocol_path + "/mgt_attributes.tab";
         lines = read_params_rx_tx (tx_param_fname, "tx");
-        if (lines < 10) cout << "problem reading file: " << tx_param_fname;
+        if (lines < 10) cout << "problem reading file: " << tx_param_fname << endl;
 
         if (!(common_unit->common_is_used)) // qpll is not used yet
         {
             // tell COMMON unit to read its parameters
             tx_param_fname = tx_protocol_path + "/common_attributes.tab";
             lines = common_unit->read_params_rx_tx (tx_param_fname, "common");
-            if (lines < 10) cout << "problem reading file: " << tx_param_fname;
+            if (lines < 10) cout << "problem reading file: " << tx_param_fname << endl;
 
             if (tx_pll.compare("Q") == 0)
                 common_unit->common_is_used = true; // mark as used
@@ -248,14 +263,14 @@ void drp_unit::read_params ()
     {
         string rx_param_fname = rx_protocol_path + "/mgt_attributes.tab";
         lines = read_params_rx_tx (rx_param_fname, "rx");
-        if (lines < 10) cout << "problem reading file: " << rx_param_fname;
+        if (lines < 10) cout << "problem reading file: " << rx_param_fname << endl;
 
         if (!(common_unit->common_is_used)) // qpll is not used yet
         {
             // tell COMMON unit to read its parameters
             rx_param_fname = rx_protocol_path + "/common_attributes.tab";
             lines = common_unit->read_params_rx_tx (rx_param_fname, "common");
-            if (lines < 10) cout << "problem reading file: " << rx_param_fname;
+            if (lines < 10) cout << "problem reading file: " << rx_param_fname << endl;
 
             if (rx_pll.compare("Q") == 0)
                 common_unit->common_is_used = true; // mark as used
@@ -284,9 +299,6 @@ int drp_unit::read_params_rx_tx(string param_fname, string unit)
     int i = 0;
     while (getline(file, str)) // read line by line
     {
-
-        //if (str.find("// PORTS") != string::npos) drp_reg = false; // port list starts
-
         if (str.find("//") != string::npos) continue; // skip commented lines
 
         vector <string> fld;

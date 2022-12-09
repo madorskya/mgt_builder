@@ -555,6 +555,9 @@ int main(int argc, char *argv[])
                 double step_time = ((t[i+1].tv_sec+t[i+1].tv_usec/1000000.) - (t[i].tv_sec+t[i].tv_usec/1000000.));
                 printf ("step: %d time: %f\n", i, step_time);
             }
+            double tot_time = ((t[8].tv_sec+t[8].tv_usec/1000000.) - (t[0].tv_sec+t[0].tv_usec/1000000.));
+            printf ("total time: %f\n", tot_time);
+
 
 
 //			std::ofstream ofs("/tmp/mgt_serialize.dat", std::ios::binary);

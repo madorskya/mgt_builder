@@ -309,6 +309,7 @@ public:
 
     int  read_config (std::string fname, bool drp_reg);
     void read_params ();
+    void copy_params (drp_unit src);
     int  read_params_rx_tx (string param_fname, string unit);
     int  read_units  (string fname);
     void fill_registers ();

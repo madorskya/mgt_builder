@@ -18,6 +18,10 @@
 
 void fpga::read_mgt_list()
 {
+    drp_unit* first_unit = NULL;
+    drp_unit fu;
+    drp_unit* first_common = NULL;
+
     ifstream file(base_addr_fn.c_str(), std::ifstream::in);
     if (!file.is_open())
     {
@@ -69,7 +73,7 @@ void fpga::read_mgt_list()
         mgt_unit.quad_port_addr1 = quad_port_addr1;
         mgt_unit.quad_port_addr0 = quad_port_addr0;
 
-        if (first_unit_xy == -1) // this is very first unit, read all parameters from files
+        if (first_unit == NULL) // this is very first unit, read all parameters from files
         {
             int mgt_port_ln  = mgt_unit.read_config (mgt_port_off, false); // read port map
             int mgt_drp_ln   = mgt_unit.read_config (mgt_drp_off , true);  // read DRP map
@@ -82,8 +86,7 @@ void fpga::read_mgt_list()
         else
         {
             // copy first unit instead of reading everything again
-            drp_unit first_unit = mgt_map.at(first_unit_xy); // extract first unit
-            mgt_unit.atts = first_unit.atts; // copy ports and attributes
+            mgt_unit.atts = first_unit->atts; // copy ports and attributes
         }
         // add record to map
         ostringstream mgt_name;
@@ -101,12 +104,21 @@ void fpga::read_mgt_list()
             com_unit->quad_drp_addr0  = quad_drp_addr0;
             com_unit->quad_port_addr1 = quad_port_addr1;
             com_unit->quad_port_addr0 = quad_port_addr0;
-            int com_port_ln  = com_unit->read_config(com_port_off, false); // read port map
-            int com_drp_ln   = com_unit->read_config(com_drp_off , true);  // read DRP map
 
-            if (com_port_ln < 5) cerr << "problem reading " << com_port_off << endl;
-            if (com_drp_ln  < 5) cerr << "problem reading " << com_drp_off  << endl;
+            // check if first common unit was created
+            if (first_common == NULL)
+            {   // not yet, read from files
+                int com_port_ln  = com_unit->read_config(com_port_off, false); // read port map
+                int com_drp_ln   = com_unit->read_config(com_drp_off , true);  // read DRP map
 
+                if (com_port_ln < 5) cerr << "problem reading " << com_port_off << endl;
+                if (com_drp_ln  < 5) cerr << "problem reading " << com_drp_off  << endl;
+            }
+            else
+            {
+                // copy first unit instead of reading everything again
+                com_unit->atts = first_common->atts;
+            }
             // store in map of commons
             common_map.insert(make_pair(com_base, com_unit));
 //            printf("creating QPLL for: x: %d y: %d com_base: %x\n", x, y, com_base);
@@ -123,9 +135,12 @@ void fpga::read_mgt_list()
         mgt_map.insert     (make_pair(mkxy(x,y), mgt_unit)); // store MGT unit in map after all parameters are set
         mgt_name_map.insert(make_pair(mgt_name.str(), mkxy(x,y))); // store MGT unit name and XY in a separate map
 
-        // store map location of first unit ever read
-        if (first_unit_xy == -1) first_unit_xy = mkxy(x,y);
-        // store direct pointer to first common unit
+        // store pointers to first units
+        if (first_unit == NULL)
+        {
+            fu = mgt_map.at(mkxy(x,y));
+            first_unit = &fu;
+        }
         if (first_common == NULL) first_common = com_unit;
     }
 //    cout << "MGT map size: " << mgt_map.size() << endl;
@@ -295,8 +310,32 @@ void fpga::read_params ()
         int xy = it->first;
         drp_unit du = it->second;
 
-        du.read_params(); // read parameters for MGT unit
-        // each MGT also reads parameters for its COMMON unit
+        // extract protocol paths from this unit
+        string tx_proto = du.tx_protocol_path;
+        string rx_proto = du.rx_protocol_path;
+
+        // make combined protocol string to be used as map index
+        string proto_map_ind = tx_proto + ":" + rx_proto;
+
+        // check if MGT with this combination of TX:RX protocols was already initialized
+        if (proto_map.count(proto_map_ind) == 0)
+        {
+            // this combination of protocols was not used, read from files
+            du.read_params(); // read parameters for MGT unit
+            // each MGT also reads parameters for its COMMON unit
+
+            // store this unit in protocol map
+            proto_map.insert(make_pair(proto_map_ind, xy));
+        }
+        else
+        {
+            // this combination of protocols was used before
+            // extract unit with these protocols
+            drp_unit du_cp = mgt_map_r.at(proto_map.at(proto_map_ind));
+
+            // copy settings
+            du.copy_params(du_cp);
+        }
 
         mgt_map_r.insert(make_pair(xy, du)); // add elements to new map
         // cannot replace element in mgt_map, this breaks iterator
