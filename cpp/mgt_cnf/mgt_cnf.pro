@@ -5,7 +5,7 @@ CONFIG -= qt
 INCLUDEPATH = /opt/cactus/include
 INCLUDEPATH += ../../../linenoise_cpp/
 DEFINES += MTF7
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 -O2
 
 SOURCES += main.cpp \
     fpga.cpp
