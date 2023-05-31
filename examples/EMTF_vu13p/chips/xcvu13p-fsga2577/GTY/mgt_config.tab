@@ -15,3 +15,5 @@ mgt_txoutclk_name	TXOUTCLK	name of TX output clock port, used to create TX user 
 mgt_txusrclk_name	TXUSRCLK	name of TX user clock port	
 mgt_rxoutclk_name	RXOUTCLK	name of RX output clock port	
 mgt_rxusrclk_name	RXUSRCLK	name of RX user clock port	
+mgt_txpolarity_name	TXPOLARITY	name of TX polarity port	
+mgt_rxpolarity_name	RXPOLARITY	name of RX polarity port	
