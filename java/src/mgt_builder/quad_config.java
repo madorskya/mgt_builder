@@ -118,7 +118,8 @@ public class quad_config
         catch (Exception e)
         {
             System.out.println ("Cannot read input file: " + fname);
-        	if (inFile1 != null) inFile1.close();
+            if (inFile1 != null) inFile1.close();
+            System.exit(1);
         }
         finally
         {
