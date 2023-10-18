@@ -26,7 +26,7 @@ void fpga::read_mgt_list()
     if (!file.is_open())
     {
         cout << "cannot open file: " << base_addr_fn << endl;
-        return;
+		exit(1);
     }
     string str;
     while (getline(file, str)) // read line by line
