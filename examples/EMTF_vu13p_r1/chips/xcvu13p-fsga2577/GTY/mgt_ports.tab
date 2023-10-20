@@ -199,7 +199,7 @@ RXSLIPOUTCLK	in	s		1
 RXSLIPPMA	in	s		1					
 RXSTARTOFSEQ	out	d	RXUSRCLK2	2		mgt_gty_rx	y		
 RXSTATUS	out	0		3					
-RXSYNCALLIN	in	d		1					
+RXSYNCALLIN	in	d		1			y		
 RXSYNCDONE	out	s		1			y		
 RXSYNCIN	in	s		1					
 RXSYNCMODE	in	s		1					
