@@ -29,7 +29,9 @@ proc parse_props {arg} {
 		if {$length == 4 && [string first "Property" [lindex $varlist 0]] == -1} {
 			if {[string first "/" [lindex $varlist 3]] == -1} {
    				set var1 [string replace [lindex $varlist 0] end+1 end+1 ""]
-   				if {[string range [lindex $varlist 3] end-1 end+1] == ".0"} {
+# cannot use == operator for string comparison below, since it may compare values, so ".0" == "00", for example.
+# this deletes "00" at the end of many many lines. Replaced == with "equal" operator
+   				if {[string equal [string range [lindex $varlist 3] end-1 end+1] ".0"]} {
 					set var2 [string replace [lindex $varlist 3] end-1 end+1 ""]
        				} else {
 					set var2 [string replace [lindex $varlist 3] end+1 end+1 ""]
