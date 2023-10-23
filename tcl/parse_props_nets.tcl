@@ -27,9 +27,13 @@ proc parse_props {arg} {
 		set varlist [regexp -inline -all -- {\S+} $prop]
 		set length [llength $varlist]
 		if {$length == 4 && [string first "Property" [lindex $varlist 0]] == -1} {
-			if {[string first "." [lindex $varlist 3]] == -1 && [string first "/" [lindex $varlist 3]] == -1} {
-				set var1 [string replace [lindex $varlist 0] end+1 end+1 ""]
-				set var2 [string replace [lindex $varlist 3] end+1 end+1 ""]
+			if {[string first "/" [lindex $varlist 3]] == -1} {
+   				set var1 [string replace [lindex $varlist 0] end+1 end+1 ""]
+   				if {[string range [lindex $varlist 3] end-1 end+1] == ".0"} {
+					set var2 [string replace [lindex $varlist 3] end-1 end+1 ""]
+       				} else {
+					set var2 [string replace [lindex $varlist 3] end+1 end+1 ""]
+    				}
 				puts "$var1 $var2"
 				puts $f "$var1 $var2"
 			}
