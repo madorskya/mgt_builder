@@ -31,38 +31,38 @@ rx	0	14	pr25g	Q	156.25	p25g_rx	14
 tx	0	14	pr25g	Q	156.25	p25g_tx	14	
 rx	0	15	pr25g	Q	156.25	p25g_rx	15	
 tx	0	15	pr25g	Q	156.25	p25g_tx	15	
-//rx	0	16	pr25g	Q	156.25	p25g_rx		
-//tx	0	16	pr25g	Q	156.25	p25g_tx		
-//rx	0	17	pr25g	Q	156.25	p25g_rx		
-//tx	0	17	pr25g	Q	156.25	p25g_tx		
-//rx	0	18	pr25g	Q	156.25	p25g_rx	axi	
-//tx	0	18	pr25g	Q	156.25	p25g_tx	axi	
-//rx	0	19	pr25g	Q	156.25	p25g_rx		
-//tx	0	19	pr25g	Q	156.25	p25g_tx		
-//rx	0	20	pr25g	Q	156.25	p25g_rx	axi	
-//tx	0	20	pr25g	Q	156.25	p25g_tx	axi	
-//rx	0	21	pr25g	Q	156.25	p25g_rx		
-//tx	0	21	pr25g	Q	156.25	p25g_tx		
-//rx	0	22	pr25g	Q	156.25	p25g_rx		
-//tx	0	22	pr25g	Q	156.25	p25g_tx		
-//rx	0	23	pr25g	Q	156.25	p25g_rx		
-//tx	0	23	pr25g	Q	156.25	p25g_tx		
-rx	0	24	pr25g	Q	156.25	p25g_rx	16	
-tx	0	24	pr25g	Q	156.25	p25g_tx	16	
-rx	0	25	pr25g	Q	156.25	p25g_rx	17	
-tx	0	25	pr25g	Q	156.25	p25g_tx	17	
-rx	0	26	pr25g	Q	156.25	p25g_rx	18	
-tx	0	26	pr25g	Q	156.25	p25g_tx	18	
-rx	0	27	pr25g	Q	156.25	p25g_rx	19	
-tx	0	27	pr25g	Q	156.25	p25g_tx	19	
-rx	0	28	pr25g	Q	156.25	p25g_rx	20	
-tx	0	28	pr25g	Q	156.25	p25g_tx	20	
-rx	0	29	pr25g	Q	156.25	p25g_rx	21	
-tx	0	29	pr25g	Q	156.25	p25g_tx	21	
-rx	0	30	pr25g	Q	156.25	p25g_rx	22	
-tx	0	30	pr25g	Q	156.25	p25g_tx	22	
-rx	0	31	pr25g	Q	156.25	p25g_rx	23	
-tx	0	31	pr25g	Q	156.25	p25g_tx	23	
+rx	0	16	pr25g	Q	156.25	p25g_rx	16	
+tx	0	16	pr25g	Q	156.25	p25g_tx	16	
+rx	0	17	pr25g	Q	156.25	p25g_rx	17	
+tx	0	17	pr25g	Q	156.25	p25g_tx	17	
+rx	0	18	pr25g	Q	156.25	p25g_rx	18	
+tx	0	18	pr25g	Q	156.25	p25g_tx	18	
+rx	0	19	pr25g	Q	156.25	p25g_rx	19	
+tx	0	19	pr25g	Q	156.25	p25g_tx	19	
+rx	0	20	pr25g	Q	156.25	p25g_rx	20	
+tx	0	20	pr25g	Q	156.25	p25g_tx	20	
+rx	0	21	pr25g	Q	156.25	p25g_rx	21	
+tx	0	21	pr25g	Q	156.25	p25g_tx	21	
+rx	0	22	pr25g	Q	156.25	p25g_rx	22	
+tx	0	22	pr25g	Q	156.25	p25g_tx	22	
+rx	0	23	pr25g	Q	156.25	p25g_rx	23	
+tx	0	23	pr25g	Q	156.25	p25g_tx	23	
+//rx	0	24	pr25g	Q	156.25	p25g_rx		
+//tx	0	24	pr25g	Q	156.25	p25g_tx		
+//rx	0	25	pr25g	Q	156.25	p25g_rx		
+//tx	0	25	pr25g	Q	156.25	p25g_tx		
+//rx	0	26	pr25g	Q	156.25	p25g_rx		
+//tx	0	26	pr25g	Q	156.25	p25g_tx		
+//rx	0	27	pr25g	Q	156.25	p25g_rx		
+//tx	0	27	pr25g	Q	156.25	p25g_tx		
+//rx	0	28	pr25g	Q	156.25	p25g_rx		
+//tx	0	28	pr25g	Q	156.25	p25g_tx		
+//rx	0	29	pr25g	Q	156.25	p25g_rx		
+//tx	0	29	pr25g	Q	156.25	p25g_tx		
+//rx	0	30	pr25g	Q	156.25	p25g_rx		
+//tx	0	30	pr25g	Q	156.25	p25g_tx		
+//rx	0	31	pr25g	Q	156.25	p25g_rx		
+//tx	0	31	pr25g	Q	156.25	p25g_tx		
 rx	0	32	pr25g	Q	156.25	p25g_rx	24	
 tx	0	32	pr25g	Q	156.25	p25g_tx	24	
 rx	0	33	pr25g	Q	156.25	p25g_rx	25	
